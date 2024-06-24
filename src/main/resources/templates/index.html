@@ -279,19 +279,17 @@ rs.lng); -->
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
-></script>
-<script>
+></script><script>
     function locationfunc(xxx, yyy) {
         const now = new Date();
         const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, "0"); // 1을 더한 후 두 자리 수로 맞춤
+        const month = String(now.getMonth() + 1).padStart(2, "0");
         const date = String(now.getDate()).padStart(2, "0");
 
         const formattedDate = `${year}${month}${date}`;
 
         console.log(formattedDate); // 예: 20240624
 
-        console.log("locationfunc");
         var rs = dfs_xy_conv("toXY", xxx, yyy);
 
         const apiKey = "RJPEUzqySY-TxFM6spmPRQ"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
@@ -300,24 +298,79 @@ rs.lng); -->
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                console.log(data.response.body.items.item[0].category);
-                console.log(data.response.body.items.item[0].fcstValue);
+                // 필요한 데이터 추출
+                const items = data.response.body.items.item;
+
+                // 필요한 카테고리 데이터 추출
+                const popData = items.find(item => item.category === 'POP');
+                const skyData = items.find(item => item.category === 'SKY');
+                const tmpData = items.find(item => item.category === 'TMP');
+                const ptyData = items.find(item => item.category === 'PTY');
+
+                // 강수 형태에 따라 문자열 결정
+                var ptyString = "";
+                var ptyImg = "";
+                if (ptyData) {
+                    if (ptyData.fcstValue === "0") {
+                        if (skyData.fcstValue === "1") {
+                            ptyString = "맑음";
+                            ptyImg = "sun.png";
+                        }
+                        else if (skyData.fcstValue === "3") {
+                            ptyString = "구름많음";
+                            ptyImg = "manyCloud.png";
+                        }
+                        else if (skyData.fcstValue === "4") {
+                            ptyString = "흐림";
+                            ptyImg = "cloud.png";
+                        }
+                    } else if (ptyData.fcstValue === "1") {
+                        ptyString = "비";
+                        ptyImg = "rain.png";
+                    }
+                    else if (ptyData.fcstValue === "2") {
+                        ptyString = "비/눈";
+                        ptyImg = "rainSnow.png";
+                    }
+                    else if (ptyData.fcstValue === "3") {
+                        ptyString = "눈";
+                        ptyImg = "snow.png";
+                    }
+                    else if (ptyData.fcstValue === "5") {
+                        ptyString = "빗방울";
+                        ptyImg = "littleRain.png";
+                    }
+                    else if (ptyData.fcstValue === "6") {
+                        ptyString = "빗방울눈날림";
+                        ptyImg = "littleRainSnow.png";
+                    }
+                    else if (ptyData.fcstValue === "7") {
+                        ptyString = "눈날림";
+                        ptyImg = "littleSnow.png";
+                    }
+                }
+
+                // 강수 형태 문자열 출력
+                console.log("PTY (강수 형태):", ptyString);
+
+                // 추출한 데이터 출력
                 var weather = document.getElementById("weather");
                 weather.innerHTML = `
-              <p>${data.response.body.items.item[0].fcstDate}</p>
-              <p>온도: ${data.response.body.items.item[0].fcstValue}</p>
-          `;
-                console.log(rs.x);
-                console.log(rs.y);
-                console.log(xxx);
-                console.log(yyy);
-                mapXY(xxx, yyy);
+                    <p>${popData.fcstDate}</p>
+                    <p>온도: ${tmpData.fcstValue}</p>
+                    <p>강수확률: ${popData.fcstValue}</p>
+                    <p>하늘상태: ${skyData.fcstValue}</p>
+                    <p>결과 : ${ptyString}</p>
+                    <img src="./img/${ptyImg}" alt="날씨이미지">
+                `;
+
+                mapXY(xxx,yyy);
             })
             .catch((error) =>
                 console.error("Error fetching weather data:", error)
             );
     }
 </script>
+
 </body>
 </html>
