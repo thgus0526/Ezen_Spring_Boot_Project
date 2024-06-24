@@ -1,5 +1,7 @@
 package com.ezen.weather.user;
 
+import com.ezen.weather.adminTemp.AdminTemp;
+import com.ezen.weather.adminTemp.AdminTempService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -14,7 +17,7 @@ import java.util.Collections;
 public class UserController {
 
     private final UserService userService;
-
+    private final AdminTempService adminTempService;
 
 
     @GetMapping("/signup")
@@ -51,5 +54,19 @@ public class UserController {
         return "login_form";
     }
 
+    @GetMapping("/mypage")
+    public String mypage(Model model){
+        List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
+        model.addAttribute("siteUser", new SiteUser());
+        model.addAttribute("adminTemps", adminTemps);
+        return "user_mypage";
+
+    }
+    @PostMapping("/userTempSet")
+    public String userTempSet(@RequestParam("hiddenTemp") String hiddenTemp){
+        System.out.println(hiddenTemp);
+
+        return "redirect:/";
+    }
 
 }
