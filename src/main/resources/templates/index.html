@@ -10,17 +10,31 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
     />
-    <script
-            type="text/javascript"
-            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e"
-    ></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
         .bg-light-green {
-            background-color: #90ee90; /* 연두색 */
+            background-color: #90ee90;
         }
         .logo2 {
             width: 100px;
-            animation: fadeIn 3s ease-in-out, spin 2s infinite; /* 천천히 나타나며 회전 */
+            animation: fadeIn 3s ease-in-out, spin 2s infinite;
+        }
+        .weatherIcon {
+            width: 100px;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        #weather {
+            background-color: #e0f7fa;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         @keyframes fadeIn {
             from {
@@ -37,12 +51,6 @@
             to {
                 transform: rotate(360deg);
             }
-        }
-
-        /* 지도 크기 설정 */
-        #map {
-            width: 100%;
-            height: 400px;
         }
     </style>
 </head>
@@ -67,7 +75,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/"
+                    <a class="nav-link active" aria-current="page" href="#"
                     >커뮤니티</a
                     >
                 </li>
@@ -75,24 +83,16 @@
                     <a class="nav-link" href="#">기상 퀴즈</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/news">기상 뉴스</a>
+                    <a class="nav-link" href="#">기상 뉴스</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">랭킹</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                    <a class="nav-link" href="#">로그인</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAnonymous()" href="/user/signup">회원가입</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{#}">마이페이지</a>
-                </li>
-                <li>
-
-                    <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
+                    <a class="nav-link" href="#">회원가입</a>
                 </li>
             </ul>
         </div>
@@ -100,21 +100,10 @@
 </nav>
 <div class="container-fluid">
     <div class="row text-center">
-        <div class="col-md-9">
+        <div class="col-md-9 map-wrapper">
             <div id="map"></div>
         </div>
-        <div class="col-md-3" id="weather">
-            <h6>서울</h6>
-            <p>맑음</p>
-            <p>하이</p>
-            <p>하이</p>
-            <p>Hi</p>
-            <p>안녕ㅎ하세요</p>
-            탕후루
-            하이
-            바이
-            성진
-        </div>
+        <div class="col-md-3" id="weather"></div>
     </div>
 </div>
 
@@ -139,7 +128,7 @@
         var longitude = position.coords.longitude;
 
         // 위치 정보를 HTML 요소에 표시
-        var locationElement = document.getElementById("location");
+        var locationElement = document.getElementById("weather");
         locationElement.innerHTML = `
                 <p>Latitude: ${latitude}</p>
                 <p>Longitude: ${longitude}</p>
@@ -173,23 +162,25 @@
     window.onload = getLocation;
 </script>
 
-
+<script
+        type="text/javascript"
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e"
+></script>
 <script>
-
     function mapXY(x, y) {
-        let mapContainer = document.getElementById("map"), // 지도를 표시할 div
+        var mapContainer = document.getElementById("map"), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(x, y), // 지도의 중심좌표
-                level: 14, // 지도의 확대 레벨
+                level: 8, // 지도의 확대 레벨
             };
 
-        let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
         // 마커가 표시될 위치입니다
-        let markerPosition = new kakao.maps.LatLng(x, y);
+        var markerPosition = new kakao.maps.LatLng(x, y);
 
         // 마커를 생성합니다
-        let marker = new kakao.maps.Marker({
+        var marker = new kakao.maps.Marker({
             position: markerPosition,
         });
 
@@ -286,8 +277,11 @@ rs.lng); -->
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, "0"); // 1을 더한 후 두 자리 수로 맞춤
         const date = String(now.getDate()).padStart(2, "0");
+        const hour = String(now.getHours()).padStart(2, "0");
 
         const formattedDate = `${year}${month}${date}`;
+
+        console.log(hour);
 
         console.log(formattedDate); // 예: 20240624
 
@@ -295,7 +289,7 @@ rs.lng); -->
         var rs = dfs_xy_conv("toXY", xxx, yyy);
 
         const apiKey = "RJPEUzqySY-TxFM6spmPRQ"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
-        const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${formattedDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
+        const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${formattedDate}&base_time=1700&nx=${rs.x}&ny=${rs.y}`;
 
         fetch(url)
             .then((response) => response.json())
@@ -303,10 +297,19 @@ rs.lng); -->
                 console.log(data);
                 console.log(data.response.body.items.item[0].category);
                 console.log(data.response.body.items.item[0].fcstValue);
-                var weather = document.getElementById("weather");
+                const weather = document.getElementById("weather");
+                const date = data.response.body.items.item[0].fcstDate;
+                const year = date.substring(0,4);
+                const month = date.substring(4,6);
+                const day = date.substring(6,8);
+                const parseDate = `${year}년 ${month}월 ${day}일`;
                 weather.innerHTML = `
-              <p>${data.response.body.items.item[0].fcstDate}</p>
+                <img class="weatherIcon" src="img/1.png" />
+              <p>${parseDate}</p>
               <p>온도: ${data.response.body.items.item[0].fcstValue}</p>
+              <div>
+              </div>
+              <p>${hour}시 기준 </p>
           `;
                 console.log(rs.x);
                 console.log(rs.y);
