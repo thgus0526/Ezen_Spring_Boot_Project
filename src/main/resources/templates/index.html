@@ -10,17 +10,31 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
             crossorigin="anonymous"
     />
-    <script
-            type="text/javascript"
-            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e"
-    ></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
         .bg-light-green {
-            background-color: #90ee90; /* 연두색 */
+            background-color: #90ee90;
         }
         .logo2 {
             width: 100px;
-            animation: fadeIn 3s ease-in-out, spin 2s infinite; /* 천천히 나타나며 회전 */
+            animation: fadeIn 3s ease-in-out, spin 2s infinite;
+        }
+        .weatherIcon {
+            width: 100px;
+        }
+        #map {
+            width: 100%;
+            height: 100vh;
+        }
+        #weather {
+            background-color: #e0f7fa;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         @keyframes fadeIn {
             from {
@@ -37,12 +51,6 @@
             to {
                 transform: rotate(360deg);
             }
-        }
-
-        /* 지도 크기 설정 */
-        #map {
-            width: 100%;
-            height: 400px;
         }
     </style>
 </head>
@@ -100,21 +108,10 @@
 </nav>
 <div class="container-fluid">
     <div class="row text-center">
-        <div class="col-md-9">
+        <div class="col-md-9 map-wrapper">
             <div id="map"></div>
         </div>
-        <div class="col-md-3" id="weather">
-            <h6>서울</h6>
-            <p>맑음</p>
-            <p>하이</p>
-            <p>하이</p>
-            <p>Hi</p>
-            <p>안녕ㅎ하세요</p>
-            탕후루
-            하이
-            바이
-            성진
-        </div>
+        <div class="col-md-3" id="weather"></div>
     </div>
 </div>
 
@@ -139,7 +136,7 @@
         var longitude = position.coords.longitude;
 
         // 위치 정보를 HTML 요소에 표시
-        var locationElement = document.getElementById("location");
+        var locationElement = document.getElementById("weather");
         locationElement.innerHTML = `
                 <p>Latitude: ${latitude}</p>
                 <p>Longitude: ${longitude}</p>
@@ -173,23 +170,25 @@
     window.onload = getLocation;
 </script>
 
-
+<script
+        type="text/javascript"
+        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e"
+></script>
 <script>
-
     function mapXY(x, y) {
-        let mapContainer = document.getElementById("map"), // 지도를 표시할 div
+        var mapContainer = document.getElementById("map"), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(x, y), // 지도의 중심좌표
-                level: 14, // 지도의 확대 레벨
+                level: 8, // 지도의 확대 레벨
             };
 
-        let map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
         // 마커가 표시될 위치입니다
-        let markerPosition = new kakao.maps.LatLng(x, y);
+        var markerPosition = new kakao.maps.LatLng(x, y);
 
         // 마커를 생성합니다
-        let marker = new kakao.maps.Marker({
+        var marker = new kakao.maps.Marker({
             position: markerPosition,
         });
 
@@ -286,27 +285,91 @@ rs.lng); -->
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, "0"); // 1을 더한 후 두 자리 수로 맞춤
         const date = String(now.getDate()).padStart(2, "0");
+        const hour = String(now.getHours()).padStart(2, "0");
 
         const formattedDate = `${year}${month}${date}`;
 
+        console.log(hour);
+
         console.log(formattedDate); // 예: 20240624
 
-        console.log("locationfunc");
         var rs = dfs_xy_conv("toXY", xxx, yyy);
 
         const apiKey = "RJPEUzqySY-TxFM6spmPRQ"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
-        const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${formattedDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
+        const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${formattedDate}&base_time=1700&nx=${rs.x}&ny=${rs.y}`;
 
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                console.log(data.response.body.items.item[0].category);
-                console.log(data.response.body.items.item[0].fcstValue);
-                var weather = document.getElementById("weather");
+                // 필요한 데이터 추출
+                const items = data.response.body.items.item;
+
+                // 필요한 카테고리 데이터 추출
+                const popData = items.find(item => item.category === 'POP');
+                const skyData = items.find(item => item.category === 'SKY');
+                const tmpData = items.find(item => item.category === 'TMP');
+                const ptyData = items.find(item => item.category === 'PTY');
+
+                // 강수 형태에 따라 문자열 결정
+                var ptyString = "";
+                var ptyImg = "";
+                if (ptyData) {
+                    if (ptyData.fcstValue === "0") {
+                        if (skyData.fcstValue === "1") {
+                            ptyString = "맑음";
+                            ptyImg = "sun.png";
+                        }
+                        else if (skyData.fcstValue === "3") {
+                            ptyString = "구름많음";
+                            ptyImg = "manyCloud.png";
+                        }
+                        else if (skyData.fcstValue === "4") {
+                            ptyString = "흐림";
+                            ptyImg = "cloud.png";
+                        }
+                    } else if (ptyData.fcstValue === "1") {
+                        ptyString = "비";
+                        ptyImg = "rain.png";
+                    }
+                    else if (ptyData.fcstValue === "2") {
+                        ptyString = "비/눈";
+                        ptyImg = "rainSnow.png";
+                    }
+                    else if (ptyData.fcstValue === "3") {
+                        ptyString = "눈";
+                        ptyImg = "snow.png";
+                    }
+                    else if (ptyData.fcstValue === "5") {
+                        ptyString = "빗방울";
+                        ptyImg = "littleRain.png";
+                    }
+                    else if (ptyData.fcstValue === "6") {
+                        ptyString = "빗방울눈날림";
+                        ptyImg = "littleRainSnow.png";
+                    }
+                    else if (ptyData.fcstValue === "7") {
+                        ptyString = "눈날림";
+                        ptyImg = "littleSnow.png";
+                    }
+                }
+
+                // 강수 형태 문자열 출력
+                console.log("PTY (강수 형태):", ptyString);
+
+                const weather = document.getElementById("weather");
+                const date = data.response.body.items.item[0].fcstDate;
+                const year = date.substring(0,4);
+                const month = date.substring(4,6);
+                const day = date.substring(6,8);
+                const parseDate = `${year}년 ${month}월 ${day}일`;
                 weather.innerHTML = `
-              <p>${data.response.body.items.item[0].fcstDate}</p>
+                <img class="weatherIcon" src="./img/${ptyImg}" alt="날씨이미지" />
+              <p>${parseDate}</p>
               <p>온도: ${data.response.body.items.item[0].fcstValue}</p>
+              <p>강수확률: ${popData.fcstValue}</p>
+                    <p>하늘상태: ${skyData.fcstValue}</p>
+                    <p>결과 : ${ptyString}</p>
+              <p>${hour}시 기준 </p>
           `;
                 console.log(rs.x);
                 console.log(rs.y);
