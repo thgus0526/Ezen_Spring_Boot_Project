@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "user_temp")
 public class UserTemp {
-
+/////
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
