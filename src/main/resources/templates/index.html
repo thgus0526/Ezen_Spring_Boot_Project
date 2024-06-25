@@ -9,7 +9,10 @@
     <!-- sbb CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
     <style>
-
+        .title {font-weight:bold;display:block;}
+        .hAddr {position:absolute;left:10px;top:100px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+        #centerAddr {display:block;margin-top:2px;font-weight: normal;}
+        .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
     </style>
 </head>
 
@@ -68,12 +71,21 @@
     <div class="row text-center">
         <div class="col-md-9 map-wrapper">
             <div id="map"></div>
+            <div class="hAddr">
+                <div>주소</div>
+                <span id="centerAddr"></span>
+            </div>
         </div>
-        <div class="col-md-3" id="weather"></div>
+        <div class="col-md-3" id="weather">
+            <div id="weather1"></div>
+            <div id="weather12"></div>
+            <div id="weather2"></div>
+        </div>
     </div>
 </div>
 
 <script>
+    let isFirstLoad = true;
     // 위치 정보 요청 함수
     function getLocation() {
         // Geolocation API 지원 여부 확인
@@ -91,8 +103,10 @@
         var longitude = position.coords.longitude;
 
         // 위치 정보를 HTML 요소에 표시
-        var locationElement = document.getElementById("weather");
+        var locationElement = document.getElementById("weather1");
         locationfunc(latitude, longitude);
+        airvisualFunc(latitude,longitude);
+        mapXY(latitude, longitude);
     }
 
     // 위치 정보를 받아오는 도중 오류가 발생한 경우 실행되는 함수
@@ -114,17 +128,16 @@
                 locationElement.innerHTML = "An unknown error occurred.";
                 break;
         }
-        locationfunc(33.2541205, 126.560076);
+            locationfunc(33.2541205, 126.560076);
+        airvisualFunc(33.2541205,126.560076);
+        mapXY(33.2541205, 126.560076);
     }
 
     // 페이지 로드 시 위치 정보 요청
     window.onload = getLocation;
 </script>
 
-<script
-        type="text/javascript"
-        src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e"
-></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e&libraries=services"></script>
 <script>
     function mapXY(x, y) {
         var mapContainer = document.getElementById("map"), // 지도를 표시할 div
@@ -145,6 +158,75 @@
 
         // 마커가 지도 위에 표시되도록 설정합니다
         marker.setMap(map);
+
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+
+// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+        searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+        kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
+            searchDetailAddrFromCoords(mouseEvent.latLng, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
+                    detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
+
+                    var content = '<div class="bAddr">' +
+                        '<span class="title">법정동 주소정보</span>' +
+                        detailAddr +
+                        '</div>';
+                    // 마커를 클릭한 위치에 표시합니다
+                    marker.setPosition(mouseEvent.latLng);
+                    console.log(mouseEvent.latLng);
+
+                    // locationfunc(latitude, longitude);
+                    console.log(mouseEvent.latLng.La);
+                    console.log(mouseEvent.latLng.Ma);
+                    locationfunc(mouseEvent.latLng.Ma, mouseEvent.latLng.La);
+
+                    marker.setMap(map);
+
+                    // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+                    infowindow.setContent(content);
+                    infowindow.open(map, marker);
+                }
+            });
+        });
+
+// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+        kakao.maps.event.addListener(map, 'idle', function() {
+            searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+        });
+
+        function searchAddrFromCoords(coords, callback) {
+            // 좌표로 행정동 주소 정보를 요청합니다
+            geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), callback);
+        }
+
+        function searchDetailAddrFromCoords(coords, callback) {
+            // 좌표로 법정동 상세 주소 정보를 요청합니다
+            geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+        }
+
+// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+        function displayCenterInfo(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var infoDiv = document.getElementById('centerAddr');
+                var weather2Div = document.getElementById('weather2');
+
+                for(var i = 0; i < result.length; i++) {
+                    // 행정동의 region_type 값은 'H' 이므로
+                    if (result[i].region_type === 'H') {
+                        infoDiv.innerHTML = result[i].address_name;
+                            weather2Div.innerHTML = result[i].address_name;
+
+                        break;
+                    }
+                }
+            }
+        }
     }
 </script>
 
@@ -224,7 +306,55 @@ rs.lng); -->
     }
     //-->
 </script>
+<script>
+    function airvisualFunc(x, y) {
+        console.log("airvisualFunc");
+        const apiKey = "c206ebed-5875-47c9-adee-a2235d91c32d"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
+        const url = `http://api.airvisual.com/v2/nearest_city?lat=${x}&lon=${y}&rad=500&key=${apiKey}`;
+        console.log(url);
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
 
+                // 데이터에서 필요한 정보를 추출하여 콘솔에 출력
+                if (data.status === "success" && data.data) {
+                    const city = data.data.city;
+                    const state = data.data.state;
+                    const country = data.data.country;
+                    const coordinates = data.data.location.coordinates;
+                    const currentPollution = data.data.current.pollution;
+                    const currentWeather = data.data.current.weather;
+
+                    console.log(`City: ${city}`);
+                    console.log(`State: ${state}`);
+                    console.log(`Country: ${country}`);
+                    console.log(`Coordinates: [${coordinates[0]}, ${coordinates[1]}]`);
+                    console.log(`Air Quality Index (US): ${currentPollution.aqius}`);
+                    console.log(`Main Pollutant (US): ${currentPollution.mainus}`);
+                    console.log(`Air Quality Index (CN): ${currentPollution.aqicn}`);
+                    console.log(`Main Pollutant (CN): ${currentPollution.maincn}`);
+                    console.log(`Temperature: ${currentWeather.tp}°C`);
+                    console.log(`Pressure: ${currentWeather.pr} hPa`);
+                    console.log(`Humidity: ${currentWeather.hu}%`);
+                    console.log(`Wind Speed: ${currentWeather.ws} m/s`);
+                    console.log(`Wind Direction: ${currentWeather.wd}°`);
+                    console.log(`Icon: ${currentWeather.ic}`);
+                    var weather12Div = document.getElementById('weather12');
+
+                    weather12Div.innerHTML = `
+              <p>미세먼지 지수 : ${currentPollution.aqius}</p>
+          `;
+                } else {
+                    console.error("Failed to fetch data or data is incomplete");
+                }
+            })
+            .catch((error) =>
+                console.error("Error fetching airvisualFunc data:", error)
+            );
+    }
+
+</script>
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -246,7 +376,10 @@ rs.lng); -->
         }
 
         console.log("locationfunc");
+        console.log(xxx);
+        console.log(yyy);
         var rs = dfs_xy_conv("toXY", xxx, yyy);
+        console.log(rs.x, rs.y);
 
         const apiKey = "pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
         const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
@@ -312,10 +445,10 @@ rs.lng); -->
                     }
                 }
 
-                const weather = document.getElementById("weather");
+                const weather1 = document.getElementById("weather1");
 
                 const parseDate = `${year}년 ${month}월 ${date}일`;
-                weather.innerHTML = `
+                weather1.innerHTML = `
                 <img class="weatherIcon" src="./img/${ptyImg}" alt="날씨이미지" />
               <p>${parseDate}</p>
               <p>온도: ${tmpData.fcstValue}</p>
@@ -324,7 +457,6 @@ rs.lng); -->
                     <p>결과 : ${ptyString}</p>
               <p>${hour}시 기준 </p>
           `;
-                mapXY(xxx, yyy);
             })
             .catch((error) =>
                 console.error("Error fetching weather data:", error)
