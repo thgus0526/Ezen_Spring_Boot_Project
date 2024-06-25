@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,7 +14,56 @@
 </head>
 
 <body>
+<nav class="navbar navbar-expand-lg bg-light-green">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img class="logo2" src="./img/logo.png" alt="로고" />
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/"
+                    >커뮤니티</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">기상 퀴즈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/news">기상 뉴스</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">랭킹</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" href="/user/signup">회원가입</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/mypage}">마이페이지</a>
+                </li>
+                <li>
 
+                    <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 <div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-9 map-wrapper">
@@ -192,7 +241,7 @@ rs.lng); -->
         const formattedDate = `${year}${month}${date}`;
 
         var baseDate = formattedDate;
-        if(hour < '13'){
+        if(hour < '06'){
             baseDate =  `${year}${month}${date-1}`;
         }
 
@@ -204,9 +253,6 @@ rs.lng); -->
         fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                console.log(data.response.body.items.item[0].category);
-                console.log(data.response.body.items.item[0].fcstValue);
                 // 필요한 데이터 추출
                 console.log(data);
                 const items = data.response.body.items.item;
@@ -270,11 +316,8 @@ rs.lng); -->
 
                 const parseDate = `${year}년 ${month}월 ${date}일`;
                 weather.innerHTML = `
-                <img class="weatherIcon" src="img/1.png" />
+                <img class="weatherIcon" src="./img/${ptyImg}" alt="날씨이미지" />
               <p>${parseDate}</p>
-              <p>온도: ${data.response.body.items.item[0].fcstValue}</p>
-              <div>
-              </div>
               <p>온도: ${tmpData.fcstValue}</p>
               <p>강수확률: ${popData.fcstValue}</p>
                     <p>하늘상태: ${skyData.fcstValue}</p>
