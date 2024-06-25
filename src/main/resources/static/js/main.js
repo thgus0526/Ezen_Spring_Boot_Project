@@ -1,4 +1,9 @@
 // --------------------------------------------------GPS---------------------------------------------------
+const weatherDiv = document.getElementById('weather');
+const weather1Div = document.getElementById('weather1');
+const weather2Div = document.getElementById('weather2');
+const weather3Div = document.getElementById('weather3');
+
 // 위치 정보 요청 함수
 function getLocation() {
     // Geolocation API 지원 여부 확인
@@ -126,13 +131,13 @@ function mapXY(x, y) {
     function displayCenterInfo(result, status) {
         if (status === kakao.maps.services.Status.OK) {
             var infoDiv = document.getElementById('centerAddr');
-            var weather2Div = document.getElementById('weather2');
 
             for(var i = 0; i < result.length; i++) {
                 // 행정동의 region_type 값은 'H' 이므로
                 if (result[i].region_type === 'H') {
+                    // weather3Div.textContent = result[i].address_name;
+
                     infoDiv.innerHTML = result[i].address_name;
-                    weather2Div.innerHTML = result[i].address_name;
 
                     break;
                 }
@@ -242,20 +247,9 @@ function airvisualFunc(x, y) {
                 console.log(`Wind Speed: ${currentWeather.ws} m/s`);
                 console.log(`Wind Direction: ${currentWeather.wd}°`);
                 console.log(`Icon: ${currentWeather.ic}`);
-                var weather12Div = document.getElementById('weather12');
 
-                var aqiusResult = '';
-                if (currentPollution.aqius <= '50' ){
-                    aqiusResult = '좋음';
-                } else if(currentPollution.aqius <= 100){
-                    aqiusResult = '보통';
-                } else{
-                    aqiusResult = '나쁨';
-                }
+                weather2Div.textContent = `미세먼지 지수 : ${currentPollution.aqius}`;
 
-                weather12Div.innerHTML = `
-              <p>미세먼지 ${aqiusResult}</p>
-          `;
             } else {
                 console.error("Failed to fetch data or data is incomplete");
             }
@@ -347,17 +341,47 @@ function locationfunc(xxx, yyy) {
                 }
             }
 
+            // 기존 내용을 지웁니다.
+            while (weather1Div.firstChild) {
+                weather1Div.removeChild(weather1Div.firstChild);
+            }
+
             const weather1 = document.getElementById("weather1");
 
             const parseDate = `${year}년 ${month}월 ${date}일`;
-            weather1.innerHTML = `
-                <img class="weatherIcon" src="./img/${ptyImg}" alt="날씨이미지" />
-                    <p>${ptyString}</p>
-              <p>${parseDate}</p>
-              <p>온도: ${tmpData.fcstValue}</p>
-              <p>강수확률: ${popData.fcstValue}%</p>
-              <p>${hour}시 기준 </p>
-          `;
+
+            var imgElement = document.createElement('img'); // <img> 요소를 생성합니다.
+            imgElement.src = "./img/" + ptyImg; // 이미지 URL을 설정합니다.
+            imgElement.alt = '날씨이미지'; // alt 속성을 설정합니다.
+
+            weather1Div.appendChild(imgElement);
+
+            // 기존 내용을 지웁니다.
+            // weather1Div.textContent = '';
+
+            // 필요한 요소를 생성합니다.
+            var ptyStringElement = document.createElement('p');
+            ptyStringElement.textContent = ptyString;
+
+            var parseDateElement = document.createElement('p');
+            parseDateElement.textContent = parseDate;
+
+            var temperatureElement = document.createElement('p');
+            temperatureElement.textContent = `온도: ${tmpData.fcstValue}`;
+
+            var popElement = document.createElement('p');
+            popElement.textContent = `강수확률: ${popData.fcstValue}`;
+
+            var hourElement = document.createElement('p');
+            hourElement.textContent = `${hour}시 기준`;
+
+// 생성한 요소를 weather1Div에 추가합니다.
+            weather1Div.appendChild(ptyStringElement);
+            weather1Div.appendChild(parseDateElement);
+            weather1Div.appendChild(temperatureElement);
+            weather1Div.appendChild(popElement);
+            weather1Div.appendChild(hourElement);
+
         })
         .catch((error) =>
             console.error("Error fetching weather data:", error)
