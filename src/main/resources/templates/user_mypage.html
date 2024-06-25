@@ -23,7 +23,7 @@
             <input type="hidden"
                    th:id="hiddenMaxTemp"
                    th:name="hiddenMaxTemp"
-                   th:value="${userTemp.userSetMaxTemp}">
+                   th:value="${userTemp != null ? userTemp.userSetMaxTemp : temp.adminSetMaxTemp}">
             <div class="value-display">현재 값: <span th:id="customRangeMaxTempValue"
                                                      th:text="${userTemp != null ? userTemp.userSetMaxTemp : temp.adminSetMaxTemp}"></span></div>
 
@@ -35,7 +35,7 @@
             <input type="hidden"
                    th:id="hiddenMinTemp"
                    th:name="hiddenMinTemp"
-                   th:value="${userTemp.userSetMinTemp}">
+                   th:value="${userTemp != null ? userTemp.userSetMinTemp : temp.adminSetMinTemp}">
             <div class="value-display">현재 값: <span th:id="customRangeMinTempValue"
                                                    th:text="${userTemp != null ? userTemp.userSetMinTemp : temp.adminSetMinTemp}"></span></div>
             <div class="form-check form-switch">
