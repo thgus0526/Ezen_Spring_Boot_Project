@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,13 +9,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <!-- sbb CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-    <style>
-
-    </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-light-green">
+
+<nav class="navbar navbar-expand-lg bg-light-green" th:fragment="headerFragment">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img class="logo2" src="./img/logo.png" alt="로고" />
@@ -64,6 +63,7 @@
         </div>
     </div>
 </nav>
+
 <div class="container-fluid">
     <div class="row text-center">
         <div class="col-md-9 map-wrapper">
