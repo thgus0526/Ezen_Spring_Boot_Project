@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" >
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,7 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{/user/userTempSet}" method="post">
+
+<form th:action="@{/user/userTempSet}" method="post" layout:fragment="content">
     <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
 
     <div class="container my-3">
@@ -100,5 +103,10 @@
 
 
 </script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
 </body>
 </html>
