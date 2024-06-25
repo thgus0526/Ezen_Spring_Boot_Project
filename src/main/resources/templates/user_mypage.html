@@ -1,4 +1,41 @@
 <!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/user/userTempSet}" method="post">
+    <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
+
+    <div class="container my-3">
+        <div th:each="temp : ${adminTemps}">
+            <label th:for="customRange" class="form-label">최고온도</label>
+            <input type="range" class="form-range" min="-20" max="45" th:id="customRange" th:value="${temp.adminSetMaxTemp}" th:oninput="updateValue('${temp.adminSetMaxTemp}', this.value)" >
+            <input type="hidden" th:id="hiddenTemp" th:name="hiddenTemp" th:value="${temp.adminSetMaxTemp}">
+            <div class="value-display">현재 값: <span th:id="customRangeValue" th:text="${temp.adminSetMaxTemp}"></span></div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">변경</button>
+</form>
+<script>
+    // range input 값이 변경될 때마다 호출되는 함수
+    function updateValue(maxTemp, value) {
+        document.getElementById('customRangeValue').textContent = value;
+        document.getElementById('hiddenTemp').value=value;
+        console.log("updateValue"+value);
+    }
+
+
+</script>
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
