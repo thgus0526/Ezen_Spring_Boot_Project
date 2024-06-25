@@ -248,7 +248,21 @@ function airvisualFunc(x, y) {
                 console.log(`Wind Direction: ${currentWeather.wd}°`);
                 console.log(`Icon: ${currentWeather.ic}`);
 
-                weather2Div.textContent = `미세먼지 지수 : ${currentPollution.aqius}`;
+                const spanElement = document.createElement('span');
+                let color;
+                if (currentPollution.aqius <= 50) {
+                    spanElement.textContent = '좋음';
+                    spanElement.style.color = 'green'; // 좋음 - 초록색
+                } else if (currentPollution.aqius <= 100) {
+                    spanElement.textContent = '보통';
+                    spanElement.style.color = 'orange'; // 보통 - 주황색
+                } else {
+                    spanElement.textContent = '나쁨';
+                    spanElement.style.color = 'red'; // 나쁨 - 빨간색
+                }
+                // weather2Div에 <span> 요소를 추가합니다.
+                weather2Div.appendChild(document.createTextNode('미세먼지 지수 : '));
+                weather2Div.appendChild(spanElement);
 
             } else {
                 console.error("Failed to fetch data or data is incomplete");
