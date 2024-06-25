@@ -22,7 +22,7 @@ public class UserTemp {
     private Double userSetMinTemp;
 
     @Column(name = "user_set_rain")
-    private boolean userSetRain;
+    private Integer userSetRain;
 
     @Column(name = "user_set_fine_dust")
     private Double userSetFineDust;
@@ -30,7 +30,7 @@ public class UserTemp {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private SiteUser siteuser;
+    private SiteUser siteUser;
 
 
 }

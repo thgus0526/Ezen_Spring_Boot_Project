@@ -23,7 +23,7 @@ public class AdminTemp {
     private Double AdminSetMinTemp;
 
     @Column(name="admin_set_rain")
-    private boolean AdminSetRain;
+    private Integer AdminSetRain;
 
     @Column(name="admin_set_fine_dust")
     private Double AdminSetFineDust;
