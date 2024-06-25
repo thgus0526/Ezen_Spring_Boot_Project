@@ -256,8 +256,8 @@ function locationfunc(xxx, yyy) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const apiKey = "ce6bdcc62bd5415f94ec41f4fe08cb0f"; // 여기에 올바른 API 키를 입력하세요.
-    const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
+    const apiKey = "pub_47274cc26048b8d0cbbb009de6d436e3a53bd"; // 여기에 올바른 API 키를 입력하세요.
+    const url = `https://newsdata.io/api/1/latest?country=kr&category=environment&apikey=pub_47274cc26048b8d0cbbb009de6d436e3a53bd`;
     const newsContainer = document.getElementById("news-container");
 
     fetch(url)
@@ -268,14 +268,15 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then((data) => {
-            if (data.articles) {
-                data.articles.forEach((article) => {
+            console.log(data);
+            if (data.results) {
+                data.results.forEach((article) => {
                     const newsCard = document.createElement("div");
                     newsCard.className = "news-card";
 
                     const img = document.createElement("img");
                     img.src =
-                        article.urlToImage || "https://via.placeholder.com/300x200";
+                        article.image_url || "https://via.placeholder.com/300x200";
                     img.alt = article.title;
 
                     const body = document.createElement("div");
@@ -294,7 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     footer.className = "news-card-footer";
 
                     const link = document.createElement("a");
-                    link.href = article.url;
+                    link.href = article.link;
                     link.target = "_blank";
                     link.innerText = "Read more";
 
@@ -313,6 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch((error) => {
             console.error("Error fetching news:", error);
         });
+});
 
     function sample6_execDaumPostcode() {
         new daum.Postcode({
@@ -422,46 +424,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    function checkUserEmail(){
-        let email = document.getElementById("email").value;
-
-        if(email.trim() ===''){
-            alert('이메일을 입력하세요');
-            return;
-        }
-        let userEmailInfo = document.getElementById('userEmailInfo');
-        if (userEmailInfo) {
-            userEmailInfo.innerHTML = '';  // 요소가 존재하면 innerHTML 설정
-        } else {
-            console.error('userEmailInfo 요소를 찾을 수 없습니다.');
-            return;
-        }
-        let userEmailError = document.getElementById('userEmailError');
-        if (userEmailError) {
-            userEmailError.innerHTML = '';  // 요소가 존재하면 innerHTML 설정
-        } else {
-            console.error('userIdError 요소를 찾을 수 없습니다.');
-            return;
-        }
-
-        $.ajax({
-            type: 'GET',
-            url: '/user/checkUserEmail',
-            data: {email: email},
-            success: function(response) {
-                if(response.available){
-                    document.getElementById('userEmailInfo').innerHTML='사용가능한 이메일 입니다.';
-                } else {
-                    document.getElementById('userEmailError').innerHTML='이미 사용 중인 이메일입니다.';
-
-                }
-            },
-            error : function(xhr, status, error){
-                console.error('Ajax 요청 실패' + status+ ', '+error);
-            }
-        });
-
-
-
-    }
-});
+//     function checkUserEmail(){
+//         let email = document.getElementById("email").value;
+//
+//         if(email.trim() ===''){
+//             alert('이메일을 입력하세요');
+//             return;
+//         }
+//         let userEmailInfo = document.getElementById('userEmailInfo');
+//         if (userEmailInfo) {
+//             userEmailInfo.innerHTML = '';  // 요소가 존재하면 innerHTML 설정
+//         } else {
+//             console.error('userEmailInfo 요소를 찾을 수 없습니다.');
+//             return;
+//         }
+//         let userEmailError = document.getElementById('userEmailError');
+//         if (userEmailError) {
+//             userEmailError.innerHTML = '';  // 요소가 존재하면 innerHTML 설정
+//         } else {
+//             console.error('userIdError 요소를 찾을 수 없습니다.');
+//             return;
+//         }
+//
+//         $.ajax({
+//             type: 'GET',
+//             url: '/user/checkUserEmail',
+//             data: {email: email},
+//             success: function(response) {
+//                 if(response.available){
+//                     document.getElementById('userEmailInfo').innerHTML='사용가능한 이메일 입니다.';
+//                 } else {
+//                     document.getElementById('userEmailError').innerHTML='이미 사용 중인 이메일입니다.';
+//
+//                 }
+//             },
+//             error : function(xhr, status, error){
+//                 console.error('Ajax 요청 실패' + status+ ', '+error);
+//             }
+//         });
+//
+//
+//
+//
+// };

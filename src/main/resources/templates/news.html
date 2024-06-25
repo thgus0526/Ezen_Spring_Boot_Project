@@ -63,8 +63,8 @@
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const apiKey = "ce6bdcc62bd5415f94ec41f4fe08cb0f"; // 여기에 올바른 API 키를 입력하세요.
-        const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKey}`;
+        const apiKey = "43d0588ba65140a7a082984bd780f46c"; // 여기에 올바른 API 키를 입력하세요.
+        const url = `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${apiKey}`;
         const newsContainer = document.getElementById("news-container");
 
         fetch(url)
@@ -76,7 +76,9 @@
             })
             .then((data) => {
                 if (data.articles) {
+                    console.log(data);
                     data.articles.forEach((article) => {
+                        console.log(article.link);
                         const newsCard = document.createElement("div");
                         newsCard.className = "news-card";
 
@@ -101,7 +103,7 @@
                         footer.className = "news-card-footer";
 
                         const link = document.createElement("a");
-                        link.href = article.url;
+                        link.href = article.link;
                         link.target = "_blank";
                         link.innerText = "Read more";
 
