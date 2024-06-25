@@ -281,12 +281,12 @@ rs.lng); -->
                         ptyImg = "littleSnow.png";
                     }
                 }
-
+                //th:src="@{/img/logo.png}"
                 const weather = document.getElementById("weather");
 
                 const parseDate = `${year}년 ${month}월 ${date}일`;
                 weather.innerHTML = `
-                <img class="weatherIcon" src="./img/${ptyImg}" alt="날씨이미지" />
+                <img class="weatherIcon" src="@{/img/${ptyImg}}" alt="날씨이미지" />
               <p>${parseDate}</p>
               <p>온도: ${tmpData.fcstValue}</p>
               <p>강수확률: ${popData.fcstValue}</p>
