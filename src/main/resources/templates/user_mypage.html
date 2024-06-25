@@ -47,23 +47,55 @@
 <body>
 <form th:action="@{/user/userTempSet}" method="post">
     <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
+    <input type="hidden" th:name="hiddenUserId" th:id="hiddenUserId" th:value="${#authentication.name}">
 
-    <div class="container my-3">
+    <div class="container my-3" th:if="${adminTemps != null}">
         <div th:each="temp : ${adminTemps}">
-            <label th:for="customRange" class="form-label">최고온도</label>
-            <input type="range" class="form-range" min="-20" max="45" th:id="customRange" th:value="${temp.adminSetMaxTemp}" th:oninput="updateValue('${temp.adminSetMaxTemp}', this.value)" >
-            <input type="hidden" th:id="hiddenTemp" th:name="hiddenTemp" th:value="${temp.adminSetMaxTemp}">
-            <div class="value-display">현재 값: <span th:id="customRangeValue" th:text="${temp.adminSetMaxTemp}"></span></div>
+            <label th:for="customRangeMaxTemp" class="form-label">최고온도</label>
+            <input type="range" class="form-range" min="25" max="45"
+                   th:id="customRangeMaxTemp"
+                   th:value="${userTemp != null ? userTemp.userSetMaxTemp : temp.adminSetMaxTemp}"
+                   th:oninput="updateMaxTempValue('${temp.adminSetMaxTemp}', this.value)" >
+            <input type="hidden"
+                   th:id="hiddenMaxTemp"
+                   th:name="hiddenMaxTemp"
+                   th:value="${userTemp != null ? userTemp.userSetMaxTemp : temp.adminSetMaxTemp}">
+            <div class="value-display">현재 값: <span th:id="customRangeMaxTempValue"
+                                                     th:text="${userTemp != null ? userTemp.userSetMaxTemp : temp.adminSetMaxTemp}"></span></div>
+
+            <label th:for="customRangeMinTemp" class="form-label">최저온도</label>
+            <input type="range" class="form-range" min="-30" max="10"
+                   th:id="customRangeMinTemp"
+                   th:value="${userTemp != null ? userTemp.userSetMinTemp : temp.adminSetMinTemp}"
+                   th:oninput="updateMinTempValue('${temp.adminSetMinTemp}', this.value)" >
+            <input type="hidden"
+                   th:id="hiddenMinTemp"
+                   th:name="hiddenMinTemp"
+                   th:value="${userTemp != null ? userTemp.userSetMinTemp : temp.adminSetMinTemp}">
+            <div class="value-display">현재 값: <span th:id="customRangeMinTempValue"
+                                                   th:text="${userTemp != null ? userTemp.userSetMinTemp : temp.adminSetMinTemp}"></span></div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="rain"
+                            th:checked="${userTemp != null ? userTemp.userSetRain : temp.adminSetRain}"
+                            th:value="true" th:name="rain">
+                <label class="form-check-label" for="rain">비 알람</label>
+                <!--  사용자가 체크박스를 체크하지 않은 경우 false 를 날림   -->
+                <input type="hidden" th:name="rain" th:value="false">
+            </div>
         </div>
     </div>
     <button type="submit" class="btn btn-primary">변경</button>
 </form>
 <script>
     // range input 값이 변경될 때마다 호출되는 함수
-    function updateValue(maxTemp, value) {
-        document.getElementById('customRangeValue').textContent = value;
-        document.getElementById('hiddenTemp').value=value;
-        console.log("updateValue"+value);
+    function updateMaxTempValue(maxTemp, value) {
+        document.getElementById('customRangeMaxTempValue').textContent = value;
+        document.getElementById('hiddenMaxTemp').value=value;
+
+    }
+    function updateMinTempValue(minTemp, value){
+        document.getElementById('customRangeMinTempValue').textContent = value;
+        document.getElementById('hiddenMinTemp').value=value;
     }
 
 
