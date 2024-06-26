@@ -43,6 +43,8 @@ dependencies {
     // 문자 발송을 위한
     implementation 'net.nurigo:sdk:4.3.0'
     implementation 'net.nurigo:javaSDK:2.2'
+    // Kakao
+    implementation 'com.google.code.gson:gson:2.8.8'
 }
 
 

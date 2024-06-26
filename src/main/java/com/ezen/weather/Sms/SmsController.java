@@ -1,9 +1,11 @@
 package com.ezen.weather.Sms;
 
 import com.ezen.weather.adminTemp.AdminTempRepository;
+
 import com.ezen.weather.user.SiteUser;
 import com.ezen.weather.user.UserRepository;
 import com.ezen.weather.user.UserService;
+import com.ezen.weather.userTemp.UserTemp;
 import com.ezen.weather.userTemp.UserTempRepository;
 import com.ezen.weather.userTemp.UserTempService;
 import lombok.NoArgsConstructor;
@@ -19,7 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -33,32 +37,40 @@ public class SmsController {
     private final UserTempService userTempService;
 
 
+
     @PostMapping("/user/send")
     public void sendSms(@RequestBody Map<String, Object> data) {
-        String userId = (String)data.get("userId");
-        Object obj = data.get("value");
-        System.out.println("Controller~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println(obj);
-        System.out.println(userId);
+        // 현재 기온
+        double currentTemp = Double.parseDouble(data.get("value").toString());
 
-        double userMaxTemp = userTempService.getUserTemp(userId).getUserSetMaxTemp();
-        double userMinTemp = userTempService.getUserTemp(userId).getUserSetMinTemp();
-        Integer userRain = userTempService.getUserTemp(userId).getUserSetRain();
+        // 모든 사용자 정보 가져오기
+        List<SiteUser> allUsers = userRepository.findAll();
 
-        // 비오는건 아직 구현 못함
-        if(userMaxTemp <= Double.parseDouble(obj.toString())) {
-            Message message = new Message();
-            message.setFrom("01020751709");
-            message.setTo("01040562408");
-            message.setText("폭염에 주의하세요");
+        for(SiteUser user : allUsers) {
+            String userId = user.getUserId();
+            // 사용자별 설정값 가져오기
+            UserTemp userTemp = userTempService.getUserTemp(userId);
 
-//            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+            if(userTemp != null){
+                double userMaxTemp = userTemp.getUserSetMaxTemp();
+                double userMinTemp = userTemp.getUserSetMinTemp();
+                Integer userRain = userTemp.getUserSetRain(); // 추후 추가
+
+                // 조건을 만족한다면 문자 보내기
+                if(currentTemp > userMaxTemp){
+                    String userPhone = user.getPhone();
+
+                    Message message = new Message();
+                    message.setFrom("01020751709"); // 발신자번호 고정 (유성헌)
+                    message.setTo(userPhone);
+                    message.setText("현재기온이 설정값을 벗어났습니다 폭염에 주의하세요~!");
+                    // 메세지 발송
+//                    SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
+//                    System.out.println("Message sent: " + response);
+                }
+            }
+
         }
-
-
-        System.out.println("데이터베이스에 저장된 최대 값 : " +userMaxTemp+"\n"+"최소값 : " + userMinTemp + "\n" +"비 :" + userRain);
-        System.out.println("호출  " + "유저아이디 : " + userId + "  온도 값 : " +obj);
-
     }
 
 
