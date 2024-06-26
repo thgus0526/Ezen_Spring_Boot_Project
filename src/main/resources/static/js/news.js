@@ -2,8 +2,8 @@
 // --------------------------------------------------뉴스---------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-    const apiKey = "pub_47274cc26048b8d0cbbb009de6d436e3a53bd"; // 여기에 올바른 API 키를 입력하세요.
-    const url = `https://newsdata.io/api/1/latest?country=kr&category=environment&apikey=pub_47274cc26048b8d0cbbb009de6d436e3a53bd`;
+    const apiKey = "pub_4736254b02f1f18de933db7c8ddd0e40704b6"; // 여기에 올바른 API 키를 입력하세요.
+    const url = `https://newsdata.io/api/1/latest?country=kr&category=environment&apikey=${apiKey}`;
     const newsContainer = document.getElementById("news-container");
 
     fetch(url)

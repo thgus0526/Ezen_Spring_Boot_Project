@@ -247,7 +247,7 @@ function dfs_xy_conv(code, v1, v2) {
 function airvisualFunc(lat, lng) {
     console.log("airvisualFunc");
 
-    const apiKey = "c206ebed-5875-47c9-adee-a2235d91c32d"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
+    const apiKey = "34a5088c-cdec-4e29-99ce-59ed71c60059"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
     const url = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&rad=500&key=${apiKey}`;
     console.log(url);
     fetch(url)
@@ -265,6 +265,7 @@ function airvisualFunc(lat, lng) {
                 const currentWeather = data.data.current.weather;
 
                 var aqiusElement = document.createElement('p');
+                aqiusElement.className = 'dustText';
                 var aqiusText = document.createElement('span');
                 var aqiusSpan = document.createElement('span');
                 aqiusText.className = 'weatherText';
