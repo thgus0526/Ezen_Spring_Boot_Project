@@ -12,56 +12,63 @@
 </head>
 <body>
 <div layout:fragment="content">
-<div class="my-3 border-bottom" >
-    <div>
-        <h4>회원가입</h4>
+    <div class="my-3 border-bottom" >
+        <div>
+            <h4>회원가입</h4>
+        </div>
     </div>
-</div>
-<form th:action="@{/user/signup}" th:object="${siteUser}" method="post">
-    <div class="mb-3">
-        <label for="userId" class="form-label">사용자ID</label>
-        <input type="text" th:field="*{userId}" id="userId" class="form-control">
-        <span id="userIdError" class="text-danger"></span>
-        <span id="userIdInfo" class="text-info"></span>
-    </div>
-    <button type="button" onclick="checkUserId()">아이디 중복검사</button>
-    <div class="mb-3">
-        <label for="password" class="form-label">비밀번호</label>
-        <input type="password" th:field="*{password}" id="password" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
-        <input type="password" id="passwordConfirm" class="form-control" onblur="validateForm()">
-        <span id="passwordCheck" class="text-info"></span>
-        <span id="passwordNotMatch" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label for="name" class="form-label">이름</label>
-        <input type="text" th:field="*{name}" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label for="phone" class="form-label">핸드폰번호</label>
-        <input type="text" th:field="*{phone}" class="form-control" >
-    </div>
+    <form th:action="@{/user/signup}" th:object="${siteUser}" method="post">
+        <div class="mb-3">
+            <label for="userId" class="form-label">사용자ID</label>
+            <input type="text" th:field="*{userId}" id="userId" class="form-control">
+            <span id="userIdError" class="text-danger"></span>
+            <span id="userIdInfo" class="text-info"></span>
+        </div>
+        <button type="button" onclick="checkUserId()">아이디 중복검사</button>
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" th:field="*{password}" id="password" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+            <input type="password" id="passwordConfirm" class="form-control" onblur="validateForm()">
+            <span id="passwordCheck" class="text-info"></span>
+            <span id="passwordNotMatch" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">이름</label>
+            <input type="text" th:field="*{name}" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">핸드폰번호</label>
+            <input type="text" th:field="*{phone}" class="form-control" >
+        </div>
 
-    <input type="text" th:field="*{addressZipcode}" id="addressZipcode" placeholder="우편번호">
-    <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-    <input type="text" th:field="*{addressStreet}" id="addressStreet" placeholder="주소"><br>
-    <input type="text" th:field="*{addressDetail}" id="addressDetail" placeholder="상세주소">
-    <input type="text" th:field="*{addressNotes}" id="addressNotes" placeholder="참고항목">
-    <div class="mb-3">
-        <label for="email" class="form-label">이메일</label>
-        <input type="text" th:field="*{email}" id="email" class="form-control" >
-        <span id="userEmailError" class="text-danger"></span>
-        <span id="userEmailInfo" class="text-info"></span>
-    </div>
-    <button type="button" onclick="checkUserEmail()">이메일 중복검사</button>
-    <div class="mb-3">
-        <label for="birth" class="form-label">생년월일</label>
-        <input type="text" th:field="*{birth}" class="form-control">
-    </div>
-    <button type="submit" class="btn btn-primary">회원가입</button>
-</form>
+        <input type="text" th:field="*{addressZipcode}" id="addressZipcode" placeholder="우편번호">
+        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+        <input type="text" th:field="*{addressStreet}" id="addressStreet" placeholder="주소"><br>
+        <input type="text" th:field="*{addressDetail}" id="addressDetail" placeholder="상세주소">
+        <input type="text" th:field="*{addressNotes}" id="addressNotes" placeholder="참고항목">
+        <div class="mb-3">
+            <label for="email" class="form-label">이메일</label>
+            <input type="text" th:field="*{email}" id="email" class="form-control" >
+            <span id="userEmailError" class="text-danger"></span>
+            <span id="userEmailInfo" class="text-info"></span>
+        </div>
+        <button type="button" onclick="sendVerificationCode()">이메일 인증코드 발송</button>
+        <div class="mb-3">
+            <label for="verificationCode" class="form-label">인증 코드</label>
+            <input type="text" id="verificationCode" class="form-control">
+            <button type="button" onclick="verifyCode()">인증코드 확인</button>
+            <span id="verificationResult" class="text-info"></span>
+        </div>
+        <div class="mb-3">
+            <label for="birth" class="form-label">생년월일</label>
+            <input type="text" th:field="*{birth}" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">회원가입</button>
+
+    </form>
 </div>
 </body>
 
@@ -71,5 +78,39 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
 ></script>
-
+<!--<script>-->
+<!--    function sendVerificationCode(){-->
+<!--        let email = $('#email').val();-->
+<!--        $.ajax({-->
+<!--            url: '/user/email',-->
+<!--            type: 'POST',-->
+<!--            contentType: 'application/json',-->
+<!--            data: JSON.stringify({email: email}),-->
+<!--            success: function(response){-->
+<!--                $('#userEmailInfo').text(response);-->
+<!--                alert('성공');-->
+<!--            },-->
+<!--            error: function(response) {-->
+<!--                $('#userEmailError').text(response.responseText);-->
+<!--                alert('실패');-->
+<!--            }-->
+<!--        })-->
+<!--    }-->
+<!--    function verifyCode() {-->
+<!--        var email = $('#email').val();-->
+<!--        var code = $('#verificationCode').val();-->
+<!--        $.ajax({-->
+<!--            url: '/api/verifyCode',-->
+<!--            type: 'POST',-->
+<!--            contentType: 'application/json',-->
+<!--            data: JSON.stringify({ email: email, code: code }),-->
+<!--            success: function(response) {-->
+<!--                $('#verificationResult').text(response);-->
+<!--            },-->
+<!--            error: function(response) {-->
+<!--                $('#verificationResult').text(response.responseText);-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
 </html>

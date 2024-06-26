@@ -68,6 +68,16 @@ function mapXY(x, y) {
 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
+    map.setCursor('auto');
+
+    document.addEventListener('mousedown', (event) => {
+        map.setCursor('grab');
+    });
+
+    document.addEventListener('mouseup', (event) => {
+        map.setCursor('auto');
+    });
+
     // 마커가 표시될 위치입니다
     var markerPosition = new kakao.maps.LatLng(x, y);
 
@@ -97,7 +107,7 @@ function mapXY(x, y) {
                 detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 
                 var content = '<div class="bAddr">' +
-                    '<span class="title">법정동 주소정보</span>' +
+                    '<span class="title">현재 주소정보</span>' +
                     detailAddr +
                     '</div>';
                 // 마커를 클릭한 위치에 표시합니다
@@ -109,7 +119,7 @@ function mapXY(x, y) {
 
                 marker.setMap(map);
 
-                // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+                // 인포윈도우에 클릭한 위치에 대한 현재 상세 주소정보를 표시합니다
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
             }
@@ -127,7 +137,7 @@ function mapXY(x, y) {
     }
 
     function searchDetailAddrFromCoords(coords, callback) {
-        // 좌표로 법정동 상세 주소 정보를 요청합니다
+        // 좌표로 현재 상세 주소 정보를 요청합니다
         geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
     }
 
@@ -139,7 +149,7 @@ function mapXY(x, y) {
                 detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 
                 var content = '<div class="bAddr">' +
-                    '<span class="title">법정동 주소정보</span>' +
+                    '<span class="title">현재 주소정보</span>' +
                     detailAddr +
                     '</div>';
 
@@ -150,7 +160,7 @@ function mapXY(x, y) {
                 var markerLat = position.getLat();
                 var markerLng = position.getLng();
 
-                // 인포윈도우에 처음 위치에 대한 법정동 상세 주소정보를 표시합니다
+                // 인포윈도우에 처음 위치에 대한 현재 상세 주소정보를 표시합니다
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
             }
@@ -247,7 +257,7 @@ function dfs_xy_conv(code, v1, v2) {
 function airvisualFunc(lat, lng) {
     console.log("airvisualFunc");
 
-    const apiKey = "34a5088c-cdec-4e29-99ce-59ed71c60059"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
+    const apiKey = "c206ebed-5875-47c9-adee-a2235d91c32d"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
     const url = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&rad=500&key=${apiKey}`;
     console.log(url);
     fetch(url)
@@ -616,6 +626,40 @@ function sendDataToServer(data){
         },
         error: function(error){
             console.error('Error sending data:', error);
+        }
+    });
+}
+
+function sendVerificationCode(){
+    let email = $('#email').val();
+    $.ajax({
+        url: '/user/send-email',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({email: email}),
+        success: function(response){
+            $('#userEmailInfo').text(response);
+            alert('성공');
+        },
+        error: function(response) {
+            $('#userEmailError').text(response.responseText);
+            alert('실패');
+        }
+    })
+}
+function verifyCode() {
+    var email = $('#email').val();
+    var code = $('#verificationCode').val();
+    $.ajax({
+        url: '/api/verifyCode',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ email: email, code: code }),
+        success: function(response) {
+            $('#verificationResult').text(response);
+        },
+        error: function(response) {
+            $('#verificationResult').text(response.responseText);
         }
     });
 }
