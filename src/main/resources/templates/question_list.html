@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>질문 목록</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		  integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+		  crossorigin="anonymous">
+	<style>
+		body {
+			background-color: #f2f2f2;
+			font-family: 'Arial', sans-serif;
+		}
+		.container {
+			padding-top: 30px;
+			max-width: 800px;
+		}
+		.table {
+			font-size: 16px;
+			background-color: #f5f5f5; /* 파스텔 그레이 */
+			border-radius: 10px;
+		}
+		.table th, .table td {
+			text-align: center;
+			vertical-align: middle;
+			border: none;
+		}
+		.table thead th {
+			background-color: #a3c2ff; /* 파스텔 블루 */
+			color: #333; /* 진한 회색 */
+			font-weight: bold;
+			border: none;
+		}
+		.table tbody tr:hover {
+			background-color: #e0e0e0; /* 연한 그레이 */
+		}
+		.btn-primary {
+			font-size: 16px;
+			padding: 12px 30px;
+			border-radius: 25px;
+			background-color: #71a0ff;
+			border-color: #71a0ff;
+		}
+		.btn-primary:hover {
+			background-color: #5c8eff;
+			border-color: #5c8eff;
+		}
+		.btn-primary:focus, .btn-primary.focus {
+			box-shadow: 0 0 0 0.2rem rgba(113, 160, 255, 0.5);
+		}
+		.btn-primary:disabled, .btn-primary.disabled {
+			opacity: 0.7;
+		}
+		.btn-primary:disabled:hover, .btn-primary.disabled:hover {
+			background-color: #71a0ff;
+			border-color: #71a0ff;
+		}
+	</style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+	<h2 class="text-center mb-4">질문 목록</h2>
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover">
+			<thead class="thead-light"> <!-- 파스텔 그레이 -->
+			<tr>
+				<th scope="col">번호</th>
+				<th scope="col" style="width: 50%">제목</th>
+				<th scope="col">글쓴이</th>
+				<th scope="col">작성일시</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="question, loop : ${questionList}">
+				<td th:text="${loop.count}"></td>
+				<td class="text-left">
+					<a class="text-dark font-weight-bold" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+				</td>
+				<td th:text="${question.author != null ? question.author.userId : 'Unknown'}"></td>
+				<td th:text="${#temporals.format(question.createDate,'yyyy-MM-dd HH:mm')}"></td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="text-center">
+		<a th:href="@{/question/create}" class="btn btn-primary mt-3">질문 등록하기</a>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+		crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+		integrity="sha384-1PnLw5V1MlOy+zJnbu+31GKf5k8f0XRxYGT7o6BpepDuhUy+1zM9Tp2jS2dtzhuU"
+		crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+		integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+		crossorigin="anonymous"></script>
+</body>
+</html>
