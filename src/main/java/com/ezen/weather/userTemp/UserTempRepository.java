@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface UserTempRepository extends JpaRepository<UserTemp, Long> {
     Optional<UserTemp> findBySiteUser(SiteUser siteUser);
+
 }
