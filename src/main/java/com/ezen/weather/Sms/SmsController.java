@@ -52,7 +52,7 @@ public class SmsController {
             message.setTo("01040562408");
             message.setText("폭염에 주의하세요");
 
-            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
+//            SingleMessageSentResponse response = this.messageService.sendOne(new SingleMessageSendingRequest(message));
         }
 
 
