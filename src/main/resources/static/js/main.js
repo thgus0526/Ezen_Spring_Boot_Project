@@ -2,10 +2,11 @@
 const weatherDiv = document.getElementById('weather');
 const weather1Div = document.getElementById('weather1');
 const weather2Div = document.getElementById('weather2');
-const weather3Div = document.getElementById('weather3');
+// const weather3Div = document.getElementById('weather3');
 
 // 위치 정보 요청 함수
 function getLocation() {
+    console.log("getLocation");
     // Geolocation API 지원 여부 확인
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -19,6 +20,8 @@ function getLocation() {
 function showPosition(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
+    console.log("lat", latitude);
+    console.log("lng", longitude);
 
     // 위치 정보를 HTML 요소에 표시
     var locationElement = document.getElementById("weather1");
@@ -99,11 +102,9 @@ function mapXY(x, y) {
                     '</div>';
                 // 마커를 클릭한 위치에 표시합니다
                 marker.setPosition(mouseEvent.latLng);
-                console.log(mouseEvent.latLng);
 
-                // locationfunc(latitude, longitude);
-                console.log(mouseEvent.latLng.La);
-                console.log(mouseEvent.latLng.Ma);
+                console.log("lat: ", mouseEvent.latLng.La);
+                console.log("lng: ", mouseEvent.latLng.Ma);
                 locationfunc(mouseEvent.latLng.Ma, mouseEvent.latLng.La);
 
                 marker.setMap(map);
@@ -148,9 +149,6 @@ function mapXY(x, y) {
                 // 마커의 좌표를 infowindow에 표시합니다
                 var markerLat = position.getLat();
                 var markerLng = position.getLng();
-
-                // locationfunc 호출 예제
-                locationfunc(markerLng, markerLat);
 
                 // 인포윈도우에 처음 위치에 대한 법정동 상세 주소정보를 표시합니다
                 infowindow.setContent(content);
@@ -246,10 +244,11 @@ function dfs_xy_conv(code, v1, v2) {
 }
 
 // --------------------------------------------------미세먼지 ---------------------------------------------------
-function airvisualFunc(x, y) {
+function airvisualFunc(lat, lng) {
     console.log("airvisualFunc");
+
     const apiKey = "c206ebed-5875-47c9-adee-a2235d91c32d"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
-    const url = `http://api.airvisual.com/v2/nearest_city?lat=${x}&lon=${y}&rad=500&key=${apiKey}`;
+    const url = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&rad=500&key=${apiKey}`;
     console.log(url);
     fetch(url)
         .then((response) => response.json())
@@ -265,36 +264,26 @@ function airvisualFunc(x, y) {
                 const currentPollution = data.data.current.pollution;
                 const currentWeather = data.data.current.weather;
 
-                console.log(`City: ${city}`);
-                console.log(`State: ${state}`);
-                console.log(`Country: ${country}`);
-                console.log(`Coordinates: [${coordinates[0]}, ${coordinates[1]}]`);
-                console.log(`Air Quality Index (US): ${currentPollution.aqius}`);
-                console.log(`Main Pollutant (US): ${currentPollution.mainus}`);
-                console.log(`Air Quality Index (CN): ${currentPollution.aqicn}`);
-                console.log(`Main Pollutant (CN): ${currentPollution.maincn}`);
-                console.log(`Temperature: ${currentWeather.tp}°C`);
-                console.log(`Pressure: ${currentWeather.pr} hPa`);
-                console.log(`Humidity: ${currentWeather.hu}%`);
-                console.log(`Wind Speed: ${currentWeather.ws} m/s`);
-                console.log(`Wind Direction: ${currentWeather.wd}°`);
-                console.log(`Icon: ${currentWeather.ic}`);
+                var aqiusElement = document.createElement('p');
+                var aqiusText = document.createElement('span');
+                var aqiusSpan = document.createElement('span');
+                aqiusText.className = 'weatherText';
+                aqiusSpan.className = 'weatherValue';
+                aqiusText.textContent = `미세먼지 지수 : `;
 
-                const spanElement = document.createElement('span');
-                let color;
                 if (currentPollution.aqius <= 50) {
-                    spanElement.textContent = '좋음';
-                    spanElement.style.color = 'green'; // 좋음 - 초록색
+                    aqiusSpan.textContent = '좋음';
+                    aqiusSpan.style.color = 'green';
                 } else if (currentPollution.aqius <= 100) {
-                    spanElement.textContent = '보통';
-                    spanElement.style.color = 'orange'; // 보통 - 주황색
+                    aqiusSpan.textContent = '보통';
+                    aqiusSpan.style.color = 'orange';
                 } else {
-                    spanElement.textContent = '나쁨';
-                    spanElement.style.color = 'red'; // 나쁨 - 빨간색
+                    aqiusSpan.textContent = '나쁨';
+                    aqiusSpan.style.color = 'red';
                 }
-                // weather2Div에 <span> 요소를 추가합니다.
-                weather2Div.appendChild(document.createTextNode('미세먼지 지수 : '));
-                weather2Div.appendChild(spanElement);
+                aqiusElement.appendChild(aqiusText);
+                aqiusElement.appendChild(aqiusSpan);
+                weather2Div.appendChild(aqiusElement);
 
             } else {
                 console.error("Failed to fetch data or data is incomplete");
@@ -306,7 +295,9 @@ function airvisualFunc(x, y) {
 }
 
 // --------------------------------------------------단기예보 ---------------------------------------------------
-function locationfunc(xxx, yyy) {
+function locationfunc(lat, lng) {
+    console.log("locationfunc");
+
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0"); // 1을 더한 후 두 자리 수로 맞춤
@@ -320,23 +311,18 @@ function locationfunc(xxx, yyy) {
         baseDate =  `${year}${month}${date-1}`;
     }
 
-    console.log("locationfunc");
-    var rs = dfs_xy_conv("toXY", xxx, yyy);
+    var rs = dfs_xy_conv("toXY", lat, lng);
 
     const apiKey = "pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
     const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
     fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            // 필요한 데이터 추출
-            console.log(data);
             const items = data.response.body.items.item;
 
             // fcstTime의 데이터 필터링
             const filteredItems = items.filter(item => item.fcstDate === formattedDate)
                 .filter(item => item.fcstTime.substring(0, 2) === hour);
-
-            console.log("filteredItems:", filteredItems);
 
             // 필요한 카테고리 데이터 추출
             const popData = filteredItems.find(item => item.category === 'POP');
@@ -407,26 +393,41 @@ function locationfunc(xxx, yyy) {
 
             // 필요한 요소를 생성합니다.
             var ptyStringElement = document.createElement('p');
+            ptyStringElement.className = 'weatherValue';
             ptyStringElement.textContent = ptyString;
 
             var parseDateElement = document.createElement('p');
             parseDateElement.textContent = parseDate;
 
-            var temperatureElement = document.createElement('p');
-            temperatureElement.textContent = `온도: ${tmpData.fcstValue}`;
-
-            var popElement = document.createElement('p');
-            popElement.textContent = `강수확률: ${popData.fcstValue}`;
-
             var hourElement = document.createElement('p');
             hourElement.textContent = `${hour}시 기준`;
+
+            var temperatureElement = document.createElement('p');
+            var tmpText = document.createElement('span');
+            var tmpSpan = document.createElement('span');
+            tmpText.className = 'weatherText';
+            tmpSpan.className = 'weatherValue';
+            tmpText.textContent = `온도 : `;
+            tmpSpan.textContent = `${tmpData.fcstValue}°`;
+            temperatureElement.appendChild(tmpText);
+            temperatureElement.appendChild(tmpSpan);
+
+            var popElement = document.createElement('p');
+            var popText = document.createElement('span');
+            var popSpan = document.createElement('span');
+            popText.className = 'weatherText';
+            popSpan.className = 'weatherValue';
+            popText.textContent = `강수확률 : `;
+            popSpan.textContent = `${popData.fcstValue}%`;
+            popElement.appendChild(popText);
+            popElement.appendChild(popSpan);
 
 // 생성한 요소를 weather1Div에 추가합니다.
             weather1Div.appendChild(ptyStringElement);
             weather1Div.appendChild(parseDateElement);
+            weather1Div.appendChild(hourElement);
             weather1Div.appendChild(temperatureElement);
             weather1Div.appendChild(popElement);
-            weather1Div.appendChild(hourElement);
 
         })
         .catch((error) =>
