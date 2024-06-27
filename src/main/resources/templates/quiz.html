@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz</title>
+    <title>Environment Quiz</title>
 </head>
-<body layout:fragment="content">
-<h1 class="quizName">퀴즈</h1>
-    <div class="container-fluid p-md-2 quizWrapper" >
-        <div class="quiz">
-            <p class="question">북극곰은 북극에 산다 o / x</p>
-            <div class="ox">
-                <p>o</p>
-                <p>x</p>
-            </div>
-            <div>
-                <p>정답입니다~</p>
-            </div>
-        </div>
-    </div>
+<body>
+<h1>Environment Quiz</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Question</th>
+        <th>Answer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="quiz : ${quizList}">
+        <td th:text="${quiz.quizId}"></td>
+        <td th:text="${quiz.question}"></td>
+        <td th:text="${quiz.answer} ? 1 : 0"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
 <th:block layout:fragment="script">
 </th:block>
 </body>
