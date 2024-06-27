@@ -26,7 +26,7 @@
         .container {
             display: flex;
             justify-content: space-between;
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 50px auto;
             background: #ffffff;
             padding: 30px;
@@ -37,6 +37,7 @@
         .card {
             width: 30%;
             background: #ffffff;
+            height: 100%;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -45,7 +46,7 @@
         }
 
         .card-small {
-            height: 310px;
+            height: 350px;
         }
 
         h2 {
@@ -61,7 +62,7 @@
 
         .form-range {
             -webkit-appearance: none;
-            width: 100%;
+            width: calc(100% - 40px);
             height: 8px;
             border-radius: 5px;
             background: #ddd;
@@ -221,7 +222,6 @@
     </div>
     <div class="card card-small">
         <h2>비밀번호 변경</h2>
-        <form th:action="@{/user/updatePassword}" method="post">
             <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
             <div class="mb-3">
                 <label for="password" class="form-label">비밀번호</label>
@@ -234,11 +234,26 @@
                 <span id="passwordCheck" class="text-info"></span>
                 <span id="passwordNotMatch" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">변경</button>
-        </form>
+            <button type="button" class="btn btn-primary" onclick="submitForm()">변경</button>
     </div>
 </div>
-
+<!-- 비밀번호변경시 뜰 모달 창 -->
+<div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">비밀번호 변경 완료</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                비밀번호가 변경되었습니다. 다시 로그인하세요.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="confirmUpdate()">확인</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     // range input 값이 변경될 때마다 호출되는 함수
     function updateMaxTempValue(maxTemp, value) {
@@ -249,6 +264,28 @@
     function updateMinTempValue(minTemp, value){
         document.getElementById('customRangeMinTempValue').textContent = value;
         document.getElementById('hiddenMinTemp').value=value;
+    }
+    function submitForm(){
+        // 모달 창
+        let myModal = new bootstrap.Modal(document.getElementById('passwordModal'));
+        myModal.show();
+    }
+    function confirmUpdate(){
+        $.ajax({
+            type: 'POST',
+            url: '/user/updatePassword',
+            data: {
+                password: $('#password').val(), // 비밀번호 입력란의 값
+                hiddenName: $('#hiddenName').val() // 히든네임값
+            },
+            success: function(){
+                window.location.href = '/user/logout';
+            },
+            error: function(){
+                alert("비밀번호 업데이트중 오류가 발생했습니다.")
+            }
+
+        })
     }
 </script>
 <script

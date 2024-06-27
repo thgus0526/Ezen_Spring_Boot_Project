@@ -7,6 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 public class EnvironmentQuiz {
     @Id
@@ -16,5 +17,4 @@ public class EnvironmentQuiz {
     private String question;
 
     private int answer;
-
 }

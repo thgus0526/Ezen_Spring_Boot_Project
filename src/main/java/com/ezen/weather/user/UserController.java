@@ -110,8 +110,8 @@ public class UserController {
     }
     // 비밀번호 수정
     @PostMapping("/updatePassword")
-    public String updateUserPwd(@RequestParam("password") String password, @RequestParam("hiddenName") String name){
+    public ResponseEntity<String> updateUserPwd(@RequestParam("password") String password, @RequestParam("hiddenName") String name){
         userService.userPwdUpdate(password, name);
-        return "redirect:/user/logout";
+        return ResponseEntity.ok("Password updated successfully");
     }
 }

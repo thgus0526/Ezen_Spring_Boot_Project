@@ -43,8 +43,15 @@ dependencies {
     // 문자 발송을 위한
     implementation 'net.nurigo:sdk:4.3.0'
     implementation 'net.nurigo:javaSDK:2.2'
-    // Kakao
-    implementation 'com.google.code.gson:gson:2.8.8'
+    //kakao
+    implementation 'com.google.code.gson:gson:2.8.9'
+    //kakaoSecurity
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+  
+
+
     // 이메일 인증
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 }

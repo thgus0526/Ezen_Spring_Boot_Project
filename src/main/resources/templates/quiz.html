@@ -1,31 +1,175 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Environment Quiz</title>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>환경 퀴즈</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .quiz-container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .quiz-question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .quiz-form {
+            display: flex;
+            justify-content: center;
+        }
+        .quiz-form button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #0a53be;
+            border-radius: 5px;
+            color: white;
+        }
+        .quiz-form .xButton {
+            background-color: red;
+        }
+        .oxWrapper {
+            display: flex;
+            justify-content: center;
+        }
+        .modal {
+            display: none; /* 초기에는 모달을 숨겨둠 */
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+        }
+        .result-container {
+            margin-top: 20px;
+        }
+    </style>
 </head>
-<body>
-<h1>Environment Quiz</h1>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Question</th>
-        <th>Answer</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="quiz : ${quizList}">
-        <td th:text="${quiz.quizId}"></td>
-        <td th:text="${quiz.question}"></td>
-        <td th:text="${quiz.answer} ? 1 : 0"></td>
-    </tr>
-    </tbody>
-</table>
 
+<body layout:fragment="content">
+<h1>환경 퀴즈</h1>
+<div class="quiz-container">
+    <div class="quiz-question" th:text="${quiz.question}"></div>
+    <div class="oxWrapper">
+        <form class="quiz-form" id="quizFormTrue">
+            <input type="hidden" name="quizId" th:value="${quiz.quizId}">
+            <input type="hidden" name="answer" value="true">
+            <button type="button" onclick="submitAnswer('true')">O</button>
+        </form>
+        <form class="quiz-form" id="quizFormFalse">
+            <input type="hidden" name="quizId" th:value="${quiz.quizId}">
+            <input type="hidden" name="answer" value="false">
+            <button type="button" onclick="submitAnswer('false')" class="xButton">X</button>
+        </form>
+    </div>
+</div>
 
+<!-- 모달 창 -->
+<div id="myModal" class="modal">
+    <div class="modal-content" id="modalContent">
+        <span class="close" onclick="hideModal()">&times;</span>
+        <div class="result-container" id="resultContainer">
+            <!-- 여기에 AJAX로 받은 데이터가 채워질 예정 -->
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    // 페이지 로드 시 이벤트 리스너 설정
+    document.addEventListener("DOMContentLoaded", function() {
+        var isAnswer = /*[[${isAnswer}]]*/ false;
+        if (isAnswer != null && isAnswer) {
+            showModal();
+        }
+    });
+
+    // 정답 제출 함수 (AJAX 호출)
+    function submitAnswer(answer) {
+        var quizId = /*[[${quiz.quizId}]]*/ '';
+        var formData = {
+            "quizId": quizId,
+            "answer": answer
+        };
+
+        // AJAX 호출
+        $.ajax({
+            type: "POST",
+            url: "/quiz",
+            data: formData,
+            dataType: "html",
+            success: function (data) {
+                // 모달 창에 결과 페이지 띄우기
+                $('#resultContainer').html(data);
+                showModal();
+            },
+            error: function (e) {
+                console.error("Error submitting answer: " + e);
+            }
+        });
+    }
+
+    // 모달 표시 함수
+    function showModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'block';
+    }
+
+    // 모달 닫기 함수
+    function hideModal() {
+        var modal = document.getElementById('myModal');
+        modal.style.display = 'none';
+    }
+</script>
 
 <th:block layout:fragment="script">
+    <!-- jQuery 라이브러리 추가 -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <!-- CSRF 토큰 처리 -->
+    <script th:src="@{/js/csrf_token.js}"></script>
 </th:block>
+
 </body>
 </html>
