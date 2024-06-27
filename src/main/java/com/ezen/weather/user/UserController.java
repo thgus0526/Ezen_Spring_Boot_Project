@@ -2,9 +2,12 @@ package com.ezen.weather.user;
 
 import com.ezen.weather.adminTemp.AdminTemp;
 import com.ezen.weather.adminTemp.AdminTempService;
+import com.ezen.weather.email.EmailService;
+import com.ezen.weather.email.VerificationCodeService;
 import com.ezen.weather.userTemp.UserTemp;
 import com.ezen.weather.userTemp.UserTempService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +28,12 @@ public class UserController {
     private final AdminTempService adminTempService;
     private final UserTempService userTempService;
     private final UserRepository userRepository;
+    // 이메일 인증
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private VerificationCodeService verificationCodeService;
 
     @GetMapping("/signup")
     public String signup(Model model){
@@ -86,6 +95,8 @@ public class UserController {
 
         return "redirect:/";
     }
+
+
 
 
 }

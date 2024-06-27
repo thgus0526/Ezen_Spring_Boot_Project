@@ -18,6 +18,7 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.apache.maven.model.Site;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +38,10 @@ public class SmsController {
     private final UserTempService userTempService;
 
 
-
+    @Scheduled(cron = "0 0 6 * * *")    // 오전 6시에 전송되도록 설정
     @PostMapping("/user/send")
     public void sendSms(@RequestBody Map<String, Object> data) {
+        System.out.println("문자~~~~~~~~~~~~~~~~~");
         // 현재 기온
         double currentTemp = Double.parseDouble(data.get("value").toString());
 
