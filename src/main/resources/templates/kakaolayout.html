@@ -5,18 +5,18 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <!-- sbb CSS -->
-    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <meta name="user-id" th:content="${#authentication.name}"/>
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">-->
+<!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
+<!--    <meta name="user-id" th:content="${#authentication.name}"/>-->
 
 </head>
 
 <body>
 <nav class="navbar navbar-expand-lg bg-light-green" th:fragment="headerFragment">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="/static">
             <img class="logo2" th:src="@{/img/logo.png}" alt="로고" />
         </a>
         <button
@@ -34,11 +34,11 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/question/list"
-                    >커뮤니티</a
-                    >
+                    >커뮤니티</a>
+
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">기상 퀴즈</a>
+                    <a class="nav-link" href="/static">기상 퀴즈</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/news">기상 뉴스</a>
@@ -47,17 +47,10 @@
                     <a class="nav-link" href="#">랭킹</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                    <a class="nav-link" th:href="@{/user/logout}">로그아웃</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/mypage}">마이페이지</a>
-                </li>
-
-                <li>
-
-                    <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
-
+                    <a class="nav-link"  th:href="@{/user/mypage}">마이페이지</a>
                 </li>
             </ul>
         </div>

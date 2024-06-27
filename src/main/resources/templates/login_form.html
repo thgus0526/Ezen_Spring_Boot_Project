@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      layout:decorate="~{layout}"
->
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,7 +59,7 @@
 
 <body>
 <div layout:fragment="content" class="container my-3">
-    <form th:action="@{/user/login}" method="post">
+    <form th:action="@{/user/login}" method="post" sec:authorize="!isAuthenticated()">
         <div th:if="${param.error}" class="alert alert-danger">
             사용자ID 또는 비밀번호를 확인해 주세요.
         </div>
@@ -79,9 +78,11 @@
                  alt="카카오 로그인 아이콘" width="20" height="20">
             카카오 로그인
         </a>
+
         <a href="/user/signup" class="btn btn-outline-secondary btn-block signup-link">회원가입</a>
     </form>
-</div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
