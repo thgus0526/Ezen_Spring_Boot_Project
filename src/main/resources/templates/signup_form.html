@@ -70,47 +70,14 @@
 
     </form>
 </div>
-</body>
-
-
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
 ></script>
-<!--<script>-->
-<!--    function sendVerificationCode(){-->
-<!--        let email = $('#email').val();-->
-<!--        $.ajax({-->
-<!--            url: '/user/email',-->
-<!--            type: 'POST',-->
-<!--            contentType: 'application/json',-->
-<!--            data: JSON.stringify({email: email}),-->
-<!--            success: function(response){-->
-<!--                $('#userEmailInfo').text(response);-->
-<!--                alert('성공');-->
-<!--            },-->
-<!--            error: function(response) {-->
-<!--                $('#userEmailError').text(response.responseText);-->
-<!--                alert('실패');-->
-<!--            }-->
-<!--        })-->
-<!--    }-->
-<!--    function verifyCode() {-->
-<!--        var email = $('#email').val();-->
-<!--        var code = $('#verificationCode').val();-->
-<!--        $.ajax({-->
-<!--            url: '/api/verifyCode',-->
-<!--            type: 'POST',-->
-<!--            contentType: 'application/json',-->
-<!--            data: JSON.stringify({ email: email, code: code }),-->
-<!--            success: function(response) {-->
-<!--                $('#verificationResult').text(response);-->
-<!--            },-->
-<!--            error: function(response) {-->
-<!--                $('#verificationResult').text(response.responseText);-->
-<!--            }-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
+<th:block layout:fragment="script">
+    <script th:src="@{/js/signup_form.js}"></script>
+</th:block>
+</body>
+
 </html>
