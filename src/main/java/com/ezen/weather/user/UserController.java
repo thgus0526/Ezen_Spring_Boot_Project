@@ -114,4 +114,15 @@ public class UserController {
         userService.userPwdUpdate(password, name);
         return ResponseEntity.ok("Password updated successfully");
     }
+    @PostMapping("/updatePoint")
+    public ResponseEntity<?> updatePoint(@RequestBody Map<String, Object> data){
+        String userId = (String) data.get("userId");
+        System.out.println("유저아이디" + userId);
+        userService.updatePoint(userId);
+
+
+        return ResponseEntity.ok("Point updated successfully");
+    }
+
+
 }

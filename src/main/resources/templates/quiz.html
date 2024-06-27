@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="user-id" th:content="${#authentication.name}"/>
     <title>환경 퀴즈</title>
     <style>
         body {
@@ -119,6 +120,7 @@
 
 <script th:inline="javascript">
     // 페이지 로드 시 이벤트 리스너 설정
+    userId = $("meta[name='user-id']").attr("content"); // userId 넘기기
     document.addEventListener("DOMContentLoaded", function() {
         var isAnswer = /*[[${isAnswer}]]*/ false;
         if (isAnswer != null && isAnswer) {
@@ -139,10 +141,29 @@
             type: "POST",
             url: "/quiz",
             data: formData,
-            dataType: "html",
+            dataType: "json",
             success: function (data) {
                 // 모달 창에 결과 페이지 띄우기
-                $('#resultContainer').html(data);
+                if(data === true){
+                    $('#resultContainer').html("<p>정답입니다.</p>");
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/user/updatePoint',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            userId: userId
+                        }),
+                        success: function(){
+                            console.log("AJax 통신 성공");
+                            console.log(userId);
+                        }, error: function() {
+                            console.log("AJax 통신 실패");
+                        }
+                    });
+                } else {
+                    $('#resultContainer').html("<p>오답입니다.</p>");
+                }
                 showModal();
             },
             error: function (e) {

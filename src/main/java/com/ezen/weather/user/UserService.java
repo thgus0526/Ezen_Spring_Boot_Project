@@ -70,6 +70,13 @@ public class UserService {
         siteUser.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(siteUser);
     }
+    public void updatePoint(String userId){
+        Optional<SiteUser> siteUser = userRepository.findById(userId);
+        SiteUser user = userRepository.findByName(siteUser.get().getName());
+
+        user.setPoint(50l);
+        this.userRepository.save(user);
+    }
 }
 
 

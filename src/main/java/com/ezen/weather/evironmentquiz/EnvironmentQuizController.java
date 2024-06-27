@@ -34,14 +34,17 @@ public class EnvironmentQuizController {
     }
 
     @PostMapping("/quiz")
-    public String submitAnswer(@RequestParam boolean answer, @RequestParam Long quizId, Model model) {
+    public ResponseEntity<?> submitAnswer(@RequestParam boolean answer, @RequestParam Long quizId, Model model) {
+        System.out.println("컨트롤러 시작");
         EnvironmentQuiz quiz = quizService.getQuizById(quizId);
         if (quiz == null) {
-            model.addAttribute("error", "퀴즈를 찾을 수 없습니다.");
-            return "error"; // error.html로 리디렉션
+//            model.addAttribute("error", "퀴즈를 찾을 수 없습니다.");
+//            return "error"; // error.html로 리디렉션
+            return ResponseEntity.badRequest().body("퀴즈를 찾을 수 없습니다.");
         }
         boolean isCorrect = (quiz.getAnswer() == (answer ? 1 : 0));
+        System.out.println(isCorrect);
         model.addAttribute("isAnswer", isCorrect);
-        return "result";
+        return ResponseEntity.ok(isCorrect);
     }
 }
