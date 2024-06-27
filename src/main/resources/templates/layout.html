@@ -1,4 +1,6 @@
-<html lang="ko"><head>
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -33,18 +35,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/question/list"
+                    <a class="nav-link" aria-current="page" href="/question/list"
                     >커뮤니티</a
                     >
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">기상 퀴즈</a>
+                    <a class="nav-link" href="/quiz">기상 퀴즈</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/news">기상 뉴스</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">랭킹</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
@@ -64,12 +63,13 @@
 
     </div>
 </nav>
+
 <!-- 기본 템플릿 안에 삽입될 내용 Start -->
 <th:block layout:fragment="content"></th:block>
 <!-- 기본 템플릿 안에 삽입될 내용 End -->
+
 <!-- 자바스크립트 Start -->
-<th:block layout:fragment="script"></th:block>
-<!-- 자바스크립트 End -->
+<!-- 공통 스크립트 -->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2f76b9ff5693043658660eb94f70830e&libraries=services"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script
@@ -77,6 +77,10 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
 ></script>
-<script th:src="@{/js/main.js}"></script>
-<script th:src="@{/js/news.js}"></script>
-</body></html>
+<!-- 개별 페이지에서 삽입될 스크립트 -->
+<th:block layout:fragment="script">
+    <script th:src="@{/js/csrf_token.js}"></script>
+</th:block>
+<!-- 자바스크립트 End -->
+</body>
+</html>

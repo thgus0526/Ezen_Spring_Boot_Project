@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Environment Quiz</title>
+</head>
+<body>
+<h1>Environment Quiz</h1>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Question</th>
+        <th>Answer</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="quiz : ${quizList}">
+        <td th:text="${quiz.quizId}"></td>
+        <td th:text="${quiz.question}"></td>
+        <td th:text="${quiz.answer} ? 1 : 0"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+
+<th:block layout:fragment="script">
+</th:block>
+</body>
+</html>

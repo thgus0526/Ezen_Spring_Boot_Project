@@ -14,7 +14,7 @@ body {
 }
 .logo2 {
     width: 100px;
-    animation: fadeIn 3s ease-in-out, spin 2s infinite;
+    animation: fadeIn 3s ease-in-out, spin 2s linear;
 }
 .weatherIcon {
     width: 100px;
@@ -30,6 +30,12 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
+}
+
+#weather2 {
+    position: absolute;
+    top: 607px;
 }
 @keyframes fadeIn {
     from {
@@ -61,6 +67,37 @@ body {
     font-weight: bold;
 }
 
+/*퀴즈*/
+.quiz {
+    width: 50%;
+    height: 500px;
+    background: linear-gradient(to right, #00b09b, #96c93d);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    border: 10px solid black;
+}
+
+.question {
+    font-size: 1.5rem;
+}
+
+.ox {
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+}
+
+.ox p {
+    cursor: pointer;
+}
+
+.ox p:last-child {
+    margin-left: 50px;
+}
+
 .kakao-login-btn {
     display: inline-block;
     padding: 10px 20px;
@@ -79,4 +116,15 @@ body {
 .kakao-login-btn img {
     vertical-align: middle;
     margin-right: 8px;
+}
+
+.quizWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quizName {
+    margin-top: 20px;
+    text-align: center;
 }
