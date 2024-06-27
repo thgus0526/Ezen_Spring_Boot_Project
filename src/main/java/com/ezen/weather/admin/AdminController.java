@@ -1,7 +1,12 @@
 package com.ezen.weather.admin;
 
 import com.ezen.weather.user.SiteUser;
+import com.ezen.weather.user.UserRepository;
+import com.ezen.weather.user.UserRole;
+import com.ezen.weather.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +18,8 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
 private final AdminService adminService;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping("/adminPage")
     public String adminPage(Model model) {
@@ -31,4 +38,33 @@ private final AdminService adminService;
             return "삭제 도중 오류가 발생했습니다: " + e.getMessage();
         }
     }
+    @GetMapping("/editUser")
+    public String editUserPage(@RequestParam("userId") String userId, Model model) {
+        SiteUser siteUser = adminService.getUser(userId);
+        model.addAttribute("siteUser", siteUser);
+        return "admin_edit_user"; // edit_user.html 템플릿으로 이동
+    }
+
+    // 회원정보 수정
+    @PostMapping("/editUserInfo")
+    public String updateUserInfo(@RequestParam("hiddenName") String name,
+                                 @RequestParam("phone") String phone,
+                                 @RequestParam("addressZipcode") String addressZipcode,
+                                 @RequestParam("addressStreet") String addressStreet,
+                                 @RequestParam("addressDetail") String addressDetail,
+                                 @RequestParam("addressNotes") String addressNotes,
+                                 @RequestParam("role")UserRole role
+                                 ) {
+
+        SiteUser siteUser = userRepository.findByName(name);
+        adminService.editUserInfo(name, phone, addressZipcode, addressStreet, addressDetail, addressNotes,role);
+        return "redirect:/admin/adminPage";
+    }
+    // 비밀번호 수정
+    @PostMapping("/editPassword")
+    public String updateUserPwd(@RequestParam("password") String password, @RequestParam("hiddenName") String name){
+        userService.userPwdUpdate(password, name);
+        return "redirect:/admin/adminPage";
+    }
+
 }

@@ -53,5 +53,8 @@ public class SiteUser {
     @Column(name="user_type", nullable=false)
     private int userType=0;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name="user_role", nullable=false)
+    private UserRole role = UserRole.DEFAULT;
 
 }

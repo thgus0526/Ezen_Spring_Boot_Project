@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+
+</html>
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Title</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        .card {
+            background: #ffffff;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #495057;
+        }
+
+        .form-control {
+            width: calc(100% - 20px); /* Adjusted width for better spacing */
+            margin-bottom: 15px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .btn-box{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-primary, .btn-secondary {
+            width: 20%;
+            padding: 8px; /* Reduced button padding */
+            font-size: 14px; /* Smaller font size */
+            font-weight: bold;
+            text-align: center;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #007bff; /* Primary button color */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3; /* Darker color on hover */
+        }
+
+        .btn-secondary {
+            background-color: #6c757d; /* Secondary button color */
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Darker color on hover */
+        }
+    </style>
+</head>
+<body>
+<div class="container" layout:fragment="content">
+    <div class="card">
+        <h2 th:text="${siteUser.name} + '님 정보 수정'"></h2>
+        <div class="card card-small">
+            <h2>비밀번호 변경</h2>
+            <form th:action="@{/admin/editPassword}" method="post">
+                <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
+                <div class="mb-3">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input type="password" class="form-control" id="password" th:name="password">
+
+                </div>
+                <div class="mb-3">
+                    <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+                    <input type="password" id="passwordConfirm" class="form-control" onblur="validateForm()">
+                    <span id="passwordCheck" class="text-info"></span>
+                    <span id="passwordNotMatch" class="text-danger"></span>
+                </div>
+                <div class="btn-box">
+                    <button type="submit" class="btn btn-primary">변경</button>
+                </div>
+
+            </form>
+        </div>
+        <form th:action="@{/admin/editUserInfo}" method="post">
+            <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
+            <div class="mb-3">
+                <label for="phone" class="form-label">핸드폰번호</label>
+                <input type="text" class="form-control" id="phone" th:name="phone" th:value="${siteUser.getPhone}">
+            </div>
+            <div class="mb-3">
+                <label for="addressZipcode" class="form-label">우편번호</label>
+                <input type="text" class="form-control" id="addressZipcode" th:name="addressZipcode" th:value="${siteUser.getAddressZipcode}">
+                <button type="button" class="btn btn-secondary" onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
+            </div>
+            <div class="mb-3">
+                <label for="addressStreet" class="form-label">주소</label>
+                <input type="text" class="form-control" id="addressStreet" th:name="addressStreet" th:value="${siteUser.getAddressStreet}">
+            </div>
+            <div class="mb-3">
+                <label for="addressDetail" class="form-label">상세주소</label>
+                <input type="text" class="form-control" id="addressDetail" th:name="addressDetail" th:value="${siteUser.getAddressDetail}">
+            </div>
+            <div class="mb-3">
+                <label for="addressNotes" class="form-label">참고</label>
+                <input type="text" class="form-control" id="addressNotes" th:name="addressNotes" th:value="${siteUser.getAddressNotes}">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">이메일</label>
+                <input type="text" class="form-control" id="email" th:name="email" th:value="${siteUser.getEmail}" disabled>
+            </div>
+            <div class="mb-3">
+                <label for="role" class="form-label">회원 구분</label>
+                <select class="form-control" id="role" name="role">
+                    <option th:each="role : ${T(com.ezen.weather.user.UserRole).values()}"
+                            th:value="${role}" th:text="${role.value}"
+                            th:selected="${role == siteUser.role}">회원 구분</option>
+                </select>
+            </div>
+            <div class="btn-box">
+            <button type="submit" class="btn btn-primary">변경</button>
+                </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    // range input 값이 변경될 때마다 호출되는 함수
+    function updateMaxTempValue(maxTemp, value) {
+        document.getElementById('customRangeMaxTempValue').textContent = value;
+        document.getElementById('hiddenMaxTemp').value=value;
+
+    }
+    function updateMinTempValue(minTemp, value){
+        document.getElementById('customRangeMinTempValue').textContent = value;
+        document.getElementById('hiddenMinTemp').value=value;
+    }
+</script>
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"
+></script>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/user_myPage.js}"></script>
+</th:block>
+</body>
+</html>
