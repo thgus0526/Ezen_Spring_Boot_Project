@@ -2,6 +2,7 @@ package com.ezen.weather.evironmentquiz;
 import com.ezen.weather.evironmentquiz.EnvironmentQuiz;
 import com.ezen.weather.evironmentquiz.EnvironmentQuizService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,6 @@ public class EnvironmentQuizController {
         }
         boolean isCorrect = (quiz.getAnswer() == (answer ? 1 : 0));
         model.addAttribute("isAnswer", isCorrect);
-        model.addAttribute("quiz", quiz);
         return "result";
     }
 }
