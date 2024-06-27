@@ -1,6 +1,6 @@
 package com.ezen.weather.notice;
 
-import com.ezen.weather.admin.Admin;
+import com.ezen.weather.user.SiteUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,7 +26,7 @@ public class Notice {
     private int noticeHit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="admin_id")
-    private Admin admin;
+    @JoinColumn(name="user_id")
+    private SiteUser adminID;
 
 }

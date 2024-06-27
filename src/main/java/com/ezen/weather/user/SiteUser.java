@@ -1,6 +1,5 @@
 package com.ezen.weather.user;
 
-import com.ezen.weather.comment.Comment;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -54,7 +53,8 @@ public class SiteUser {
     @Column(name="user_type", nullable=false)
     private int userType=0;
 
-    @OneToMany(mappedBy = "siteUser", cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<Comment>();
+    @Enumerated(EnumType.STRING)
+    @Column(name="user_role", nullable=false)
+    private UserRole role = UserRole.DEFAULT;
 
 }

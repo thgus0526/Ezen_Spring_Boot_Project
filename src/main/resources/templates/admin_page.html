@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+
+</html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+
+        body {
+            background-color: #f8f9fa;
+            padding-top: 3rem;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 2rem;
+            margin-top: 10px;
+        }
+        .table {
+            width: 100%;
+            background-color: #fff;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        .btn {
+            cursor: pointer;
+        }
+        .btn-modify {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .btn-modify:hover {
+            background-color: #0056b3;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-delete:hover {
+            background-color: #bd2130;
+        }
+    </style>
+</head>
+<body>
+<div id="Userinfo">
+    <div class="container">
+        <div class="title">
+            <h2>회원 관리</h2>
+        </div>
+        <div class="content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>휴대폰</th>
+                    <th>이메일</th>
+                    <th>주소</th>
+                    <th>구분</th>
+                    <th>수정</th>
+                    <th>삭제</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 반복 처리 -->
+                <tr th:each="user : ${userList}">
+                    <td th:text="${user.userId}"></td>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.phone}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td th:text="${user.addressStreet}"></td>
+                    <td th:text="${user.role}"></td>
+                    <td>
+                        <a class="btn btn-modify" th:href="@{/admin/editUser(userId=${user.userId})}">수정</a>
+                    </td>
+                    <td>
+                        <button class="btn btn-delete" th:attr="data-userid=${user.userId}" onclick="onClickDelete(this.getAttribute('data-userid'))">삭제</button>
+                    </td>
+                </tr>
+                <!-- 반복 처리 끝 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript 함수 정의 -->
+<script type="text/javascript">
+
+    function onClickDelete(userId) {
+        // 삭제 버튼을 클릭했을 때 수행할 동작 정의
+        console.log("삭제 버튼 클릭 - userId: " + userId);
+
+        if (confirm("정말로 삭제하시겠습니까?")) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/deleteUser", // 삭제 기능을 수행할 서버 엔드포인트 URL
+                data: { userId: userId }, // 삭제할 사용자의 아이디를 서버에 전달
+                success: function(response) {
+
+                    // 서버로부터의 응답 처리
+                    console.log(response);
+                    // 여기에 필요한 동작 추가
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // 오류 발생 시 처리
+                    console.error("오류 발생:", error);
+                    // 여기에 오류 처리 추가
+                }
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
