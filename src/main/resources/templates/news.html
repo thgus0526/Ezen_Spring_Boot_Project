@@ -63,8 +63,8 @@
 ></script>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const apiKey = "43d0588ba65140a7a082984bd780f46c"; // 여기에 올바른 API 키를 입력하세요.
-        const url = `https://newsapi.org/v2/top-headlines?country=kr&apiKey=${apiKey}`;
+        const apiKey = "pub_47274ef0067948a6383cf877b5bd2505b4932"; // 여기에 올바른 API 키를 입력하세요.
+        const url = `https://newsdata.io/api/1/latest?country=kr&category=environment&apiKey=${apiKey}`;
         const newsContainer = document.getElementById("news-container");
 
         fetch(url)
@@ -130,5 +130,8 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"
 ></script>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/news.js}"></script>
+</th:block>
 </body>
 </html>
