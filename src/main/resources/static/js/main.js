@@ -447,8 +447,7 @@ function locationfunc(lat, lng) {
             console.error("Error fetching weather data:", error)
         );
 }
-
-// 문자 발송을 위한 스크립트
+// csrf 토큰
 let userId
 $(document).ready(function() {
 
@@ -460,6 +459,7 @@ $(document).ready(function() {
         xhr.setRequestHeader(header, token);
     });
 });
+// 문자 발송을 위한 스크립트
 // 서버로 데이터를 전송하는 함수
 function sendDataToServer(data){
     // AJAX 를 이용하여 서버로 데이터 전송

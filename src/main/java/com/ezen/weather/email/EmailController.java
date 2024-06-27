@@ -21,9 +21,4 @@ public class EmailController {
         emailService.sendSimpleEmail(emailRequest.getEmail());
         return "이메일이 발송되었습니다.";
     }
-
-    @GetMapping("/email")
-    public String emailForm() {
-        return "email";
-    }
 }
