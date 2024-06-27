@@ -35,11 +35,17 @@
         }
 
         .card {
-            width: 48%;
+            width: 30%;
             background: #ffffff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 10px; /* Add left margin for spacing between cards */
+            margin-right: 10px; /* Add right margin for spacing between cards */
+        }
+
+        .card-small {
+            height: 310px;
         }
 
         h2 {
@@ -122,12 +128,17 @@
             color: #007bff;
             margin-top: 5px;
         }
+        .username-info{
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" layout:fragment="content">
     <div class="card">
-        <form th:action="@{/user/userTempSet}" method="post" layout:fragment="content">
+        <form th:action="@{/user/userTempSet}" method="post" >
             <input type="hidden" th:name="hiddenUserId" th:id="hiddenUserId" th:value="${#authentication.name}">
             <div class="container my-3" th:if="${adminTemps != null}">
                 <div th:each="temp : ${adminTemps}">
@@ -170,18 +181,17 @@
 
     <div class="card">
         <h2>회원정보 수정</h2>
+        <p class="username-info" th:text="${siteUser.getName} + '님정보입니다.'"></p>
         <form th:action="@{/user/updateUserInfo}" method="post">
-            <div class="mb-3">
-                <label for="name" class="form-label">이름</label>
-                <input type="text" class="form-control" id="name" th:name="name" th:value="${siteUser.getName}">
-            </div>
+            <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
             <div class="mb-3">
                 <label for="phone" class="form-label">핸드폰번호</label>
-                <input type="text" class="form-control" id="phone" th:name="phone" th:value="${siteUser.getPhone()}">
+                <input type="text" class="form-control" id="phone" th:name="phone" th:value="${siteUser.getPhone}">
             </div>
             <div class="mb-3">
                 <label for="addressZipcode" class="form-label">우편번호</label>
                 <input type="text" class="form-control" id="addressZipcode" th:name="addressZipcode" th:value="${siteUser.getAddressZipcode}">
+                <button type="button" class="btn btn-secondary" onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
             </div>
             <div class="mb-3">
                 <label for="addressStreet" class="form-label">주소</label>
@@ -195,16 +205,36 @@
                 <label for="addressNotes" class="form-label">참고</label>
                 <input type="text" class="form-control" id="addressNotes" th:name="addressNotes" th:value="${siteUser.getAddressNotes}">
             </div>
-            <button></button>
             <div class="mb-3">
                 <label for="email" class="form-label">이메일</label>
                 <input type="text" class="form-control" id="email" th:name="email" th:value="${siteUser.getEmail}">
             </div>
+            <button type="button" class="btn btn-secondary mb-3" onclick="sendVerificationCode()">이메일 인증코드 발송</button>
+            <div class="mb-3">
+                <label for="verificationCode" class="form-label">인증 코드</label>
+                <input type="text" id="verificationCode" class="form-control">
+                <button type="button" class="btn btn-secondary mt-3" onclick="verifyCode()">인증코드 확인</button>
+                <span id="verificationResult" class="text-info"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">변경</button>
+        </form>
+    </div>
+    <div class="card card-small">
+        <h2>비밀번호 변경</h2>
+        <form th:action="@{/user/updatePassword}" method="post">
+            <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
             <div class="mb-3">
                 <label for="password" class="form-label">비밀번호</label>
-                <input type="password" class="form-control" id="password" th:name="password" >
+                <input type="password" class="form-control" id="password" th:name="password">
+
             </div>
-            <button type="submit" class="btn btn-primary">저장</button>
+            <div class="mb-3">
+                <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+                <input type="password" id="passwordConfirm" class="form-control" onblur="validateForm()">
+                <span id="passwordCheck" class="text-info"></span>
+                <span id="passwordNotMatch" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">변경</button>
         </form>
     </div>
 </div>
