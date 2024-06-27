@@ -54,6 +54,8 @@ public class KakaoService {
         return accessToken;
     }
 
+
+    // 카카오 로그아웃 메서드
     public HashMap<String, Object> getUserInfo(String access_Token) {
         HashMap<String, Object> userInfo = new HashMap<>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
@@ -100,4 +102,5 @@ public class KakaoService {
 
         return userInfo;
     }
+
 }
