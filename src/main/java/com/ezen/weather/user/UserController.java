@@ -30,23 +30,22 @@ public class UserController {
     private final UserRepository userRepository;
 
 
-
-
     @GetMapping("/signup")
-    public String signup(Model model){
+    public String signup(Model model) {
         model.addAttribute("siteUser", new SiteUser());
         return "signup_form";
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute SiteUser siteUser, Model model){
+    public String signup(@ModelAttribute SiteUser siteUser, Model model) {
 
         userService.create(siteUser.getUserId(), siteUser.getPassword(), siteUser.getName(), siteUser.getPhone(), siteUser.getAddressStreet(), siteUser.getAddressZipcode(), siteUser.getAddressDetail(), siteUser.getAddressNotes(), siteUser.getEmail(), siteUser.getBirth());
         return "redirect:/";
     }
+
     // 아이디 중복 검사
     @GetMapping("/checkUserId")
-    public ResponseEntity<?> checkUserIdAvailability(@RequestParam("userId") String userId){
+    public ResponseEntity<?> checkUserIdAvailability(@RequestParam("userId") String userId) {
         boolean available = !userService.isUserIdExists(userId);
 
         return ResponseEntity.ok().body(Collections.singletonMap("available", available));
@@ -54,20 +53,20 @@ public class UserController {
     }
 
     @GetMapping("/checkUserEmail")
-    public ResponseEntity<?> checkUserEmailAvailability(@RequestParam("email") String email){
+    public ResponseEntity<?> checkUserEmailAvailability(@RequestParam("email") String email) {
         System.out.println("Controller~~~~~~~~~~~");
         boolean available = !userService.isUserEmailExists(email);
         return ResponseEntity.ok().body(Collections.singletonMap("available", available));
     }
 
     @GetMapping("/login")
-    public String login(Model model){
+    public String login(Model model) {
         model.addAttribute("siteUser", new SiteUser());
         return "login_form";
     }
 
     @GetMapping("/mypage")
-    public String mypage(@AuthenticationPrincipal UserDetails userDetails, Model model){
+    public String mypage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String userId = userDetails.getUsername();
         UserTemp userTemp = userTempService.getUserTemp(userId);
         List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
@@ -79,11 +78,12 @@ public class UserController {
         return "user_mypage";
 
     }
+
     @PostMapping("/userTempSet")
     public String userTempSet(@RequestParam("hiddenMaxTemp") String hiddenMaxTemp,
                               @RequestParam("hiddenMinTemp") String hiddenMinTemp,
-                              @RequestParam(value="rain", defaultValue = "false") boolean rain,
-                              @RequestParam("hiddenUserId") String hiddenUserId){
+                              @RequestParam(value = "rain", defaultValue = "false") boolean rain,
+                              @RequestParam("hiddenUserId") String hiddenUserId) {
         System.out.println(rain);
         System.out.println(hiddenUserId);
 
@@ -94,7 +94,24 @@ public class UserController {
         return "redirect:/";
     }
 
+    // 회원정보 수정
+    @PostMapping("/updateUserInfo")
+    public String updateUserInfo(@RequestParam("hiddenName") String name,
+                                 @RequestParam("phone") String phone,
+                                 @RequestParam("addressZipcode") String addressZipcode,
+                                 @RequestParam("addressStreet") String addressStreet,
+                                 @RequestParam("addressDetail") String addressDetail,
+                                 @RequestParam("addressNotes") String addressNotes,
+                                 @RequestParam("email") String email) {
 
-
-
+        SiteUser siteUser = userRepository.findByName(name);
+        userService.userInfoUpdate(name, phone, addressZipcode, addressStreet, addressDetail, addressNotes, email);
+        return "redirect:/user/mypage";
+    }
+    // 비밀번호 수정
+    @PostMapping("/updatePassword")
+    public String updateUserPwd(@RequestParam("password") String password, @RequestParam("hiddenName") String name){
+        userService.userPwdUpdate(password, name);
+        return "redirect:/user/logout";
+    }
 }

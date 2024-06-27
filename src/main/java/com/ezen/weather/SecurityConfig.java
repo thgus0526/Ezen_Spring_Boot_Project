@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/user/logout")) // 로그아웃 url
                         .logoutSuccessUrl("/") // 로그아웃 성공하면 루트로 이동.
-                        .invalidateHttpSession(true)); //
+                        .invalidateHttpSession(true));
+
 
         return http.build();
     }

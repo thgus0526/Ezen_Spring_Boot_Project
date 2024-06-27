@@ -50,6 +50,26 @@ public class UserService {
         }
     }
 
+    // 회원정보 수정
+    public void userInfoUpdate(String name, String phone, String addressZipcode, String addressStreet, String addressDetail, String addressNotes, String email) {
+        SiteUser siteUser = userRepository.findByName(name);
+
+        siteUser.setPhone(phone);
+        siteUser.setAddressZipcode(addressZipcode);
+        siteUser.setAddressStreet(addressStreet);
+        siteUser.setAddressDetail(addressDetail);
+        siteUser.setAddressNotes(addressNotes);
+        siteUser.setEmail(email);
+        this.userRepository.save(siteUser);
+
+    }
+    // 비밀번호 수정
+    public void userPwdUpdate(String password, String name){
+        SiteUser siteUser = userRepository.findByName(name);
+
+        siteUser.setPassword(passwordEncoder.encode(password));
+        this.userRepository.save(siteUser);
+    }
 }
 
 
