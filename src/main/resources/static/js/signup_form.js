@@ -155,6 +155,7 @@ function checkUserEmail(){
 
 // 이메일 인증코드 보내는 함수
 function sendVerificationCode(){
+    console.log("여기까지오냐");
     let email = $('#email').val();
     $.ajax({
         url: '/user/send-email',

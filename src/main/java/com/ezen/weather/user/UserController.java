@@ -3,7 +3,7 @@ package com.ezen.weather.user;
 import com.ezen.weather.adminTemp.AdminTemp;
 import com.ezen.weather.adminTemp.AdminTempService;
 import com.ezen.weather.email.EmailService;
-import com.ezen.weather.email.VerificationCodeService;
+
 import com.ezen.weather.userTemp.UserTemp;
 import com.ezen.weather.userTemp.UserTempService;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,9 @@ public class UserController {
     private final AdminTempService adminTempService;
     private final UserTempService userTempService;
     private final UserRepository userRepository;
-    // 이메일 인증
-    @Autowired
-    private EmailService emailService;
 
-    @Autowired
-    private VerificationCodeService verificationCodeService;
+
+
 
     @GetMapping("/signup")
     public String signup(Model model){
@@ -74,8 +71,9 @@ public class UserController {
         String userId = userDetails.getUsername();
         UserTemp userTemp = userTempService.getUserTemp(userId);
         List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
+        SiteUser siteUser = userService.getUser(userId);
 
-
+        model.addAttribute("siteUser", siteUser);
         model.addAttribute("userTemp", userTemp);
         model.addAttribute("adminTemps", adminTemps);
         return "user_mypage";

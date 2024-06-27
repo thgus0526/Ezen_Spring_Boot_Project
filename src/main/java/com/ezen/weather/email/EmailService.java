@@ -27,16 +27,15 @@ public class EmailService {
         final Random random = new Random();
 
         StringBuilder sb = new StringBuilder();
+
         sb.append("<html><body>");
         sb.append("<h2 style='color: #007bff;'>Weather Ezen Spring Boot 이메일 인증 코드</h2>");
         sb.append("<p>아래 코드를 입력하여 이메일 인증을 완료해주세요:</p>");
-        sb.append("<p style='font-size: 18px; font-weight: bold;'>");
-
         for (int i = 0; i < LENGTH; i++) {
             int index = random.nextInt(CHARACTERS.length());
             sb.append(CHARACTERS.charAt(index));
         }
-
+        sb.append("<p style='font-size: 18px; font-weight: bold;'>");
         sb.append("</p>");
         sb.append("</body></html>");
 
