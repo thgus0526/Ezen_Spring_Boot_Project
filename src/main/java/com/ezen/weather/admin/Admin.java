@@ -28,8 +28,8 @@ public class Admin {
     @Column(name = "admin_type", nullable = false)
     private int adminType = 1;
 
-    @OneToMany(mappedBy = "admin", cascade=CascadeType.ALL)
-    private List<Notice> noticeList = new ArrayList<Notice>();
+//    @OneToMany(mappedBy = "admin", cascade=CascadeType.ALL)
+//    private List<Notice> noticeList = new ArrayList<Notice>();
 
 //    @OneToOne(mappedBy = "admin")
 //    private AdminTemp adminTemp;
