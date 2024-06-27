@@ -8,37 +8,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class KakaoController {
+
+    private static final Logger logger = LoggerFactory.getLogger(KakaoController.class);
 
     @Autowired
     private KakaoService kakaoService;
 
+
+
     @RequestMapping("/login")
-    public String home(@RequestParam(value = "code", required = false) String code, Model model) throws Exception {
-        if (code != null) {
-            System.out.println("1----------------여기는 토큰값------------------------1");
-            System.out.println("######### Code received: " + code);
-            String access_Token = kakaoService.getAccessToken(code);
-            System.out.println("### Access Token: " + access_Token);
-            System.out.println("2--------------------------------------------------2");
+    public String home(@RequestParam(value = "code", required = false) String code, Model model) {
+        System.out.println("시작");
+        try {
+            if (code != null) {
+                logger.info("----------------여기는 토큰값------------------------");
+                logger.info("######### Code received: {}", code);
+                String access_Token = kakaoService.getAccessToken(code);
+                logger.info("### Access Token: {}", access_Token);
+                logger.info("----------------여기는 토큰값------------------------");
 
-            System.out.println("3-------------------여기는 유저 정보---------------------3");
-            HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
-            System.out.println("1.### User Info: " + userInfo);
-            System.out.println("2.### Profile Nickname: " + userInfo.get("profile_nickname"));
-            System.out.println("3.### Profile Image: " + userInfo.get("profile_image"));
-            System.out.println("4.### Email: " + userInfo.get("email"));
-            System.out.println("5.### Name: " + userInfo.get("name"));
-            System.out.println("6.### Phone Number: " + userInfo.get("phone_number"));
-            System.out.println("4--------------------------------------------------4");
+                logger.info("-------------------여기는 유저 정보---------------------");
+                HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
+                logger.info("1.### User Info: {}", userInfo);
+                logger.info("2.### Profile Nickname: {}", userInfo.get("profile_nickname"));
+                logger.info("3.### Profile Image: {}", userInfo.get("profile_image"));
+                logger.info("4.### Email: {}", userInfo.get("email"));
+                logger.info("5.### Name: {}", userInfo.get("name"));
+                logger.info("6.### Phone Number: {}", userInfo.get("phone_number"));
+                logger.info("-------------------여기는 유저 정보---------------------");
 
-            // 사용자 정보를 모델에 추가
-            model.addAttribute("userInfo", userInfo);
-        } else {
-            System.out.println("### 코드 없음요.");
+                // 사용자 정보를 모델에 추가
+                model.addAttribute("access_Token", access_Token);
+                model.addAttribute("userInfo", userInfo);
+
+            } else {
+                logger.warn("### 코드 없음요.");
+            }
+        } catch (Exception e) {
+            logger.error("로그인 처리 중 오류 발생", e);
+            // 에러 페이지로 리다이렉트하거나 에러 메시지 제공
+            return "redirect:/error";
         }
-
-        return "testPage";
+        return "kakaoindex";
     }
 }
