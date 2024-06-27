@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>환경 퀴즈</title>
     <style>
         body {
@@ -84,43 +88,68 @@
         }
     </style>
 </head>
-<body>
+
+<body layout:fragment="content">
 <h1>환경 퀴즈</h1>
 <div class="quiz-container">
     <div class="quiz-question" th:text="${quiz.question}"></div>
     <div class="oxWrapper">
-        <form class="quiz-form" method="post" action="/quiz">
+        <form class="quiz-form" id="quizFormTrue">
             <input type="hidden" name="quizId" th:value="${quiz.quizId}">
             <input type="hidden" name="answer" value="true">
-            <button type="submit">O</button>
+            <button type="button" onclick="submitAnswer('true')">O</button>
         </form>
-        <form class="quiz-form" method="post" action="/quiz">
+        <form class="quiz-form" id="quizFormFalse">
             <input type="hidden" name="quizId" th:value="${quiz.quizId}">
             <input type="hidden" name="answer" value="false">
-            <button class="xButton" type="submit">X</button>
+            <button type="button" onclick="submitAnswer('false')" class="xButton">X</button>
         </form>
     </div>
 </div>
 
 <!-- 모달 창 -->
-<div id="myModal" class="modal" th:if="${isAnswer != null}">
-    <div class="modal-content">
+<div id="myModal" class="modal">
+    <div class="modal-content" id="modalContent">
         <span class="close" onclick="hideModal()">&times;</span>
-        <div class="result-container">
-            <p class="result-message" th:text="${isAnswer ? '정답입니다!' : '오답입니다.'}"></p>
-            <a href="/quiz">다음 문제 풀기</a>
+        <div class="result-container" id="resultContainer">
+            <!-- 여기에 AJAX로 받은 데이터가 채워질 예정 -->
         </div>
     </div>
 </div>
 
 <script th:inline="javascript">
-    // 페이지 로드 시 모달 표시
+    // 페이지 로드 시 이벤트 리스너 설정
     document.addEventListener("DOMContentLoaded", function() {
         var isAnswer = /*[[${isAnswer}]]*/ false;
         if (isAnswer != null && isAnswer) {
             showModal();
         }
     });
+
+    // 정답 제출 함수 (AJAX 호출)
+    function submitAnswer(answer) {
+        var quizId = /*[[${quiz.quizId}]]*/ '';
+        var formData = {
+            "quizId": quizId,
+            "answer": answer
+        };
+
+        // AJAX 호출
+        $.ajax({
+            type: "POST",
+            url: "/quiz",
+            data: formData,
+            dataType: "html",
+            success: function (data) {
+                // 모달 창에 결과 페이지 띄우기
+                $('#resultContainer').html(data);
+                showModal();
+            },
+            error: function (e) {
+                console.error("Error submitting answer: " + e);
+            }
+        });
+    }
 
     // 모달 표시 함수
     function showModal() {
@@ -134,6 +163,13 @@
         modal.style.display = 'none';
     }
 </script>
+
+<th:block layout:fragment="script">
+    <!-- jQuery 라이브러리 추가 -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <!-- CSRF 토큰 처리 -->
+    <script th:src="@{/js/csrf_token.js}"></script>
+</th:block>
 
 </body>
 </html>

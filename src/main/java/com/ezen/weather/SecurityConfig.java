@@ -22,8 +22,10 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
+
                 .csrf(csrf -> csrf   // /h2-console/로 시작하는 모든 URL은 CSRF 검증을 하지 않겠다.
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
+
                 .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
