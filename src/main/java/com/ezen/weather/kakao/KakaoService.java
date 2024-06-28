@@ -3,6 +3,7 @@ package com.ezen.weather.kakao;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,7 +16,9 @@ import java.util.HashMap;
 @Service
 public class KakaoService {
 
-    // getAccessToken 메서드
+    @Autowired
+    private KakaoUserInfoRepository kakaoUserInfoRepository;
+
     public String getAccessToken(String code) {
         String accessToken = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -26,10 +29,9 @@ public class KakaoService {
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
 
-            // POST 요청에 필요한 파라미터를 OutputStream에 추가
             String postParams = "grant_type=authorization_code"
-                    + "&client_id=a0f264bcd4d592a0479ae39646b18e9c" // 클라이언트 아이디
-                    + "&redirect_uri=http://localhost:8080/login" // 리다이렉트 URI
+                    + "&client_id=a0f264bcd4d592a0479ae39646b18e9c"
+                    + "&redirect_uri=http://localhost:8080/login"
                     + "&code=" + code;
             conn.getOutputStream().write(postParams.getBytes());
 
@@ -54,8 +56,6 @@ public class KakaoService {
         return accessToken;
     }
 
-
-    // 카카오 로그아웃 메서드
     public HashMap<String, Object> getUserInfo(String access_Token) {
         HashMap<String, Object> userInfo = new HashMap<>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
@@ -96,11 +96,20 @@ public class KakaoService {
             userInfo.put("name", name);
             userInfo.put("phone_number", phoneNumber);
 
+            // 사용자 정보를 데이터베이스에 저장
+            KakaoUserInfo user = new KakaoUserInfo();
+            user.setNickname(nickname);
+            user.setProfileImage(profile_image);
+            user.setEmail(email);
+            user.setName(name);
+            user.setPhoneNumber(phoneNumber);
+
+            kakaoUserInfoRepository.save(user);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return userInfo;
     }
-
 }

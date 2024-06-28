@@ -17,4 +17,6 @@ public class EnvironmentQuiz {
     private String question;
 
     private int answer;
+
+    private int point;
 }

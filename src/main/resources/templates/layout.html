@@ -12,7 +12,6 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="user-id" th:content="${#authentication.name}"/>
-
 </head>
 
 <body>
@@ -59,21 +58,11 @@
 
                 <li>
 
+                    <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
 
-    <span th:with="principal=${#authentication.principal}">
-        <!-- Principal이 UserDetails 타입인지 확인하고, 그에 맞게 처리 -->
-        <span th:if="${principal instanceof T(org.springframework.security.core.userdetails.UserDetails)}">
-            <span th:each="authority : ${principal.authorities}">
-                <!-- authority에는 각 GrantedAuthority 객체가 순회됩니다 -->
-                <span th:text="${authority.authority}"></span>
-            </span>
-        </span>
-    </span>
-</span>
                 </li>
             </ul>
         </div>
-
     </div>
 </nav>
 

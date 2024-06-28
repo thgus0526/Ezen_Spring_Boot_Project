@@ -19,7 +19,7 @@ public class UserService {
         user.setUserId(userId);
         user.setPassword(passwordEncoder.encode(password));
         user.setName(name);
-        user.setPhone(phone);
+        user.setPhone("콜");
         user.setAddressStreet(addressStreet);
         user.setAddressZipcode(addressZipcode);
         user.setAddressDetail(addressDetail);
@@ -69,7 +69,7 @@ public class UserService {
     public void userInfoUpdate(String name, String phone, String addressZipcode, String addressStreet, String addressDetail, String addressNotes, String email) {
         SiteUser siteUser = userRepository.findByName(name);
 
-        siteUser.setPhone(phone);
+        siteUser.setPhone("콜");
         siteUser.setAddressZipcode(addressZipcode);
         siteUser.setAddressStreet(addressStreet);
         siteUser.setAddressDetail(addressDetail);
@@ -173,6 +173,13 @@ public class UserService {
         int currentSms = user.getSms();
         int updateCurrentSms = currentSms -1;
         user.setSms(updateCurrentSms);
+        this.userRepository.save(user);
+    }
+    public void updatePoint(String userId){
+        Optional<SiteUser> siteUser = userRepository.findById(userId);
+        SiteUser user = userRepository.findByName(siteUser.get().getName());
+
+        user.setPoint(50l);
         this.userRepository.save(user);
     }
 }
