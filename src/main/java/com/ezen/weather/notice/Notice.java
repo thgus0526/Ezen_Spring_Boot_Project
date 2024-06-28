@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -25,8 +27,19 @@ public class Notice {
     @Column(name="notice_hit")
     private int noticeHit;
 
+    @Column(name = "create_date")
+    private LocalDateTime createDate;
+
+    @Column(name = "modify_date")
+    private LocalDateTime modifyDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
-    private SiteUser adminID;
+    private SiteUser adminId;
+
+    // 조회수 증가 메서드
+    public void increaseHit() {
+        this.noticeHit++;
+    }
 
 }

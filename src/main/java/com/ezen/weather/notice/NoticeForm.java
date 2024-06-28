@@ -10,8 +10,8 @@ import lombok.Setter;
 public class NoticeForm {
 	@NotEmpty(message = "제목은 필수항목입니다.")
 	@Size(max = 200)
-	private String subject;
+	private String noticeTitle;
 
 	@NotEmpty(message = "내용은 필수항목입니다.")
-	private String content;
+	private String noticeContent;
 }
