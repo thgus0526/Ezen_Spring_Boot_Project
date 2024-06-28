@@ -7,11 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <meta name="user-id" th:content="${#authentication.name}"/>
-    <title>회원가입</title>
+    <title>Title</title>
 </head>
 <style>
     body {
@@ -31,6 +30,10 @@
     .btn-secondary {
         margin-right: 10px;
     }
+
+    .invalidBorder {
+        border: 5px solid red; /* 테두리 크기 2px, 빨간색 테두리 */
+    }
 </style>
 <body>
 <div layout:fragment="content">
@@ -43,39 +46,41 @@
                 <form th:action="@{/user/signup}" th:object="${siteUser}" method="post">
                     <div class="mb-3">
                         <label for="userId" class="form-label">사용자ID</label>
-                        <input type="text" th:field="*{userId}" id="userId" class="form-control">
-                        <span id="userIdError" class="text-danger"></span>
+                        <input type="text" th:field="*{userId}" id="userId" class="form-control" onblur="validateId()">
                         <span id="userIdInfo" class="text-info"></span>
                     </div>
                     <button type="button" class="btn btn-secondary mb-3" onclick="checkUserId()">아이디 중복검사</button>
 
                     <div class="mb-3">
                         <label for="password" class="form-label">비밀번호</label>
-                        <input type="password" th:field="*{password}" id="password" class="form-control">
+                        <input type="password" th:field="*{password}" id="password" class="form-control" onblur="validatePassword()">
                     </div>
                     <div class="mb-3">
                         <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
-                        <input type="password" id="passwordConfirm" class="form-control" onblur="validateForm()">
+                        <input type="password" id="passwordConfirm" class="form-control" onblur="validatePassword()">
                         <span id="passwordCheck" class="text-info"></span>
                         <span id="passwordNotMatch" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label for="name" class="form-label">이름</label>
-                        <input type="text" th:field="*{name}" class="form-control">
+                        <input type="text" th:field="*{name}" class="form-control" onblur="validateName()">
+                        <span id="nameInfo" class="text-info"></span>
                     </div>
                     <div class="mb-3">
                         <label for="phone" class="form-label">핸드폰번호</label>
-                        <input type="text" th:field="*{phone}" class="form-control">
+                        <input type="text" th:field="*{phone}" class="form-control" onblur="validatePhone()">
+                        <span id="phoneInfo" class="text-info"></span>
                     </div>
 
                     <div class="mb-3">
                         <label for="addressZipcode" class="form-label">우편번호</label>
-                        <input type="text" th:field="*{addressZipcode}" id="addressZipcode" class="form-control">
+                        <input type="text" th:field="*{addressZipcode}" id="addressZipcode" class="form-control" readonly>
+                        <span id="zipcodeInfo" class="text-info"></span>
                         <button type="button" class="btn btn-secondary" onclick="sample6_execDaumPostcode()">우편번호 찾기</button>
                     </div>
                     <div class="mb-3">
                         <label for="addressStreet" class="form-label">주소</label>
-                        <input type="text" th:field="*{addressStreet}" id="addressStreet" class="form-control">
+                        <input type="text" th:field="*{addressStreet}" id="addressStreet" class="form-control" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="addressDetail" class="form-label">상세주소</label>
@@ -83,29 +88,31 @@
                     </div>
                     <div class="mb-3">
                         <label for="addressNotes" class="form-label">참고항목</label>
-                        <input type="text" th:field="*{addressNotes}" id="addressNotes" class="form-control">
+                        <input type="text" th:field="*{addressNotes}" id="addressNotes" class="form-control" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">이메일</label>
-                        <input type="text" th:field="*{email}" id="email" class="form-control">
-                        <span id="userEmailError" class="text-danger"></span>
+                        <input type="text" th:field="*{email}" id="email" class="form-control"
+                               onblur="validateEmail()">
                         <span id="userEmailInfo" class="text-info"></span>
                     </div>
-                    <button type="button" class="btn btn-secondary mb-3" onclick="sendVerificationCode()">이메일 인증코드 발송</button>
+                    <button type="button" class="btn btn-secondary mb-3 unverifiedCode" onclick="checkUserEmail()">이메일 인증코드 발송</button>
 
-                    <div class="mb-3">
+                    <div class="mb-3 unverifiedCode d-none" id="insertEmail">
                         <label for="verificationCode" class="form-label">인증 코드</label>
                         <input type="text" id="verificationCode" class="form-control">
-                        <button type="button" class="btn btn-secondary mb-3" onclick="verifyCode()">인증코드 확인</button>
                         <span id="verificationResult" class="text-info"></span>
+                        <button type="button" class="btn btn-secondary mb-3" onclick="verifyCode()">인증코드 확인</button>
                     </div>
 
                     <div class="mb-3">
-                        <label for="birth" class="form-label">생년월일</label>
-                        <input type="text" th:field="*{birth}" class="form-control">
+                            <label for="birth" class="form-label">생년월일</label>
+                            <input type="text" th:field="*{birth}" class="form-control" onfocus="showDatePicker()"
+                                onblur="validateBirth()">
+                        <span id="birthInfo" class="text-info"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary">회원가입</button>
+                    <button type="submit" class="btn btn-secondary" id="join" disabled>회원가입</button>
                 </form>
             </div>
         </div>
