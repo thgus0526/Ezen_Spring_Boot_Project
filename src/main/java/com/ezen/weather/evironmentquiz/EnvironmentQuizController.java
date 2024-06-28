@@ -7,6 +7,7 @@ import com.ezen.weather.user.UserService;
 import org.apache.maven.model.Site;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -36,6 +37,7 @@ public class EnvironmentQuizController {
         this.authenticationManager = authenticationManager;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/quiz")
     public String getQuiz(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         List<EnvironmentQuiz> quizList = quizService.getAllQuizzes();
