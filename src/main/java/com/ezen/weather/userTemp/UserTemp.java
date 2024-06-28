@@ -28,7 +28,7 @@ public class UserTemp {
     private Double userSetFineDust;
 
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private SiteUser siteUser;
 
