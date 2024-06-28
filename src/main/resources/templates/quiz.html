@@ -128,11 +128,25 @@
         .wrong {
             color: #a52834;
         }
+        .quiz-result-container {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
     </style>
 </head>
 <body layout:fragment="content">
 <h1 class="quiz-title">환경 퀴즈</h1>
 <div class="quiz-container">
+    <div>
+        <span th:text="${quiz.point}"></span>
+        <span>점</span>
+    </div>
     <div class="quiz-question" th:text="${quiz.question}"></div>
     <div class="oxWrapper">
         <form class="quiz-form" id="quizFormTrue">
@@ -151,9 +165,9 @@
     </div>
 </div>
 
-<div>
-    <p>사용자 포인트: <span id="userPoint" th:text="${user.point}"></span></p>
-    <p>퀴즈 포인트: <span id="quizPoint" th:text="${quiz.point}"></span></p>
+<div class="quiz-result-container">
+    <h2><span th:text="${user.userId}"></span>님, Point : <span th:text="${user.point}"></span>점</h2>
+    <p>분발하시고</p>
 </div>
 
 <!-- 모달 창 -->
@@ -175,6 +189,7 @@
 <!-- JavaScript -->
 <script th:inline="javascript">
     // 페이지 로드 시 이벤트 리스너 설정
+    userId = $("meta[name='user-id']").attr("content"); // userId 넘기기
     document.addEventListener("DOMContentLoaded", function() {
         var isAnswer = /*[[${isAnswer}]]*/ false;
         if (isAnswer) {
@@ -194,7 +209,7 @@
             type: "POST",
             url: "/quiz",
             data: formData,
-            dataType: "html",
+            dataType: "json",
             success: function (data) {
                 console.log(data);
                 if(data.isCorrect === true){
