@@ -60,6 +60,7 @@ function checkUserId(){
     if(!validateId()){
         return;
     }
+
     $.ajax({
         type: 'GET',
         url: '/user/checkUserId',
@@ -205,6 +206,11 @@ function checkUserEmail(){
 function sendVerificationCode(){
     var email = document.getElementById("email");
 
+    $('#userEmailInfo').removeClass('text-danger').removeClass('text-info').addClass('text-success');
+    $('#userEmailInfo').text("이메일 인증 코드 전송중입니다.");
+    var txt = $('#userEmailInfo').textContent;
+    console.log(txt);
+
     $.ajax({
         url: '/user/send-email',
         type: 'POST',
@@ -213,7 +219,7 @@ function sendVerificationCode(){
         success: function(response){
             $('#userEmailInfo').text(response);
             email.classList.remove('is-invalid');
-            $('#userEmailInfo').removeClass('text-danger').addClass('text-info');
+            $('#userEmailInfo').removeClass('text-success').addClass('text-info');
             alert('인증 코드가 정상적으로 보내졌습니다,');
             $('#email').prop('readonly', true);
             $('#insertEmail').removeClass('d-none');
@@ -222,7 +228,7 @@ function sendVerificationCode(){
         error: function(response) {
             $('#userEmailInfo').text(response.responseText);
             email.classList.add('is-invalid');
-            $('#userEmailInfo').removeClass('text-info').addClass('text-danger');
+            $('#userEmailInfo').removeClass('text-success').addClass('text-danger');
             alert('인증 코드가 전송되지 않았습니다.');
         }
     })
@@ -387,28 +393,28 @@ function validatePassword() {
 
 // 회원가입 버튼 활성화 검사
 function checkAllValidations() {
-    const submitButton = document.getElementById('join');
-    const isAllValid = validationStatus.id && validationStatus.checkId &&
-            validationStatus.password && validationStatus.name && validationStatus.phone &&
-        validationStatus.zipcode && validationStatus.email &&
-        validationStatus.checkEmail && validationStatus.birth;
-
-    // console.log("validationStatus.id", validationStatus.id);
-    // console.log("validationStatus.checkId", validationStatus.checkId);
-    // console.log("validationStatus.name", validationStatus.name);
-    // console.log("validationStatus.phone", validationStatus.phone);
-    // console.log("validationStatus.zipcode", validationStatus.zipcode);
-    // console.log("validationStatus.email", validationStatus.email);
-    // console.log("validationStatus.checkEmail", validationStatus.checkEmail);
-    // console.log("validationStatus.password", validationStatus.password);
-    // console.log("validationStatus.birth", validationStatus.birth);
-    // console.log("-----------------------------------------------------------------");
-
-    if (isAllValid) {
-        $('#join').removeClass('btn-secondary').addClass('btn-primary');
-        submitButton.disabled = false;
-    } else {
-        $('#join').removeClass('btn-primary').addClass('btn-secondary');
-        submitButton.disabled = true;
-    }
+    // const submitButton = document.getElementById('join');
+    // const isAllValid = validationStatus.id && validationStatus.checkId &&
+    //         validationStatus.password && validationStatus.name && validationStatus.phone &&
+    //     validationStatus.zipcode && validationStatus.email &&
+    //     validationStatus.checkEmail && validationStatus.birth;
+    //
+    // // console.log("validationStatus.id", validationStatus.id);
+    // // console.log("validationStatus.checkId", validationStatus.checkId);
+    // // console.log("validationStatus.name", validationStatus.name);
+    // // console.log("validationStatus.phone", validationStatus.phone);
+    // // console.log("validationStatus.zipcode", validationStatus.zipcode);
+    // // console.log("validationStatus.email", validationStatus.email);
+    // // console.log("validationStatus.checkEmail", validationStatus.checkEmail);
+    // // console.log("validationStatus.password", validationStatus.password);
+    // // console.log("validationStatus.birth", validationStatus.birth);
+    // // console.log("-----------------------------------------------------------------");
+    //
+    // if (isAllValid) {
+    //     $('#join').removeClass('btn-secondary').addClass('btn-primary');
+    //     submitButton.disabled = false;
+    // } else {
+    //     $('#join').removeClass('btn-primary').addClass('btn-secondary');
+    //     submitButton.disabled = true;
+    // }
 }

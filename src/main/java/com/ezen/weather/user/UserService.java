@@ -19,7 +19,7 @@ public class UserService {
         user.setUserId(userId);
         user.setPassword(passwordEncoder.encode(password));
         user.setName(name);
-        user.setPhone("콜");
+        user.setPhone(phone);
         user.setAddressStreet(addressStreet);
         user.setAddressZipcode(addressZipcode);
         user.setAddressDetail(addressDetail);
