@@ -36,6 +36,7 @@ public class SmsController {
     private final UserRepository userRepository;
     private final UserTempRepository userTempRepository;
     private final UserTempService userTempService;
+    private final UserService userService;
 
 
     @Scheduled(cron = "0 0 6 * * *")    // 오전 6시에 전송되도록 설정
@@ -59,7 +60,7 @@ public class SmsController {
                 Integer userRain = userTemp.getUserSetRain(); // 추후 추가
 
                 // 조건을 만족한다면 문자 보내기
-                if(currentTemp > userMaxTemp){
+                if(currentTemp > userMaxTemp && user.getSms() >= 1){
                     String userPhone = user.getPhone();
 
                     Message message = new Message();
@@ -69,6 +70,7 @@ public class SmsController {
                     // 메세지 발송
 //                    SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
 //                    System.out.println("Message sent: " + response);
+                    userService.discountSmsCount(userId);
                 }
             }
 

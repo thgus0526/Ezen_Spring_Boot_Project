@@ -16,34 +16,27 @@ public class EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void sendSimpleEmail(String to) throws MessagingException {
+    public void sendSimpleEmail(String to, String verificationCode) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true); // true indicates HTML format
 
         String subject = "Weather Ezen Spring Boot 이메일 인증입니다.";
-
-        final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890123456789";
-        final int LENGTH = 6;
-        final Random random = new Random();
 
         StringBuilder sb = new StringBuilder();
 
         sb.append("<html><body>");
         sb.append("<h2 style='color: #007bff;'>Weather Ezen Spring Boot 이메일 인증 코드</h2>");
         sb.append("<p>아래 코드를 입력하여 이메일 인증을 완료해주세요:</p>");
-        for (int i = 0; i < LENGTH; i++) {
-            int index = random.nextInt(CHARACTERS.length());
-            sb.append(CHARACTERS.charAt(index));
-        }
         sb.append("<p style='font-size: 18px; font-weight: bold;'>");
+        sb.append(verificationCode);
         sb.append("</p>");
         sb.append("</body></html>");
 
-        String authenticationCode = sb.toString();
+        String text = sb.toString();
 
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText(authenticationCode, true); // HTML 형식으로 설정
+        helper.setText(text, true); // HTML 형식으로 설정
 
         mailSender.send(message);
     }

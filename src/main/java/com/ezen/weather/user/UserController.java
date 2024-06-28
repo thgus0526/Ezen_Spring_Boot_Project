@@ -72,6 +72,7 @@ public class UserController {
         List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
         SiteUser siteUser = userService.getUser(userId);
 
+
         model.addAttribute("siteUser", siteUser);
         model.addAttribute("userTemp", userTemp);
         model.addAttribute("adminTemps", adminTemps);
@@ -114,4 +115,26 @@ public class UserController {
         userService.userPwdUpdate(password, name);
         return ResponseEntity.ok("Password updated successfully");
     }
+
+
+    // 포인트 전환
+    @PostMapping("/exchangePointToSms")
+    public ResponseEntity<?> exchangePointToSms(@RequestBody Map<String, Object> data){
+        String userId = (String) data.get("userId");
+        Integer exchangePoint = Integer.parseInt((String)data.get("point"));
+        long exchangePointL = exchangePoint;
+        SiteUser siteUser = userService.getUser(userId);
+        long currentPoint = siteUser.getPoint();
+
+        if(exchangePoint > currentPoint){
+            return ResponseEntity.ok("포인트가 교환할 값보다 적습니다.");
+        } else{
+            userService.exchangePointToSms(userId, exchangePointL);
+            return ResponseEntity.ok("포인트 교환 성공!");
+        }
+
+
+
+    }
+
 }
