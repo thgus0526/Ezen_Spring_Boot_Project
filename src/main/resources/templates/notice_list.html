@@ -84,8 +84,8 @@
             </tbody>
         </table>
     </div>
-    <div class="text-center">
-        <a th:href="@{/notice/create}" class="btn btn-primary mt-3">질문 등록하기</a>
+    <div class="text-center" th:if="${#authorization.expression('isAuthenticated()')}">
+        <a th:href="@{/notice/create}" class="btn btn-primary mt-3" sec:authorize="hasAuthority('ADMIN')">공지사항 작성</a>
     </div>
 </div>
 

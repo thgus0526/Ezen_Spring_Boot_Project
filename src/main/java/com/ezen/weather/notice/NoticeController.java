@@ -78,12 +78,8 @@ public class NoticeController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String noticeModify(NoticeForm noticeForm, @PathVariable("id") Long noticeNumber,
-                                 Principal principal) {
+    public String noticeModify(NoticeForm noticeForm, @PathVariable("id") Long noticeNumber) {
         Notice notice = this.noticeService.getNotice(noticeNumber);
-        if (!notice.getAdminId().getUserId().equals(principal.getName())) { //(!question.getAuthor().getUsername().equals(principal.getName()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
         noticeForm.setNoticeTitle(notice.getNoticeTitle());
         noticeForm.setNoticeContent(notice.getNoticeContent());
         return "notice_form";
@@ -91,15 +87,12 @@ public class NoticeController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult, Principal principal,
+    public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult,
                                  @PathVariable("id") Long noticeNumber) {
         if (bindingResult.hasErrors()) {
             return "notice_form";
         }
         Notice notice = this.noticeService.getNotice(noticeNumber);
-        if (!notice.getAdminId().getUserId().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
-        }
         this.noticeService.modify(notice, noticeForm.getNoticeTitle(),
                 noticeForm.getNoticeContent());
         return String.format("redirect:/question/detail/%s", noticeNumber);

@@ -165,9 +165,9 @@
     </div>
     <div class="list-btn"><a href="/notice/list" class="btn btn-primary mt-3">목록</a></div>
     <!-- 수정 버튼 -->
-    <div class="btn-group mt-3">
-        <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/notice/modify/{id}(id=${notice.noticeNumber})}" class="btn btn-custom">수정</a>
-        <a th:if="${#authorization.expression('isAuthenticated()')}" href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.noticeNumber}|}" class="delete btn btn-danger" sec:authorize="isAuthenticated()" th:text="삭제"></a>
+    <div class="btn-group mt-3" th:if="${#authorization.expression('isAuthenticated()')}">
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/notice/modify/{id}(id=${notice.noticeNumber})}" class="btn btn-custom">수정</a>
+        <a sec:authorize="hasAuthority('ADMIN')" href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.noticeNumber}|}" class="delete btn btn-danger" th:text="삭제"></a>
     </div>
     <!-- 이전 페이지와 다음 페이지 -->
     <div class="btn-nav mt-3">
