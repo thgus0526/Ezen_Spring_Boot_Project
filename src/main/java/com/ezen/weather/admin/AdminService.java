@@ -50,7 +50,7 @@ public class AdminService {
     }
 
     // 회원정보 수정
-    public void editUserInfo(String name, String phone, String addressZipcode, String addressStreet, String addressDetail, String addressNotes, UserRole role) {
+    public void editUserInfo(String name, String phone, String addressZipcode, String addressStreet, String addressDetail, String addressNotes) {
         SiteUser siteUser = userRepository.findByName(name);
 
         siteUser.setPhone(phone);
@@ -58,7 +58,7 @@ public class AdminService {
         siteUser.setAddressStreet(addressStreet);
         siteUser.setAddressDetail(addressDetail);
         siteUser.setAddressNotes(addressNotes);
-        siteUser.setRole(role);
+
         this.userRepository.save(siteUser);
 
     }

@@ -52,12 +52,10 @@ private final AdminService adminService;
                                  @RequestParam("addressZipcode") String addressZipcode,
                                  @RequestParam("addressStreet") String addressStreet,
                                  @RequestParam("addressDetail") String addressDetail,
-                                 @RequestParam("addressNotes") String addressNotes,
-                                 @RequestParam("role")UserRole role
-                                 ) {
+                                 @RequestParam("addressNotes") String addressNotes) {
 
         SiteUser siteUser = userRepository.findByName(name);
-        adminService.editUserInfo(name, phone, addressZipcode, addressStreet, addressDetail, addressNotes,role);
+        adminService.editUserInfo(name, phone, addressZipcode, addressStreet, addressDetail, addressNotes);
         return "redirect:/admin/adminPage";
     }
     // 비밀번호 수정
