@@ -12,7 +12,6 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="user-id" th:content="${#authentication.name}"/>
-
 </head>
 
 <body>
@@ -51,17 +50,17 @@
                     <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/mypage}">마이페이지</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/admin/adminPage}">회원관리</a>
+                    <a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/admin/adminPage}">회원관리</a>
                 </li>
-
                 <li>
-
-                    <span th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
-
+                    <span sec:authorize="isAuthenticated()" th:text="${#authentication.name}"></span>
+                </li>
+                <!-- 이메일이 있을 때만 보여줄 부분 -->
+                <li class="nav-item" th:if="${userEmail != null}">
+                    <a class="nav-link" th:text="'이메일: ' + ${userEmail}"></a>
                 </li>
             </ul>
         </div>
-
     </div>
 </nav>
 

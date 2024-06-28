@@ -49,7 +49,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
-  
+// Spring Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MariaDB Driver (또는 사용하는 데이터베이스 드라이버)
+    implementation 'org.mariadb.jdbc:mariadb-java-client'
 
 
     // 이메일 인증
