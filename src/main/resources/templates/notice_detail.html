@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .notice-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .notice-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .badge {
+            font-size: 14px;
+        }
+        .badge span,
+        .badge em {
+            font-size: 14px;
+        }
+        .badge .mx-2 {
+            font-size: 16px;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-text {
+            color: #495057;
+            line-height: 1.8;
+        }
+        .list-btn{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .btn-primary {
+            background-color: #000;
+            border-color: #000;
+            color: #fff;
+            display: block;
+            width: 10%;
+            margin-bottom: 15px;
+            text-align: center; /* 중앙 정렬 */
+        }
+        .btn-primary:hover {
+            background-color: #333;
+            border-color: #333;
+        }
+        .btn-custom {
+            display: inline-block;
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: #fff;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+            color: #fff;
+        }
+        .btn-group {
+            text-align: center; /* 중앙 정렬 */
+            margin-top: 20px;
+        }
+        .btn-group .btn {
+            margin-right: 10px;
+        }
+        .btn-nav {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .btn-nav span {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 16px; /* Larger font size for better visibility */
+        }
+        .btn-nav a {
+            text-decoration: none;
+            font-size: 14px;
+            color: #000;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border: 1px solid #ccc; /* Lighter border for a cleaner look */
+            border-radius: 4px;
+            display: inline-block;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .btn-nav a:hover {
+            background-color: #dddddd; /* Adjusted hover color */
+            color: #fff;
+            border-color: #dddddd;
+        }
+    </style>
+
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+    <!-- 공지사항 제목, 이름, 날짜 -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="border-bottom py-2" th:text="${notice.noticeTitle}"></h2>
+        <div class="badge bg-light text-dark p-2 text-start">
+            <span th:if="${notice.adminId != null}" th:text="${notice.adminId.userId}"></span>
+            <span class="mx-2">|</span> <!-- 구분선 -->
+            <div class="badge bg-light text-dark p-2 text-start mb-2">
+                <div th:if="${notice.modifyDate == null}" th:text="${#temporals.format(notice.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+            </div>
+            <span class="mx-2">|</span> <!-- 구분선 -->
+            <em>조회수: <span th:text="${notice.noticeHit}"></span></em>
+        </div>
+    </div>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text" style="white-space: pre-line;" th:text="${notice.noticeContent}"></div>
+        </div>
+    </div>
+    <div class="list-btn"><a href="/notice/list" class="btn btn-primary mt-3">목록</a></div>
+    <!-- 수정 버튼 -->
+    <div class="btn-group mt-3">
+        <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/notice/modify/{id}(id=${notice.noticeNumber})}" class="btn btn-custom">수정</a>
+        <a th:if="${#authorization.expression('isAuthenticated()')}" href="javascript:void(0);" th:data-uri="@{|/notice/delete/${notice.noticeNumber}|}" class="delete btn btn-danger" sec:authorize="isAuthenticated()" th:text="삭제"></a>
+    </div>
+    <!-- 이전 페이지와 다음 페이지 -->
+    <div class="btn-nav mt-3">
+        <span th:if="${previousNotice != null}">이전글</span><a th:if="${previousNotice != null}" th:href="@{/notice/detail/{id}(id=${previousNotice.noticeNumber})}" class="btn btn-outline-secondary">&laquo; <span th:text="${previousNotice.noticeTitle}"></span></a>
+        <span th:if="${nextNotice != null}">다음글</span><a th:if="${nextNotice != null}" th:href="@{/notice/detail/{id}(id=${nextNotice.noticeNumber})}" class="btn btn-outline-secondary"><span th:text="${nextNotice.noticeTitle}"></span> &raquo;</a>
+    </div>
+</div>
+
+<script layout:fragment="script" type='text/javascript'>
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function (element) {
+        element.addEventListener('click', function () {
+            if (confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
+
+</body>
+</html>

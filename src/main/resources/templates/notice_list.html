@@ -1,10 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>질문 목록</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa; /* 배경색 흰색 계열 */
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            padding-top: 30px;
+            max-width: 800px;
+        }
+        .table {
+            font-size: 16px;
+            background-color: #ffffff; /* 배경색 흰색 */
+            border: 1px solid #dee2e6; /* 연한 회색 테두리 */
+            border-radius: 10px;
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+            border: none;
+            padding: 12px; /* 셀 안의 여백 조정 */
+        }
+        .table thead th {
+            background-color: #007bff; /* 진한 파란색 */
+            color: #fff; /* 흰색 글자 */
+            font-weight: bold;
+            border: none;
+        }
+        .table tbody tr:hover {
+            background-color: #f2f2f2; /* 연한 회색 */
+        }
+        .btn-primary {
+            font-size: 16px;
+            padding: 12px 30px;
+            border-radius: 25px;
+            background-color: #007bff; /* 진한 파란색 */
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3; /* 진한 파란색 더 진하게 */
+            border-color: #0056b3;
+        }
+        .btn-primary:focus, .btn-primary.focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* 포커스 시 파란색 테두리 */
+        }
+        .btn-primary:disabled, .btn-primary.disabled {
+            opacity: 0.7;
+        }
+        .btn-primary:disabled:hover, .btn-primary.disabled:hover {
+            background-color: #007bff; /* 비활성화 시 원래 파란색으로 */
+            border-color: #007bff;
+        }
+    </style>
 </head>
 <body>
-    <h2>공지사항입니다.</h2>
+<div layout:fragment="content" class="container">
+    <h2 class="text-center mb-4">공지사항</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light"> <!-- 연한 회색 배경 -->
+            <tr>
+                <th scope="col">번호</th>
+                <th scope="col" style="width: 50%">제목</th>
+                <th scope="col">작성일시</th>
+                <th scope="col">조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="notice, loop : ${noticeList}">
+                <td th:text="${loop.count}"></td>
+                <td class="text-left">
+                    <a class="text-dark font-weight-bold" th:href="@{|/notice/detail/${notice.noticeNumber}|}" th:text="${notice.noticeTitle}"></a>
+                </td>
+                <td th:text="${#temporals.format(notice.createDate,'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${notice.noticeHit}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <a th:href="@{/notice/create}" class="btn btn-primary mt-3">질문 등록하기</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-1PnLw5V1MlOy+zJnbu+31GKf5k8f0XRxYGT7o6BpepDuhUy+1zM9Tp2jS2dtzhuU"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+<th:block layout:fragment="script">
+</th:block>
 </body>
 </html>

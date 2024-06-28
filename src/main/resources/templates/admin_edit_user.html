@@ -146,14 +146,14 @@
                 <label for="email" class="form-label">이메일</label>
                 <input type="text" class="form-control" id="email" th:name="email" th:value="${siteUser.getEmail}" disabled>
             </div>
-            <div class="mb-3">
-                <label for="role" class="form-label">회원 구분</label>
-                <select class="form-control" id="role" name="role">
-                    <option th:each="role : ${T(com.ezen.weather.user.UserRole).values()}"
-                            th:value="${role}" th:text="${role.value}"
-                            th:selected="${role == siteUser.role}">회원 구분</option>
-                </select>
-            </div>
+<!--            <div class="mb-3">-->
+<!--                <label for="role" class="form-label">회원 구분</label>-->
+<!--                <select class="form-control" id="role" name="role">-->
+<!--                    <option th:each="role : ${T(com.ezen.weather.user.UserRole).values()}"-->
+<!--                            th:value="${role}" th:text="${role.value}"-->
+<!--                            th:selected="${role == siteUser.role}">회원 구분</option>-->
+<!--                </select>-->
+<!--            </div>-->
             <div class="btn-box">
             <button type="submit" class="btn btn-primary">변경</button>
                 </div>

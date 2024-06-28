@@ -114,4 +114,39 @@ public class UserController {
         userService.userPwdUpdate(password, name);
         return ResponseEntity.ok("Password updated successfully");
     }
+
+
+    // 포인트 전환
+    @PostMapping("/exchangePointToSms")
+    public ResponseEntity<?> exchangePointToSms(@RequestBody Map<String, Object> data){
+        String userId = (String) data.get("userId");
+        Integer exchangePoint = Integer.parseInt((String)data.get("point"));
+        long exchangePointL = exchangePoint;
+        SiteUser siteUser = userService.getUser(userId);
+        long currentPoint = siteUser.getPoint();
+
+        if(exchangePoint > currentPoint){
+            return ResponseEntity.ok("포인트가 교환할 값보다 적습니다.");
+        } else{
+            userService.exchangePointToSms(userId, exchangePointL);
+            return ResponseEntity.ok("포인트 교환 성공!");
+        }
+
+
+
+    }
+
+    @PostMapping("/updatePoint")
+    public ResponseEntity<?> updatePoint(@RequestBody Map<String, Object> data){
+        String userId = (String) data.get("userId");
+        String userPoint = data.get("userPoint").toString();
+        System.out.println("유저아이디" + userId);
+        System.out.println("유저포인트" + userPoint);
+        userService.updatePoint(userId);
+
+
+        return ResponseEntity.ok("Point updated successfully");
+    }
+
+
 }
