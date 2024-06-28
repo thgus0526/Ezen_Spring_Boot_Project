@@ -107,6 +107,6 @@ public class NoticeController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
         this.noticeService.delete(notice);
-        return "redirect:/";
+        return "redirect:/notice/list";
     }
 }
