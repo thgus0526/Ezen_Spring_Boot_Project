@@ -72,7 +72,6 @@ public class UserController {
         List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
         SiteUser siteUser = userService.getUser(userId);
 
-
         model.addAttribute("siteUser", siteUser);
         model.addAttribute("userTemp", userTemp);
         model.addAttribute("adminTemps", adminTemps);
@@ -136,5 +135,18 @@ public class UserController {
 
 
     }
+
+    @PostMapping("/updatePoint")
+    public ResponseEntity<?> updatePoint(@RequestBody Map<String, Object> data){
+        String userId = (String) data.get("userId");
+        String userPoint = data.get("userPoint").toString();
+        System.out.println("유저아이디" + userId);
+        System.out.println("유저포인트" + userPoint);
+        userService.updatePoint(userId);
+
+
+        return ResponseEntity.ok("Point updated successfully");
+    }
+
 
 }

@@ -6,14 +6,18 @@
     <meta charset="UTF-8">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <meta name="user-id" th:content="${#authentication.name}"/>
     <title>환경 퀴즈</title>
     <style>
+        /* CSS 스타일링 */
         body {
             font-family: Arial, sans-serif;
-            padding: 20px;
             text-align: center;
         }
+
+        .quiz-title {
+            margin-top: 30px;
+        }
+
         h1 {
             margin-bottom: 20px;
         }
@@ -43,9 +47,19 @@
             border-radius: 5px;
             color: white;
         }
+
+        .quiz-form button:hover {
+            background-color: #0dcaf0;
+        }
+
         .quiz-form .xButton {
             background-color: red;
         }
+
+        .quiz-form .xButton:hover {
+            background-color: #ff6f7d;
+        }
+
         .oxWrapper {
             display: flex;
             justify-content: center;
@@ -73,8 +87,10 @@
             position: relative;
         }
         .close {
+            position: absolute;
             color: #aaa;
-            float: right;
+            top: 5px;
+            right: 15px;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
@@ -87,11 +103,35 @@
         .result-container {
             margin-top: 20px;
         }
+        .next-question-button-wrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .next-question-button {
+            text-decoration: none;
+            border: 1px solid black;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #00b09b;
+            color: white;
+            margin: 0 10px;
+        }
+        .next-question-button:hover {
+            background-color: #0a53be;
+        }
+        .answer {
+            font-size: 1.2rem;
+        }
+        .correct {
+            color: #0a53be;
+        }
+        .wrong {
+            color: #a52834;
+        }
     </style>
 </head>
-
 <body layout:fragment="content">
-<h1>환경 퀴즈</h1>
+<h1 class="quiz-title">환경 퀴즈</h1>
 <div class="quiz-container">
     <div class="quiz-question" th:text="${quiz.question}"></div>
     <div class="oxWrapper">
@@ -106,6 +146,14 @@
             <button type="button" onclick="submitAnswer('false')" class="xButton">X</button>
         </form>
     </div>
+    <div class="next-question-button-wrapper">
+        <a href="#" class="next-question-button" onclick="nextQuestion()">다음 문제 풀기</a>
+    </div>
+</div>
+
+<div>
+    <p>사용자 포인트: <span id="userPoint" th:text="${user.point}"></span></p>
+    <p>퀴즈 포인트: <span id="quizPoint" th:text="${quiz.point}"></span></p>
 </div>
 
 <!-- 모달 창 -->
@@ -115,54 +163,46 @@
         <div class="result-container" id="resultContainer">
             <!-- 여기에 AJAX로 받은 데이터가 채워질 예정 -->
         </div>
+        <div class="point-container" id="pointContainer">
+
+        </div>
+        <div class="next-question-button-wrapper">
+            <a href="#" class="next-question-button" onclick="nextQuestion()">다음 문제 풀기</a>
+        </div>
     </div>
 </div>
 
+<!-- JavaScript -->
 <script th:inline="javascript">
     // 페이지 로드 시 이벤트 리스너 설정
-    userId = $("meta[name='user-id']").attr("content"); // userId 넘기기
     document.addEventListener("DOMContentLoaded", function() {
         var isAnswer = /*[[${isAnswer}]]*/ false;
-        if (isAnswer != null && isAnswer) {
+        if (isAnswer) {
             showModal();
         }
     });
 
-    // 정답 제출 함수 (AJAX 호출)
     function submitAnswer(answer) {
         var quizId = /*[[${quiz.quizId}]]*/ '';
         var formData = {
             "quizId": quizId,
-            "answer": answer
+            "answer": answer,
+            "userId": userId
         };
 
-        // AJAX 호출
         $.ajax({
             type: "POST",
             url: "/quiz",
             data: formData,
-            dataType: "json",
+            dataType: "html",
             success: function (data) {
-                // 모달 창에 결과 페이지 띄우기
-                if(data === true){
-                    $('#resultContainer').html("<p>정답입니다.</p>");
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/user/updatePoint',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            userId: userId
-                        }),
-                        success: function(){
-                            console.log("AJax 통신 성공");
-                            console.log(userId);
-                        }, error: function() {
-                            console.log("AJax 통신 실패");
-                        }
-                    });
+                console.log(data);
+                if(data.isCorrect === true){
+                    $('#resultContainer').html("<p class='answer correct'>정답입니다.</p>");
+                    $('#pointContainer').html("현재 포인트: " + data.userPoint);
                 } else {
-                    $('#resultContainer').html("<p>오답입니다.</p>");
+                    $('#resultContainer').html("<p class='answer wrong'>오답입니다.</p>");
+                    $('#pointContainer').html("현재 포인트: " + data.userPoint);
                 }
                 showModal();
             },
@@ -172,25 +212,26 @@
         });
     }
 
-    // 모달 표시 함수
+    function nextQuestion() {
+        hideModal();
+        location.reload(); // 예시로 페이지 리로드
+    }
+
     function showModal() {
         var modal = document.getElementById('myModal');
         modal.style.display = 'block';
     }
 
-    // 모달 닫기 함수
     function hideModal() {
         var modal = document.getElementById('myModal');
         modal.style.display = 'none';
     }
 </script>
 
+<!-- 추가 스크립트 블록 -->
 <th:block layout:fragment="script">
-    <!-- jQuery 라이브러리 추가 -->
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <!-- CSRF 토큰 처리 -->
     <script th:src="@{/js/csrf_token.js}"></script>
 </th:block>
-
 </body>
 </html>
