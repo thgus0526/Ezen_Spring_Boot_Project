@@ -51,6 +51,7 @@ public class EnvironmentQuizController {
         model.addAttribute("quiz", randomQuiz);
         model.addAttribute("user", user);
         return "quiz";
+
     }
 
     @PostMapping("/quiz")

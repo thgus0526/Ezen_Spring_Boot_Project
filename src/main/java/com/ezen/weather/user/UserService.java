@@ -69,7 +69,7 @@ public class UserService {
     public void userInfoUpdate(String name, String phone, String addressZipcode, String addressStreet, String addressDetail, String addressNotes, String email) {
         SiteUser siteUser = userRepository.findByName(name);
 
-        siteUser.setPhone("콜");
+        siteUser.setPhone(phone);
         siteUser.setAddressZipcode(addressZipcode);
         siteUser.setAddressStreet(addressStreet);
         siteUser.setAddressDetail(addressDetail);

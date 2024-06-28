@@ -1,5 +1,6 @@
 package com.ezen.weather.user;
 
+import com.ezen.weather.userTemp.UserTemp;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,8 +60,7 @@ public class SiteUser {
     @Column(name="user_sms")
     private int sms=5;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name="user_role", nullable=false)
-    private UserRole role = UserRole.DEFAULT;
+    @OneToOne(mappedBy = "siteUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private UserTemp userTemp;
 
 }

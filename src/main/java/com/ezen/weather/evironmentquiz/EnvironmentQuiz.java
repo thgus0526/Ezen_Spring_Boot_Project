@@ -18,5 +18,5 @@ public class EnvironmentQuiz {
 
     private int answer;
 
-    private int point;
+    private int point=0;
 }

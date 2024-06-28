@@ -68,7 +68,6 @@
                     <th>휴대폰</th>
                     <th>이메일</th>
                     <th>주소</th>
-                    <th>구분</th>
                     <th>수정</th>
                     <th>삭제</th>
                 </tr>
@@ -81,7 +80,6 @@
                     <td th:text="${user.phone}"></td>
                     <td th:text="${user.email}"></td>
                     <td th:text="${user.addressStreet}"></td>
-                    <td th:text="${user.role}"></td>
                     <td>
                         <a class="btn btn-modify" th:href="@{/admin/editUser(userId=${user.userId})}">수정</a>
                     </td>

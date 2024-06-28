@@ -194,9 +194,10 @@
             type: "POST",
             url: "/quiz",
             data: formData,
-            dataType: "html",
+            dataType: "json",
             success: function (data) {
                 console.log(data);
+
                 if(data.isCorrect === true){
                     $('#resultContainer').html("<p class='answer correct'>정답입니다.</p>");
                     $('#pointContainer').html("현재 포인트: " + data.userPoint);
