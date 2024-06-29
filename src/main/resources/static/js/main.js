@@ -4,54 +4,93 @@ const weather1Div = document.getElementById('weather1');
 const weather2Div = document.getElementById('weather2');
 // const weather3Div = document.getElementById('weather3');
 
+const lalo = {
+    latitude: 0,
+    longitude: 0
+}
+
+function activeButton(buttonId) {
+    var button = document.getElementById(buttonId);
+    var loc1Button = document.getElementById('loc1Button');
+    var loc2Button = document.getElementById('loc2Button');
+
+    if (buttonId === 'loc1Button') {
+        loc1Button.classList.add('btn-primary');
+        loc1Button.classList.remove('btn-outline-primary');
+        loc2Button.classList.add('btn-outline-success');
+        loc2Button.classList.remove('btn-success');
+        loadAPI();
+    } else if(buttonId === 'loc2Button'){
+        loc1Button.classList.add('btn-outline-primary');
+        loc1Button.classList.remove('btn-primary');
+        loc2Button.classList.add('btn-success');
+        loc2Button.classList.remove('btn-outline-success');
+    } else {
+        loc1Button.classList.add('btn-outline-primary');
+        loc1Button.classList.remove('btn-primary');
+        loc2Button.classList.add('btn-outline-success');
+        loc2Button.classList.remove('btn-success');
+    }
+}
+
+function loc2ButtonFunc(address) {
+    activeButton('loc2Button');
+    console.log("address", address);
+    // 주소-좌표 변환 객체를 생성합니다
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소로 좌표를 검색합니다
+    geocoder.addressSearch(address, function(result, status) {
+
+        // 정상적으로 검색이 완료됐으면
+        if (status === kakao.maps.services.Status.OK) {
+            mapXY(result[0].y, result[0].x);
+
+        }
+    })
+}
+
 // 위치 정보 요청 함수
 function getLocation() {
     console.log("getLocation");
     // Geolocation API 지원 여부 확인
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition, showError);
-    } else {
-        document.getElementById("location").innerHTML =
-            "Geolocation is not supported by this browser.";
+        navigator.geolocation.getCurrentPosition(showGPS, showNotGPS);
     }
 }
 
 // 위치 정보를 성공적으로 받아온 경우 실행되는 함수
-function showPosition(position) {
-    var latitude = position.coords.latitude;
-    var longitude = position.coords.longitude;
-    console.log("lat", latitude);
-    console.log("lng", longitude);
+function showGPS(position) {
+    console.log("get GPS");
+    lalo.latitude = position.coords.latitude;
+    lalo.longitude = position.coords.longitude;
+    console.log("lat", lalo.latitude);
+    console.log("lng", lalo.longitude);
 
-    // 위치 정보를 HTML 요소에 표시
-    var locationElement = document.getElementById("weather1");
-    locationfunc(latitude, longitude);
-    airvisualFunc(latitude,longitude);
-    mapXY(latitude, longitude);
+    loadAPI();
+    airvisualFunc(lalo.latitude,lalo.longitude);
 }
 
 // 위치 정보를 받아오는 도중 오류가 발생한 경우 실행되는 함수
-function showError(error) {
-    var locationElement = document.getElementById("location");
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            locationElement.innerHTML =
-                "User denied the request for Geolocation.";
-            break;
-        case error.POSITION_UNAVAILABLE:
-            locationElement.innerHTML = "Location information is unavailable.";
-            break;
-        case error.TIMEOUT:
-            locationElement.innerHTML =
-                "The request to get user location timed out.";
-            break;
-        case error.UNKNOWN_ERROR:
-            locationElement.innerHTML = "An unknown error occurred.";
-            break;
-    }
-    locationfunc(33.2541205, 126.560076);
-    airvisualFunc(33.2541205,126.560076);
-    mapXY(33.2541205, 126.560076);
+function showNotGPS() {
+    var loc1Button = document.getElementById('loc1Button');
+
+    loc1Button.classList.add('d-none');
+
+    console.log("not GPS");
+
+    lalo.latitude = 37.514575;
+    lalo.longitude = 127.0495556;
+    console.log("lat", lalo.latitude);
+    console.log("lng", lalo.longitude);
+
+    loadAPI();
+    airvisualFunc(lalo.latitude,lalo.longitude);
+}
+
+function loadAPI() {
+    locationfunc(lalo.latitude, lalo.longitude);
+    mapXY(lalo.latitude, lalo.longitude);
 }
 
 // 페이지 로드 시 위치 정보 요청
@@ -106,8 +145,10 @@ function mapXY(x, y) {
                 var detailAddr = !!result[0].road_address ? '<div>도로명주소 : ' + result[0].road_address.address_name + '</div>' : '';
                 detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 
+                activeButton();
+
                 var content = '<div class="bAddr">' +
-                    '<span class="title">현재 주소정보</span>' +
+                    '<span class="title">주소정보</span>' +
                     detailAddr +
                     '</div>';
                 // 마커를 클릭한 위치에 표시합니다
@@ -149,7 +190,7 @@ function mapXY(x, y) {
                 detailAddr += '<div>지번 주소 : ' + result[0].address.address_name + '</div>';
 
                 var content = '<div class="bAddr">' +
-                    '<span class="title">현재 주소정보</span>' +
+                    '<span class="title">주소정보</span>' +
                     detailAddr +
                     '</div>';
 

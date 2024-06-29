@@ -29,6 +29,13 @@
             </div>
         </div>
         <div class="col-md-3" id="weather">
+            <div>
+            <button class="btn btn-primary m-3" id="loc1Button" onclick="activeButton('loc1Button');">gps 주소</button>
+                <button class="btn btn-outline-success m-3" id="loc2Button" th:data-address="${user.addressStreet}"
+                        onclick="loc2ButtonFunc(this.getAttribute('data-address'));"
+                        th:if="${#authorization.expression('isAuthenticated()')}">회원 주소</button>
+            </div>
+
             <div id="weather1"></div>
             <div id="weather2"></div>
             <div id="weather3"></div>
