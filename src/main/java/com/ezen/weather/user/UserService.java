@@ -182,6 +182,27 @@ public class UserService {
         user.setPoint(50l);
         this.userRepository.save(user);
     }
+
+    // 회원탈퇴
+    public void deleteUser(String userId, String pwd){
+        Optional<SiteUser> siteUser = userRepository.findById(userId);
+
+        if(siteUser.isPresent()){
+            SiteUser user = siteUser.get();
+            String storedPassword = user.getPassword();
+            // 사용자가 입력한 비밀번호와 데이터베이스에 저장된 비밀번호를 비교
+            if(passwordEncoder.matches(pwd, storedPassword)){
+                // 비밀번호가 일치시 탈퇴
+                userRepository.delete(user);
+            } else{
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
+        }
+
+
+    }
 }
 
 

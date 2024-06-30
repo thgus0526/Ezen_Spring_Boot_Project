@@ -38,6 +38,7 @@ public class EnvironmentQuizService {
 
     public void plusPoint(SiteUser user, int point) {
         user.setPoint(user.getPoint() + point);
+        user.setAccPoint(user.getAccPoint() + point);
         userRepository.save(user);
     }
 

@@ -1,4 +1,4 @@
-const validationStatus = {
+const validationStatus   = {
     id: false,
     checkId: false,
     name: false,

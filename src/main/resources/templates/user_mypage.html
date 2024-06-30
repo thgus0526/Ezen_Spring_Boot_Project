@@ -45,6 +45,17 @@
             display: flex;
 
         }
+        .card-big2{
+            width: 30%;
+            height: 100%;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 10px; /* Add margin for spacing between cards */
+            display: flex;
+
+        }
 
         .card1 {
             width: 100%;
@@ -264,7 +275,8 @@
             <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
             <div class="mb-3">
                 <label for="phone" class="form-label">핸드폰번호</label>
-                <input type="text" class="form-control" id="phone" th:name="phone" th:value="${siteUser.getPhone}">
+                <input type="text" class="form-control" id="phone" th:name="phone" th:value="${siteUser.getPhone}" onblur="validatePhone()">
+                <span id="phoneInfo" class="text-info"></span>
             </div>
             <div class="mb-3">
                 <label for="addressZipcode" class="form-label">우편번호</label>
@@ -285,35 +297,50 @@
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">이메일</label>
-                <input type="text" class="form-control" id="email" th:name="email" th:value="${siteUser.getEmail}">
+                <input type="text" class="form-control" id="email" th:name="email" th:value="${siteUser.getEmail}" onblur="validateEmail()">
+                <span id="userEmailInfo" class="text-info"></span>
             </div>
-            <button type="button" class="btn btn-secondary mb-3" onclick="sendVerificationCode()">이메일 인증코드 발송</button>
-            <div class="mb-3">
+            <button type="button" class="btn btn-secondary mb-3 unverifiedCode" onclick="checkUserEmail()">이메일 인증코드 발송</button>
+
+            <div class="mb-3 unverifiedCode d-none" id="insertEmail">
                 <label for="verificationCode" class="form-label">인증 코드</label>
                 <input type="text" id="verificationCode" class="form-control">
-                <button type="button" class="btn btn-secondary mt-3" onclick="verifyCode()">인증코드 확인</button>
                 <span id="verificationResult" class="text-info"></span>
+                <button type="button" class="btn btn-secondary mt-3" onclick="verifyCode()">인증코드 확인</button>
             </div>
             <button type="submit" class="btn btn-primary">변경</button>
         </form>
     </div>
-    <div class="card card-small">
-        <h2>비밀번호 변경</h2>
-            <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
-            <div class="mb-3">
-                <label for="password" class="form-label">비밀번호</label>
-                <input type="password" class="form-control" id="password" th:name="password">
+    <div class="card card-big2">
+        <div class="card card1">
+            <h2>비밀번호 변경</h2>
+                <input type="hidden" th:id="hiddenName" th:name="hiddenName" th:value="${siteUser.getName()}">
+                <div class="mb-3">
+                    <label for="password" class="form-label">비밀번호</label>
+                    <input type="password" class="form-control" id="password" th:name="password" onblur="validatePassword()">
 
+                </div>
+                <div class="mb-3">
+                    <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+                    <input type="password" id="passwordConfirm" class="form-control" onblur="validatePassword()">
+                    <span id="passwordCheck" class="text-info"></span>
+                    <span id="passwordNotMatch" class="text-danger"></span>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="submitForm()">변경</button>
+        </div>
+        <div class="card card-small2">
+            <h2>회원탈퇴</h2>
+            <div class="mb-3">
+                <label for="userId" class="form-label">아이디</label>
+                <input type="input" class="form-control" id="userId" th:name="userId">
             </div>
             <div class="mb-3">
-                <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
-                <input type="password" id="passwordConfirm" class="form-control" onblur="validateForm()">
-                <span id="passwordCheck" class="text-info"></span>
-                <span id="passwordNotMatch" class="text-danger"></span>
+                <label for="deletePwd" class="form-label">비밀번호</label>
+                <input type="password" class="form-control" id="deletePwd" th:name="password">
             </div>
-            <button type="button" class="btn btn-primary" onclick="submitForm()">변경</button>
+            <button type="button" class="btn btn-outline-danger" onclick="deleteUser()">탈퇴</button>
+        </div>
     </div>
-
 
 </div>
 <!-- 비밀번호변경시 뜰 모달 창 -->
@@ -366,6 +393,22 @@
         </div>
     </div>
 </div>
+<!-- 회원탈퇴 모달 -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="deleteUserModalLabel">정말 탈퇴하십니까?</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h6>탈퇴시 포인트와 문자횟수가 복구되지않습니다.</h6>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="confirmDelete()">확인</button>
+            </div>
+        </div>
+    </div>
+
 <script>
     // 포인트 전환 모달
     function exchangePointToSms(){
@@ -430,6 +473,32 @@
                 hiddenName: $('#hiddenName').val() // 히든네임값
             },
             success: function(){
+                window.location.href = '/user/logout';
+            },
+            error: function(){
+                alert("비밀번호 업데이트중 오류가 발생했습니다.")
+            }
+
+        })
+    }
+    // 회원탈퇴
+    function deleteUser(){
+        let myModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+        myModal.show();
+    }
+    function confirmDelete(){
+        console.log($('#deletePwd').val())
+        console.log($('#userId').val())
+        $.ajax({
+            type: 'POST',
+            url: '/user/deleteUser',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                password: $('#deletePwd').val(), // 비밀번호 입력란의 값
+                userId: $('#userId').val() // 히든네임값
+            }),
+            success: function(){
+                alert("회원탈퇴 완료");
                 window.location.href = '/user/logout';
             },
             error: function(){

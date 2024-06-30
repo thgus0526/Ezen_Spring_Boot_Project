@@ -148,5 +148,19 @@ public class UserController {
         return ResponseEntity.ok("Point updated successfully");
     }
 
+    // 회원탈퇴
+    @PostMapping("/deleteUser")
+    public ResponseEntity<?> deleteUser(@RequestBody Map<String, Object> data) {
+        System.out.println("컨트롤러 진입");
+        String userId = (String) data.get("userId");
+        String pwd = (String) data.get("password");
+        
+        System.out.println(userId);
+        System.out.println(pwd);
+
+        userService.deleteUser(userId, pwd);
+
+        return ResponseEntity.ok("회원탈퇴 성공");
+    }
 
 }

@@ -1,3 +1,9 @@
+const validationStatus ={
+    email:false,
+    password: false
+};
+
+
 function sample6_execDaumPostcode() {
     new daum.Postcode({
         oncomplete: function(data) {
@@ -46,42 +52,102 @@ function sample6_execDaumPostcode() {
     }).open();
 }
 
-// 아이디 유효성 검사
-function checkUserId(){
-    let userId = document.getElementById('userId').value;
-    if(userId.trim() ===''){
-        alert('아이디를 입력하세요.');
-        return;
-    }
-
-    // userIdInfo 요소 찾기
-    let userIdInfoElement = document.getElementById('userIdInfo');
-    if (userIdInfoElement) {
-        userIdInfoElement.innerHTML = '';  // 요소가 존재하면 innerHTML 설정
+// 핸드폰 번호 유효성 검사
+function validatePhone() {
+    var phone = document.getElementById('phone');
+    var phoneInfo = document.getElementById('phoneInfo');
+    var phonePattern = /^010\d{8}$/;
+    if (!phonePattern.test(phone.value)) {
+        phone.classList.add('is-invalid');
+        $('#phoneInfo').removeClass('text-info').addClass('text-danger');
+        phoneInfo.textContent = "하이픈(-)을 제외한 핸드폰 번호를 입력해주세요. ex) 01012345678";
+        validationStatus.phone = false;
+        checkAllValidations();
+        return false;
     } else {
-        console.error('userIdInfo 요소를 찾을 수 없습니다.');
-        return;
+        $('#phoneInfo').removeClass('text-danger').addClass('text-info');
+        phone.classList.remove('is-invalid');
+        phoneInfo.textContent = "";
+        validationStatus.phone = true;
+        checkAllValidations();
+        return true;
     }
+}
+// 비밀번호 유효성 검사
+function validatePassword() {
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("passwordConfirm").value;
+    let passwordCheck = document.getElementById("passwordCheck");
+    let passwordNotMatch = document.getElementById("passwordNotMatch");
 
-    // userIdError 요소 찾기
-    let userIdErrorElement = document.getElementById('userIdError');
-    if (userIdErrorElement) {
-        userIdErrorElement.innerHTML = '';  // 요소가 존재하면 innerHTML 설정
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,15}$/;
+
+    if (!regex.test(password)) {
+        passwordCheck.innerHTML = "";
+        passwordNotMatch.innerHTML = "비밀번호는 숫자, 영어, 특수문자를 포함한 15글자 이내여야 합니다.";
+        checkAllValidations();
+        return false;
+    } else if (password !== confirmPassword) {
+        passwordCheck.innerHTML = "";
+        passwordNotMatch.innerHTML = "비밀번호가 일치하지 않습니다.";
+        checkAllValidations();
+        return false;
     } else {
-        console.error('userIdError 요소를 찾을 수 없습니다.');
+        passwordNotMatch.innerHTML = "";
+        passwordCheck.innerHTML = "비밀번호가 일치합니다.";
+        validationStatus.password = true;
+        checkAllValidations();
+        return true;
+    }
+}
+
+function validateEmail() {
+    validationStatus.email = false;
+    var email = document.getElementById('email');
+    var userEmailInfo = document.getElementById('userEmailInfo');
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailPattern.test(email.value)) {
+        email.classList.add('is-invalid');
+        $('#userEmailInfo').removeClass('text-info').addClass('text-danger');
+        userEmailInfo.textContent = "유효한 이메일을 입력해주세요.";
+
+        return false;
+    }
+
+    if(!validationStatus.checkEmail){
+        email.classList.add('is-invalid');
+        $('#userEmailInfo').removeClass('text-info').addClass('text-danger');
+        userEmailInfo.textContent = '이메일 인증을 해주세요.';
+
+        return false;
+    }
+    return true;
+}
+
+
+// 이메일 유효성 검사
+function checkUserEmail(){
+    validationStatus.checkEmail = true;
+    var email = document.getElementById("email");
+    var userEmailInfo = document.getElementById('userEmailInfo');
+
+    if(!validateEmail()){
         return;
     }
 
-    console.log(userId);
     $.ajax({
         type: 'GET',
-        url: '/user/checkUserId',
-        data: {userId: userId},
+        url: '/user/checkUserEmail',
+        data: {email: email.value},
         success: function(response) {
             if(response.available){
-                document.getElementById('userIdInfo').innerHTML='사용가능한 아이디 입니다.';
+                sendVerificationCode();
             } else {
-                document.getElementById('userIdError').innerHTML='이미 사용 중인 아이디입니다.';
+                email.classList.add('is-invalid');
+                $('#userEmailInfo').removeClass('text-info').addClass('text-danger');
+                userEmailInfo.textContent = '이미 사용 중인 이메일입니다.';
+                checkAllValidations();
             }
         },
         error : function(xhr, status, error){
@@ -90,42 +156,68 @@ function checkUserId(){
     });
 
 }
-
-// 비밀번호 유효성 검사
-function validateForm(){
-    let password = document.getElementById("password").value;
-    let confirmPassword = document.getElementById("passwordConfirm").value;
-
-
-    if(password !== confirmPassword){
-        document.getElementById("passwordNotMatch").innerHTML="비밀번호가 일치하지 않습니다.";
-
-
-    } else {
-        document.getElementById("passwordNotMatch").innerHTML="";
-        document.getElementById("passwordCheck").innerHTML="비밀번호가 일치합니다.";
-
-    }
-
-}
-
-
 // 이메일 인증코드 보내는 함수
 function sendVerificationCode(){
-    console.log("여기까지오냐");
-    let email = $('#email').val();
+    var email = document.getElementById("email");
+
+    $('#userEmailInfo').removeClass('text-danger').removeClass('text-info').addClass('text-success');
+    $('#userEmailInfo').text("이메일 인증 코드 전송중입니다.");
+    var txt = $('#userEmailInfo').textContent;
+    console.log(txt);
+
     $.ajax({
         url: '/user/send-email',
         type: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({email: email}),
+        data: JSON.stringify({email: email.value}),
         success: function(response){
             $('#userEmailInfo').text(response);
-            alert('성공');
+            email.classList.remove('is-invalid');
+            $('#userEmailInfo').removeClass('text-success').addClass('text-info');
+            alert('인증 코드가 정상적으로 보내졌습니다,');
+            $('#email').prop('readonly', true);
+            $('#insertEmail').removeClass('d-none');
+            checkAllValidations();
         },
         error: function(response) {
-            $('#userEmailError').text(response.responseText);
-            alert('실패');
+            $('#userEmailInfo').text(response.responseText);
+            email.classList.add('is-invalid');
+            $('#userEmailInfo').removeClass('text-success').addClass('text-danger');
+            alert('인증 코드가 전송되지 않았습니다.');
         }
     })
+}
+
+// 이메일 인증 코드 확인
+function verifyCode() {
+    let email = $('#email').val();
+    let verificationCode = $('#verificationCode').val();
+
+    var verificationCodeE = document.getElementById("verificationCode");
+    $.ajax({
+        url: '/user/verify-code',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ email: email, code: verificationCode }),
+        success: function(response) {
+            $('#verificationResult').text(response.message);
+            if (response.success) {
+                verificationCodeE.classList.remove('is-invalid');
+                $('#userEmailInfo').removeClass('text-danger').addClass('text-info');
+                alert('인증코드가 확인되었습니다.');
+                $('.unverifiedCode').addClass('d-none');
+                validationStatus.email = true;
+                checkAllValidations();
+            } else {
+                verificationCodeE.classList.add('is-invalid');
+                $('#verificationResult').removeClass('text-info').addClass('text-danger');
+                alert('인증코드가 틀렸습니다.');
+                checkAllValidations();
+            }
+        },
+        error: function(response) {
+            $('#verificationResult').text('인증 코드 확인에 실패했습니다.');
+            $('#verificationResult').removeClass('text-info').addClass('text-danger');
+        }
+    });
 }
