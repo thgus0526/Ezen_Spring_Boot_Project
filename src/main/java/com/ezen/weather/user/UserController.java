@@ -69,6 +69,8 @@ public class UserController {
     public String mypage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         String userId = userDetails.getUsername();
         UserTemp userTemp = userTempService.getUserTemp(userId);
+        System.out.println("유저 템프값 : " +userTemp);
+
         List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
         SiteUser siteUser = userService.getUser(userId);
 

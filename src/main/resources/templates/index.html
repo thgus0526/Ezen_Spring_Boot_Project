@@ -36,6 +36,16 @@
                         th:if="${#authorization.expression('isAuthenticated()')}">회원 주소</button>
             </div>
 
+            <input type="hidden" name="userSms" th:if="${user != null}" th:value="${user.getSms}"/>
+            <input type="hidden" name="isAdmin" th:if="${role != null}" th:value="${role}"/>
+
+            <ul>
+                <li th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
+                    <input type="hidden" name="adminMaxTemp" th:value="${adminTemp.getAdminSetMaxTemp}"/>
+                </li>
+            </ul>
+
+
             <div id="weather1"></div>
             <div id="weather2"></div>
             <div id="weather3"></div>
@@ -45,8 +55,39 @@
 
 
 <th:block layout:fragment="script">
+
+    <script th:inline="javascript">
+    function sendDataToMain(data) {
+        let isAuthenticated = [[${#authentication.principal != null}]];
+        let isAdmin = $('input[name=isAdmin]').val();
+        let userSmsCount = $('input[name=userSms]').val();
+        let adminMaxTemp = $('input[name=adminMaxTemp]').val();
+        console.log("관리자인가? " + isAdmin);
+        console.log("기본값 :" + adminMaxTemp);
+        console.log("문자횟수:" + userSmsCount);
+
+        if (isAuthenticated) {
+            if (isAdmin === "USER") {
+
+                if (userSmsCount <= 0) {
+                    alert("남은 알림문자수가 0입니다 충전후 이용하세요");
+                }
+            } else if (isAdmin === "ADMIN") {
+                if (adminMaxTemp <= data) {
+                        alert("현재 온도가 기본설정값보다 높습니다 문자를 발송하세요.");
+                        // 문자를 보낸 후엔 더이상 뜨지 않게 설정해야함
+                    }
+                }
+            }
+
+    }
+
+
+    </script>
     <script th:src="@{/js/main.js}"></script>
+
 </th:block>
+
 
 </body>
 </html>
