@@ -18,6 +18,6 @@
 - <img src="https://img.shields.io/badge/Thymeleaf-C6EBBE?style=for-the-badge&logoColor=white">
 - <img src="https://img.shields.io/badge/Ajax-4FB0C6?style=for-the-badge&logoColor=white">
 - <img src="https://img.shields.io/badge/JPA-686868?style=for-the-badge&logoColor=white">
-- <img src="https://img.shields.io/badge/MariaDB-2D5D7B?style=for-the-badge&logoColor=white">
+- <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white"> 
 - <img src="https://img.shields.io/badge/HeidiSQL-DFD9E2?style=for-the-badge&logoColor=white">
 - <img src="https://img.shields.io/badge/Lombok-E4D9FF?style=for-the-badge&logoColor=white">
