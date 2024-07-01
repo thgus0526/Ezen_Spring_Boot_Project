@@ -95,7 +95,7 @@
 - 관리자 권한을 가진 사용자만 답글 가능.
 
 ### 공지 사항 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/71b14def-1883-44bb-b901-70a358d5794c)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/b0f087bd-4800-4104-bfbf-ecd1dcf542e6)
 - 관리자의 공지사항 등록 페이지
 - 수정 삭제 가능.
 
