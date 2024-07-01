@@ -28,3 +28,33 @@
 - ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)
 - ![Notion](https://img.shields.io/badge/Notion-white?style=flat-square&logo=Notion&logoColor=000000)
 - ![IntelliJ_IDEA](https://img.shields.io/badge/IntelliJ_IDEA-789AFE?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
+
+## ⚙프로젝트 구성
+![프로젝트구성](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/00de8714-3640-4014-bcbf-6f04bb215037)
+
+## 💾프로젝트 프로그램 사용법
+![프로젝트구성](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/7b5571a3-c0da-49e8-9c0f-ff5f7f161903)
+
+## 🔒저작권 및 사용권 정보
+- 카카오 지도 api : https://apis.map.kakao.com/
+- 카카오 로그인 api : https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api
+- 기상청 단기예보 api : https://www.data.go.kr/data/15084084/openapi.do
+- 미세먼지 api : https://api-docs.iqair.com/
+- 센드엠 문자 알림톡 : https://sendm.co.kr/
+- 뉴스 api : https://newsdata.io/
+
+## 👨‍🦱프로그래머 정보
+
+- 장소현(https://github.com/thgus0526)
+- 임정빈()
+- 김유민()
+- 한상민([mmm44112@gmail.com](https://github.com/mmm44112?tab=repositories))
+- 유성헌(https://github.com/c21ysh2)
+- 변성진([byun970@gmail.com](https://github.com/byun970))
+
+## 🖼화면
+
+### 메인 페이지
+
+## 🎬시연영상
+  
