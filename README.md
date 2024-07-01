@@ -1,1 +1,1 @@
-# Ezen_Spring_Boot_Project
+# 스프링 부트를 활용한 기상 알림 문자 서비스
