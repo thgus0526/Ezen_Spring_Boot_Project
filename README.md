@@ -60,6 +60,68 @@
 ## 🖼화면
 
 ### 메인 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/98418b65-d56a-4947-93a9-616598407430)  
+- 카테고리(퀴즈, 뉴스, 문의사항 등...) 메인 화면.
+- 좌측 지도에 마커를 찍으면 우측화면에 날씨정보와 미세먼지 정보 출력.
+- 사용자의 위치를 받아 화면에 날씨정보 출력.
+- 회원정보에 주소를 받아 화면에 날씨정보 출력.
 
+### 로그인 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/321667ea-d252-4441-b376-5c223ed2d995)
+- 소셜 로그인과 일반로그인을 통해 사용자 정보 수집.
+- 아이디 및 비밀번호 찾기.
+
+### 회원가입 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/cffaa8d6-07ea-44b5-9b9a-4fc0a4cb1722)
+- 유효성 검사를 통한 아이디, 비밀번호, 이메일 중복 검사.
+- gps이용을 위한 주소 입력.
+- 이메일 중복을 방지하기 위한 인증코드 발송.
+
+### 카카오 소셜 로그인 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/d5829b99-cdc5-4d1f-aa51-be04c722cdfc)
+- 동의항목 체크로 사용자 정보 수집
+#### 카카오 소셜 로그인 개인정보 수집 후 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/d39e83fe-a082-4b15-bbd6-8866989111ba)
+- 추가 적인 개인정보를 받기위한 간편가입 페이지 이동.
+
+### 소셜 및 로그인 후 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/be73f666-d902-4d6b-bf78-9c0e59ea92f7)
+- 사용자의 주소를 불러서 지도에 위치정보 및 날씨 정보 출력.
+- 헤더에 사용자 ID 출력 및 클릭시 마이페이지로 이동.
+
+### 문의 사항 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/e701257a-4167-4b62-ae00-6b290f41804c)
+- 사용자의 문의를 등록하는 페이지/ 수정 삭제 가능.
+- 관리자 권한을 가진 사용자만 답글 가능.
+
+### 공지 사항 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/71b14def-1883-44bb-b901-70a358d5794c)
+- 관리자의 공지사항 등록 페이지
+- 수정 삭제 가능.
+
+### 기상 퀴즈 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/0dddf806-231e-4f45-9652-8aced3ca65d5)
+- ox퀴즈 페이지
+- 하단에 사용자의 정보 출력
+- 다음 문제 풀기 버튼을 누르면 새로운 문제 생성
+
+### 환경 뉴스 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/8ca4f9fb-f070-45d4-bbb9-d6d156eabd0d)
+- 뉴스 api를 받아 환경 뉴스 출력
+- 뉴스 카테고리를 url
+
+### 마이 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/eded9339-274b-411f-bd40-5454bbfe075b)
+- 이메일 인증을 통한 회원정보 수정 기능
+- 비밀번호 인증을 통한 비밀번호 변경
+- 비밀번호 인증을 통한 회원 탈퇴 기능
+- 포인트 전환 기능
+- 알람 설정 변경 기능
+- 우편번호 찾기를 통한 주소 변경
+
+### 회원 관리 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/d88c12f1-8aaf-421b-ad8d-1a4b85e43e9c)
+- 관리자가 회원 정보 수정 / 삭제 가능
+- 사용자는 접근 불가능
 ## 🎬시연영상
   
