@@ -1,3 +1,4 @@
+![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=사용자ID&show_icons=true&theme=radical)
 # 스프링 부트를 활용한 기상 알림 문자 서비스
 
 ## 📆개발 기간
