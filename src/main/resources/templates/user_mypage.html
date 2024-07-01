@@ -20,7 +20,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Arial', sans-serif;
-            background-color: #f8f9fa;
+            background-color: #CCE0D6;
         }
 
         .container {
@@ -76,15 +76,7 @@
             margin: 10px; /* Add margin for spacing between cards */
         }
 
-        .card-small {
-            height: 350px;
-            width: 30%;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px; /* Add margin for spacing between cards */
-        }
+
 
         .card-small2 {
             width: 100%; /* Full width */
@@ -185,19 +177,57 @@
             text-align: center;
         }
         .grade-image{
+            margin-top: -13px;
             display: inline-block;
             width: 80px;
             height: auto;
             vertical-align: middle;
         }
+        .change-wrapper {
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            width: 30%;
+            padding: 30px;
+        }
+        .card1, .card2, .card3 {
+            width: 95%;
+        }
+
+        .card3 {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-left: 10px;
+            border-radius: 10px;
+        }
+
+        .card1, .card2, .card3 {
+            border: 1px solid #ccc8c8;
+        }
+
+        .card2 div {
+            width: 100%;
+        }
+
+        .card1 form {
+            width: 300px;
+        }
+
+        #change-code {
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
+
 <div class="container" layout:fragment="content">
-    <div class="card card-big">
-    <div class="card card1">
+
+    <div class="card-big card">
+    <div class="card1 card">
         <form th:action="@{/user/userTempSet}" method="post" >
-            <h3 class="temp">알람설정</h3>
+            <h3 class="temp" id="alert-setting">알람설정</h3>
             <input type="hidden" th:name="hiddenUserId" th:id="hiddenUserId" th:value="${#authentication.name}">
             <div class="container my-3" th:if="${adminTemps != null}">
                 <div th:each="temp : ${adminTemps}">
@@ -234,19 +264,22 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">변경</button>
+            <div class="change-wrapper">
+                <button type="submit" class="btn btn-primary" id="change">변경</button>
+            </div>
         </form>
     </div>
-        <div class="card card-small2">
-            <div class="mb-3">
+
+        <div class="card2">
+            <div>
                 <label for="currentUserPoint" class="form-label">현재포인트: </label>
                 <span id="currentUserPoint" th:text="${siteUser.getPoint()}"></span>
             </div>
-            <div class="mb-3">
+            <div>
                 <label for="accUserPoint" class="form-label">누적 포인트:</label>
                 <span id="accUserPoint" th:text="${siteUser.getAccPoint()}"></span>
             </div>
-            <div class="mb-3">
+            <div>
                 <label for="userGrade" class="form-label">회원 등급</label>
                 <span id="userGrade">
                     <span th:if="${siteUser.getGrade() == 'Bronze'}">브론즈</span>
@@ -258,9 +291,8 @@
                 <img th:if="${siteUser.getGrade() == 'Silver'}" src="/img/Silver.jpg" alt="Silver" class="grade-image">
                 <img th:if="${siteUser.getGrade() == 'Gold'}" src="/img/Gold.jpg" alt="Gold" class="grade-image">
                 <img th:if="${siteUser.getGrade() == 'Platinum'}" src="/img/Platinum.jpg" alt="Platinum" class="grade-image">
-
             </div>
-            <div class="mb-3">
+            <div>
                 <label for="smsCount" class="form-label">잔여 문자횟수: </label>
                 <span id="smsCount" th:text="${siteUser.getSms()}">건</span>
             </div>
@@ -268,7 +300,7 @@
         </div>
     </div>
 
-    <div class="card card2">
+    <div class="card">
         <h2>회원정보 수정</h2>
         <p class="username-info" th:text="${siteUser.getName} + '님정보입니다.'"></p>
         <form th:action="@{/user/updateUserInfo}" method="post">
@@ -308,7 +340,7 @@
                 <span id="verificationResult" class="text-info"></span>
                 <button type="button" class="btn btn-secondary mt-3" onclick="verifyCode()">인증코드 확인</button>
             </div>
-            <button type="submit" class="btn btn-primary">변경</button>
+            <button type="submit" class="btn btn-primary" id="change-code">변경</button>
         </form>
     </div>
     <div class="card card-big2">
@@ -328,7 +360,7 @@
                 </div>
                 <button type="button" class="btn btn-primary" onclick="submitForm()">변경</button>
         </div>
-        <div class="card card-small2">
+        <div class="card3">
             <h2>회원탈퇴</h2>
             <div class="mb-3">
                 <label for="userId" class="form-label">아이디</label>
