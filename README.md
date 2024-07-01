@@ -26,5 +26,5 @@
 
 ## ⌨사용 툴
 - ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)
-- ![Notion](https://img.shields.io/badge/Notion-white?style=flat-square&logo=Notion&logoColor=000000) !
-- [IntelliJ_IDEA](https://img.shields.io/badge/IntelliJ_IDEA-789AFE?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
+- ![Notion](https://img.shields.io/badge/Notion-white?style=flat-square&logo=Notion&logoColor=000000)
+- ![IntelliJ_IDEA](https://img.shields.io/badge/IntelliJ_IDEA-789AFE?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
