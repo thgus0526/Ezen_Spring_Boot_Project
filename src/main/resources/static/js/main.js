@@ -426,7 +426,7 @@ function locationfunc(lat, lng) {
             }
             // 문자발송을 위한 데이터 전송함수 호출
             sendDataToServer(tmpData.fcstValue);
-
+            sendDataToMain(tmpData.fcstValue);
             // 기존 내용을 지웁니다.
             while (weather1Div.firstChild) {
                 weather1Div.removeChild(weather1Div.firstChild);
@@ -488,6 +488,7 @@ function locationfunc(lat, lng) {
             console.error("Error fetching weather data:", error)
         );
 }
+
 // csrf 토큰
 let userId
 $(document).ready(function() {
@@ -504,6 +505,7 @@ $(document).ready(function() {
 // 서버로 데이터를 전송하는 함수
 function sendDataToServer(data){
     // AJAX 를 이용하여 서버로 데이터 전송
+
     $.ajax({
         type: 'POST',
         url: '/user/send',

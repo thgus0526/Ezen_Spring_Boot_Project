@@ -39,7 +39,7 @@ public class SmsController {
     private final UserService userService;
 
 
-    @Scheduled(cron = "0 0 6 * * *")    // 오전 6시에 전송되도록 설정
+
     @PostMapping("/user/send")
     public void sendSms(@RequestBody Map<String, Object> data) {
         System.out.println("문자~~~~~~~~~~~~~~~~~");
@@ -51,6 +51,8 @@ public class SmsController {
 
         for(SiteUser user : allUsers) {
             String userId = user.getUserId();
+            SiteUser siteUser = userService.getUser(userId);
+
             // 사용자별 설정값 가져오기
             UserTemp userTemp = userTempService.getUserTemp(userId);
 
@@ -58,11 +60,12 @@ public class SmsController {
                 double userMaxTemp = userTemp.getUserSetMaxTemp();
                 double userMinTemp = userTemp.getUserSetMinTemp();
                 Integer userRain = userTemp.getUserSetRain(); // 추후 추가
-
+                System.out.println("온도최대값 = " +userMaxTemp);
+                System.out.println("문자 남은 횟수 = " + user.getSms());
                 // 조건을 만족한다면 문자 보내기
                 if(currentTemp > userMaxTemp && user.getSms() >= 1){
                     String userPhone = user.getPhone();
-
+                    System.out.println("로직통과한 유저 아이디 : " + user.getUserId());
                     Message message = new Message();
                     message.setFrom("01020751709"); // 발신자번호 고정 (유성헌)
                     message.setTo(userPhone);

@@ -21,6 +21,7 @@ public class UserTempService {
         // UserTemp 를 SiteUser 를 기준으로 조회한다.
         // 테이블에 id 값이 있으면 새로 데이터베이스에 행을 추가하는것이아닌 기존 값이 업데이트된다.
         UserTemp userTemp = userTempRepository.findBySiteUser(siteUser).orElse(new UserTemp());
+//        UserTemp userTemp = userTempRepository.findBySiteUser(siteUser);
 
         userTemp.setUserSetMaxTemp(hiddenMaxTempDouble);
         userTemp.setUserSetMinTemp(hiddenMinTempDouble);
@@ -35,5 +36,6 @@ public class UserTempService {
         SiteUser siteUser = userRepository.findById(userId).get();
 
         return userTempRepository.findBySiteUser(siteUser).orElse(null);
+
     }
 }
