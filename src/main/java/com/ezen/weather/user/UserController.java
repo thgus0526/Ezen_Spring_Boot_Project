@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,6 +119,7 @@ public class UserController {
     }
 
 
+
     // 포인트 전환
     @PostMapping("/exchangePointToSms")
     public ResponseEntity<?> exchangePointToSms(@RequestBody Map<String, Object> data){
@@ -163,6 +165,32 @@ public class UserController {
         userService.deleteUser(userId, pwd);
 
         return ResponseEntity.ok("회원탈퇴 성공");
+    }
+    @GetMapping("/findId")
+    public String findId(){
+        return "findId_form";
+    }
+    @PostMapping("/findIdPost")
+    public ResponseEntity<?> findId(@RequestBody Map<String, Object> data) {
+        String name = data.get("name").toString();
+        String phone = data.get("phone").toString();
+        System.out.println("이름 = " +name+ "핸드폰번호 = " +phone);
+        String id = userService.findIdByNameAndPhone(name, phone);
+        Map<String, String> response = new HashMap<>();
+        if (id != null) {
+            response.put("id", id);
+        } else {
+            response.put("id", "");
+        }
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/findPwd")
+    public String findPwd(){
+        return "findPwd_form";
+    }
+    @GetMapping("/changePwd")
+    public String changePwd(){
+        return "changePwd_form";
     }
 
 }

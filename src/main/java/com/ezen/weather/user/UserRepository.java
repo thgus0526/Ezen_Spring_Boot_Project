@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<SiteUser, String> {
     // 사용자 이름으로 사용자 찾기
     SiteUser findByName(String name);
 
-
+    SiteUser findByNameAndPhone(String name, String phone);
 
 
 }

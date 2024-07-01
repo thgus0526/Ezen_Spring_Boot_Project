@@ -54,6 +54,21 @@
             text-decoration: none; /* 링크 밑줄 제거 */
             color: #000; /* 호버 시 텍스트 색상 변경 */
         }
+        .find-id {
+            margin-top: 15px;
+            width: 50%;
+            magin-right: 3px;
+            padding-right: 3px;
+        }
+        .find-pwd {
+            margin-top: 15px;
+            width: 50%;
+            margin-left: 3px;
+            padding-left: 3px;
+        }
+        .find {
+            display: flex;
+        }
     </style>
 </head>
 
@@ -80,7 +95,12 @@
         </a>
 
         <a href="/user/signup" class="btn btn-outline-secondary btn-block signup-link">회원가입</a>
+        <div class="find">
+            <a href="/user/findId" class="btn btn-outline-info btn-block find-id">아이디 찾기</a>
+            <a href="/user/findPwd" class="btn btn-outline-info btn-block find-pwd">비밀번호 찾기</a>
+        </div>
     </form>
+</div>
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

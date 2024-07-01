@@ -87,6 +87,7 @@ public class UserService {
     }
 
 
+
     // 포인트 전환
     public void exchangePointToSms(String userId, Long exchangePoint){
         Optional<SiteUser> siteUser = userRepository.findById(userId);
@@ -202,6 +203,10 @@ public class UserService {
         }
 
 
+    }
+    public String findIdByNameAndPhone(String name, String phone) {
+        SiteUser user = userRepository.findByNameAndPhone(name, phone);
+        return user != null ? user.getUserId() : null;
     }
 }
 
