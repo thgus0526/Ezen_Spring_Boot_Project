@@ -123,7 +123,7 @@
 - 우편번호 찾기를 통한 주소 변경
 
 ### 회원 관리 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/d88c12f1-8aaf-421b-ad8d-1a4b85e43e9c)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/cd793cef-469e-4a95-8591-36864ec7d0ba)
 - 관리자가 회원 정보 수정 / 삭제 가능
 - 사용자는 접근 불가능
 ## 🎬시연영상
