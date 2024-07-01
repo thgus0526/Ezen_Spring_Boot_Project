@@ -11,4 +11,4 @@
 - <img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
 - <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 - <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white">
-- <img src="https://img.shields.io/badge/Thymeleaf-00FF00?style=flat-square&logo=Adobe&logoColor=white">
+- <img src="https://img.shields.io/badge/Thymeleaf-00FF00?style=flat-square&logoColor=white">
