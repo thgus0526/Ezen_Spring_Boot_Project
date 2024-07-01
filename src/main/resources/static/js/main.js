@@ -431,7 +431,7 @@ function locationfunc(lat, lng) {
                 }
             }
             // 문자발송을 위한 데이터 전송함수 호출
-            sendDataToServer(tmpData.fcstValue);
+            // sendDataToServer(tmpData.fcstValue);
             sendDataToMain(tmpData.fcstValue);
             // 기존 내용을 지웁니다.
             while (weather1Div.firstChild) {

@@ -69,4 +69,6 @@ public class AdminService {
         siteUser.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(siteUser);
     }
+
+
 }

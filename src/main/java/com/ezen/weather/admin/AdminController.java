@@ -1,5 +1,7 @@
 package com.ezen.weather.admin;
 
+import com.ezen.weather.adminTemp.AdminTemp;
+import com.ezen.weather.adminTemp.AdminTempService;
 import com.ezen.weather.user.SiteUser;
 import com.ezen.weather.user.UserRepository;
 import com.ezen.weather.user.UserRole;
@@ -20,6 +22,7 @@ public class AdminController {
 private final AdminService adminService;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final AdminTempService adminTempService;
 
     @GetMapping("/adminPage")
     public String adminPage(Model model) {
@@ -63,6 +66,29 @@ private final AdminService adminService;
     public String updateUserPwd(@RequestParam("password") String password, @RequestParam("hiddenName") String name){
         userService.userPwdUpdate(password, name);
         return "redirect:/admin/adminPage";
+    }
+
+    @GetMapping("/alarmPage")
+    public String alarmPage(Model model) {
+        List<AdminTemp> adminTemps = adminTempService.getAllAdminTemps();
+        List<SiteUser> userList=userRepository.findAll();
+
+        model.addAttribute("userList", userList);
+        model.addAttribute("adminTemps", adminTemps);
+        return "alram_page";
+    }
+
+    @PostMapping("/adminTempSet")
+    public String adminTempSet(@RequestParam("hiddenMaxTemp") String hiddenMaxTemp,
+                               @RequestParam("hiddenMinTemp") String hiddenMinTemp,
+                               @RequestParam(value="rain", defaultValue="false") boolean rain,
+                               @RequestParam("hiddenId") String id) {
+
+        System.out.println(hiddenMaxTemp);
+
+        adminTempService.input(hiddenMaxTemp, hiddenMinTemp, rain, id);
+
+        return "redirect:/";
     }
 
 }

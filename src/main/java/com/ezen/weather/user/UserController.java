@@ -117,9 +117,6 @@ public class UserController {
         userService.userPwdUpdate(password, name);
         return ResponseEntity.ok("Password updated successfully");
     }
-
-
-
     // 포인트 전환
     @PostMapping("/exchangePointToSms")
     public ResponseEntity<?> exchangePointToSms(@RequestBody Map<String, Object> data){

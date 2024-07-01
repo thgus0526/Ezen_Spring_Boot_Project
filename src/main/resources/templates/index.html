@@ -39,11 +39,11 @@
             <input type="hidden" name="userSms" th:if="${user != null}" th:value="${user.getSms}"/>
             <input type="hidden" name="isAdmin" th:if="${role != null}" th:value="${role}"/>
 
-            <ul>
-                <li th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
+
+                <span th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
                     <input type="hidden" name="adminMaxTemp" th:value="${adminTemp.getAdminSetMaxTemp}"/>
-                </li>
-            </ul>
+                </span>
+
 
 
             <div id="weather1"></div>

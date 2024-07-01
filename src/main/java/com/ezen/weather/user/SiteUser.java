@@ -54,8 +54,6 @@ public class SiteUser {
     @Column(name="user_point_acc")
     private Long accPoint = 100l;
 
-    @Column(name="user_type", nullable=false)
-    private int userType=0;
     // 문자횟수를 위한 칼럼추가
     @Column(name="user_sms")
     private int sms=5;
