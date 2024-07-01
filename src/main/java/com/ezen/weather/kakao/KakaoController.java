@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public class KakaoController {
     }
 
     @RequestMapping("/login")
-    public String home(@RequestParam(value = "code", required = false) String code, Model model) {
+    public String home(@RequestParam(value = "code", required = false) String code, Model model, HttpSession session) {
         logger.info("카카오 로그인 시작");
 
         try {
@@ -41,6 +42,12 @@ public class KakaoController {
 
                 model.addAttribute("access_Token", access_Token);
                 model.addAttribute("userInfo", userInfo);
+
+                // 로그인 성공 메시지를 세션에 저장
+                session.setAttribute("loginMessage", "카카오톡 로그인이 완료되었습니다.");
+
+                // 원하는 페이지로 리다이렉트
+                return "redirect:/user/signup";
             } else {
                 logger.warn("인증 코드가 전달되지 않았습니다.");
             }
@@ -59,4 +66,5 @@ public class KakaoController {
         model.addAttribute("userEmail", email);
         return "index";
     }
+
 }
