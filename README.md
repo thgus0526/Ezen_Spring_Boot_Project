@@ -105,6 +105,9 @@
 - 하단에 사용자의 정보 출력
 - 다음 문제 풀기 버튼을 누르면 새로운 문제 생성
 
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/0593a83b-9ee4-4b37-90bd-6973f24c472f)
+- 정답을 맞추면 '정답입니다' 오답이면 '오답입니다' 모달창 생성
+
 ### 환경 뉴스 페이지
 ![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/8ca4f9fb-f070-45d4-bbb9-d6d156eabd0d)
 - 뉴스 api를 받아 환경 뉴스 출력
