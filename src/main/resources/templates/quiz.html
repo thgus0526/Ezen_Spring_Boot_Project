@@ -176,6 +176,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: color 0.3s;
+            text-decoration: none;
         }
 
         .close:hover,
@@ -291,7 +292,7 @@
 <!-- 모달 창 -->
 <div id="myModal" class="modal">
     <div class="modal-content" id="modalContent">
-        <span class="close" onclick="hideModal()">&times;</span>
+        <a href="/" class="close">x</a>
         <div class="result-container" id="resultContainer">
             <!-- 여기에 AJAX로 받은 데이터가 채워질 예정 -->
         </div>

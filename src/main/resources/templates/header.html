@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
+    <!-- sbb CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta name="user-id" th:content="${#authentication.name}"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-light-green" th:fragment="headerFragment">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img class="logo2" th:src="@{/img/logo.png}" alt="로고" />
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/notice/list">공지사항</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/question/list">문의사항</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/quiz">기상 퀴즈</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/news">기상 뉴스</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">로그아웃</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/mypage}">마이페이지</a>
+                </li>
+                <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a class="nav-link" th:href="@{/admin/adminPage}" sec:authorize="hasAuthority('ADMIN')">회원관리</a>
+                </li>
+
+                <li class="navbar-user-id">
+                    <span th:text="${#authorization.expression('isAuthenticated()') ? '환영합니다. ': ''}"></span>
+                    <a class="header-user-name" href="/user/mypage">
+                        <span class="header-user-name" th:text="${#authorization.expression('isAuthenticated()') ? #authentication.name : ''}"></span>
+                    </a>
+                    <span th:text="${#authorization.expression('isAuthenticated()') ? '님': ''}"></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

@@ -128,3 +128,34 @@ body {
     margin-top: 20px;
     text-align: center;
 }
+
+.navbar-user-id {
+    position: absolute;
+    top: 10px;
+    right: 24px;
+}
+
+#navbarSupportedContent {
+    position: relative;
+}
+
+.dustText {
+    margin-top: 42px;
+}
+
+.header-user-name {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 990px){
+    .hAddr {
+        display: none;
+    }
+    .navbar-user-id {
+        display: none;
+    }
+    .navbar {
+        text-align: center;
+    }
+}

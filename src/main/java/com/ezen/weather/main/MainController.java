@@ -3,8 +3,10 @@ package com.ezen.weather.main;
 import com.ezen.weather.adminTemp.AdminTemp;
 import com.ezen.weather.adminTemp.AdminTempRepository;
 import com.ezen.weather.adminTemp.AdminTempService;
+import com.ezen.weather.evironmentquiz.EnvironmentQuiz;
 import com.ezen.weather.user.UserService;
 import com.ezen.weather.userTemp.UserTempService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import com.ezen.weather.user.SiteUser; // 추가
 import com.ezen.weather.user.UserRepository;
 
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class MainController {
@@ -50,4 +53,6 @@ public class MainController {
         }
         return "index";
     }
+
+
 }
