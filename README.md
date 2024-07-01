@@ -34,7 +34,11 @@
 ![프로젝트구성](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/00de8714-3640-4014-bcbf-6f04bb215037)
 
 ## 💾프로젝트 프로그램 사용법
-![프로젝트구성](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/7b5571a3-c0da-49e8-9c0f-ff5f7f161903)
+![여기어때 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/3709527e-5489-4259-a41c-c156e834e882)
+
+## 🔍구현 결과
+![구현결과 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/059af82c-ddee-4ebd-ad51-186e9e77d6d0)
+
 
 ## 🔒저작권 및 사용권 정보
 - 카카오 지도 api : https://apis.map.kakao.com/
