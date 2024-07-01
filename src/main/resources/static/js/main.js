@@ -17,19 +17,25 @@ function activeButton(buttonId) {
     if (buttonId === 'loc1Button') {
         loc1Button.classList.add('btn-primary');
         loc1Button.classList.remove('btn-outline-primary');
-        loc2Button.classList.add('btn-outline-success');
-        loc2Button.classList.remove('btn-success');
+        if(loc2Button){
+            loc2Button.classList.add('btn-outline-success');
+            loc2Button.classList.remove('btn-success');
+        }
         loadAPI();
     } else if(buttonId === 'loc2Button'){
         loc1Button.classList.add('btn-outline-primary');
         loc1Button.classList.remove('btn-primary');
-        loc2Button.classList.add('btn-success');
-        loc2Button.classList.remove('btn-outline-success');
+        if(loc2Button){
+            loc2Button.classList.add('btn-success');
+            loc2Button.classList.remove('btn-outline-success');
+        }
     } else {
         loc1Button.classList.add('btn-outline-primary');
         loc1Button.classList.remove('btn-primary');
-        loc2Button.classList.add('btn-outline-success');
-        loc2Button.classList.remove('btn-success');
+        if(loc2Button){
+            loc2Button.classList.add('btn-outline-success');
+            loc2Button.classList.remove('btn-success');
+        }
     }
 }
 

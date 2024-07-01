@@ -42,7 +42,7 @@ public class UserService {
 
     public SiteUser getUser(String userId) {
         Optional<SiteUser> siteUser = this.userRepository.findByUserId(userId);
-        SiteUser user = userRepository.findByName(siteUser.get().getName());
+        SiteUser user = userRepository.findByEmail(siteUser.get().getEmail());
 
         if(siteUser.isPresent()) {
             // 마이페이지에서 유저정보를 뿌릴때 누적포인트에따라 등급을 매긴다.

@@ -12,58 +12,131 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background-color: #e0f7fa;
+            margin: 0;
+            padding: 0;
         }
 
         .quiz-title {
             margin-top: 30px;
+            font-size: 2.5rem;
+            color: #00796b;
         }
 
         h1 {
             margin-bottom: 20px;
         }
+
         .quiz-container {
-            width: 60%;
-            margin: 0 auto;
-            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
             border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
+
+        .quiz-container:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
         .quiz-question {
-            font-size: 20px;
+            font-size: 2rem;
             font-weight: bold;
             margin-bottom: 20px;
+            color: #00796b;
         }
+
         .quiz-form {
             display: flex;
             justify-content: center;
+            margin-bottom: 20px;
         }
+
         .quiz-form button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin: 0 10px;
+            padding: 15px 25px;
+            margin: 0 15px;
             cursor: pointer;
-            background-color: #0a53be;
+            background-color: #00796b;
+            border: none;
             border-radius: 5px;
             color: white;
+            font-size: 1.5rem;
+            transition: background-color 0.3s, transform 0.3s;
         }
 
         .quiz-form button:hover {
-            background-color: #0dcaf0;
+            background-color: #004d40;
+            transform: scale(1.1);
         }
 
         .quiz-form .xButton {
-            background-color: red;
+            background-color: #d32f2f;
         }
 
         .quiz-form .xButton:hover {
-            background-color: #ff6f7d;
+            background-color: #b71c1c;
         }
 
-        .oxWrapper {
-            display: flex;
-            justify-content: center;
+        .next-question-button-wrapper {
+            margin-top: 20px;
+            text-align: center;
         }
+
+        .next-question-button {
+            text-decoration: none;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            background-color: #00796b;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .next-question-button:hover {
+            background-color: #004d40;
+            transform: scale(1.1);
+        }
+
+        .quiz-result-container {
+            background-color: #ffffff;
+            margin: 40px auto;
+            padding: 40px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .accPoints {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #00796b;
+        }
+
+        .quiz-points {
+            font-size: 1.2rem;
+            color: #00796b;
+            margin-bottom: 20px;
+        }
+
+        .answer {
+            font-size: 1.2rem;
+        }
+
+        .correct {
+            color: #00796b;
+        }
+
+        .wrong {
+            color: #d32f2f;
+        }
+
         .modal {
             display: none; /* 초기에는 모달을 숨겨둠 */
             position: fixed;
@@ -73,19 +146,27 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0, 0, 0, 0.6);
         }
+
         .modal-content {
-            background-color: #fefefe;
+            background-color: #ffffff;
             margin: 10% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%;
             max-width: 600px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             position: relative;
+            animation: fadeIn 0.5s;
         }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         .close {
             position: absolute;
             color: #aaa;
@@ -94,56 +175,85 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.3s;
         }
+
         .close:hover,
         .close:focus {
             color: black;
             text-decoration: none;
         }
+
         .result-container {
             margin-top: 20px;
+            position: relative;
         }
-        .next-question-button-wrapper {
+
+        .point-container {
             margin-top: 20px;
-            text-align: center;
         }
-        .next-question-button {
-            text-decoration: none;
-            border: 1px solid black;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #00b09b;
-            color: white;
-            margin: 0 10px;
+
+        .oxWrapper {
+            display: flex;
+            justify-content: center;
         }
-        .next-question-button:hover {
-            background-color: #0a53be;
+
+        /* 폭죽 애니메이션 */
+        @keyframes firework {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
         }
-        .answer {
-            font-size: 1.2rem;
+
+        .firework {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ffeb3b;
+            border-radius: 50%;
+            animation: firework 0.7s ease-out infinite;
         }
-        .correct {
-            color: #0a53be;
+
+        .firework:nth-child(1) {
+            top: 50%;
+            left: 50%;
+            animation-delay: 0s;
         }
-        .wrong {
-            color: #a52834;
+
+        .firework:nth-child(2) {
+            top: 30%;
+            left: 30%;
+            animation-delay: 0.1s;
         }
-        .quiz-result-container {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+
+        .firework:nth-child(3) {
+            top: 30%;
+            left: 70%;
+            animation-delay: 0.2s;
+        }
+
+        .firework:nth-child(4) {
+            top: 70%;
+            left: 30%;
+            animation-delay: 0.3s;
+        }
+
+        .firework:nth-child(5) {
+            top: 70%;
+            left: 70%;
+            animation-delay: 0.4s;
         }
     </style>
 </head>
 <body layout:fragment="content">
 <h1 class="quiz-title">환경 퀴즈</h1>
 <div class="quiz-container">
-    <div>
+    <div class="quiz-points">
         <span th:text="${quiz.point}"></span>
         <span>점</span>
     </div>
@@ -167,7 +277,15 @@
 
 <div class="quiz-result-container">
     <h2><span th:text="${user.userId}"></span>님, Point : <span th:text="${user.point}"></span>점</h2>
-    <p>분발하시고</p>
+    <img alt="브론즈" src="/img/Bronze.jpg" th:if="${user.accPoint < 1000}">
+    <img alt="실버" src="/img/Silver.jpg" th:if="${user.accPoint < 2000 && user.accPoint >= 1000}">
+    <img alt="골드" src="/img/Gold.jpg" th:if="${user.accPoint < 3000 && user.accPoint >= 2000}">
+    <img alt="플래티넘" src="/img/Platinum.jpg" th:if="${user.accPoint < 4000 && user.accPoint >= 3000}">
+    <div class="accPoints">
+        <span>누적 포인트 : </span>
+        <span th:text="${user.accPoint}"></span>
+        <span>점</span>
+    </div>
 </div>
 
 <!-- 모달 창 -->
@@ -177,13 +295,17 @@
         <div class="result-container" id="resultContainer">
             <!-- 여기에 AJAX로 받은 데이터가 채워질 예정 -->
         </div>
-        <div class="point-container" id="pointContainer">
-
-        </div>
+        <div class="point-container" id="pointContainer"></div>
         <div class="next-question-button-wrapper">
             <a href="#" class="next-question-button" onclick="nextQuestion()">다음 문제 풀기</a>
         </div>
     </div>
+    <!-- 폭죽 애니메이션 -->
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
+    <div class="firework"></div>
 </div>
 
 <!-- JavaScript -->
@@ -216,11 +338,13 @@
                 if(data.isCorrect === true){
                     $('#resultContainer').html("<p class='answer correct'>정답입니다.</p>");
                     $('#pointContainer').html("현재 포인트: " + data.userPoint);
+                    showModal();
+                    showFireworks();
                 } else {
                     $('#resultContainer').html("<p class='answer wrong'>오답입니다.</p>");
                     $('#pointContainer').html("현재 포인트: " + data.userPoint);
+                    showModal();
                 }
-                showModal();
             },
             error: function (e) {
                 console.error("Error submitting answer: " + e);
@@ -241,6 +365,18 @@
     function hideModal() {
         var modal = document.getElementById('myModal');
         modal.style.display = 'none';
+    }
+
+    function showFireworks() {
+        var fireworks = document.querySelectorAll('.firework');
+        fireworks.forEach(function(firework) {
+            firework.style.display = 'block';
+        });
+        setTimeout(function() {
+            fireworks.forEach(function(firework) {
+                firework.style.display = 'none';
+            });
+        }, 1500); // 폭죽 애니메이션을 1.5초 동안 실행
     }
 </script>
 
