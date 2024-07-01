@@ -8,7 +8,7 @@
           crossorigin="anonymous">
     <style>
         body {
-            background-color: #f2f2f2;
+            background-color: #CCE0D6;
             font-family: 'Arial', sans-serif;
         }
         .container {
@@ -48,6 +48,18 @@
             background-color: #71a0ff;
             border-color: #71a0ff;
         }
+
+        .total-button {
+            background-color: #00b09b;
+            color: white;
+        }
+
+        .total-button:hover {
+            background-color: inherit;
+            color: #0f5132;
+            border: 1px solid green;
+
+        }
     </style>
 </head>
 <body>
@@ -67,7 +79,7 @@
             <label for="content" class="form-label">내용</label>
             <textarea th:field="*{noticeContent}" id="content" class="form-control" rows="10"></textarea>
         </div>
-        <input type="submit" value="저장하기" class="btn btn-primary my-2">
+        <input type="submit" value="저장하기" class="btn total-button my-2">
     </form>
 </div>
 

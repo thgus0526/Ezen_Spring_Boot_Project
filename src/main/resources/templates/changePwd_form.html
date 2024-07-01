@@ -34,28 +34,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .card-big{
-            width: 30%;
-            height: 100%;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px; /* Add margin for spacing between cards */
-            display: flex;
 
-        }
-        .card-big2{
-            width: 30%;
-            height: 100%;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px; /* Add margin for spacing between cards */
-            display: flex;
-
-        }
 
         .card1 {
             width: 100%;
@@ -67,34 +46,7 @@
             margin: 10px; /* Add margin for spacing between cards */
             display: flex;
         }
-        .card2{
-            width: 30%;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px; /* Add margin for spacing between cards */
-        }
 
-        .card-small {
-            height: 350px;
-            width: 30%;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px; /* Add margin for spacing between cards */
-        }
-
-        .card-small2 {
-            width: 100%; /* Full width */
-            height: 350px;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin: 10px 10px 20px; /* Add margin for spacing between cards */
-        }
 
         h2 {
             text-align: center;
@@ -107,51 +59,7 @@
             color: #495057;
         }
 
-        .form-range {
-            -webkit-appearance: none;
-            width: calc(100% - 40px);
-            height: 8px;
-            border-radius: 5px;
-            background: #ddd;
-            outline: none;
-            opacity: 0.7;
-            transition: opacity .2s;
-        }
 
-        .form-range:hover {
-            opacity: 1;
-        }
-
-        .form-range::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007bff;
-            cursor: pointer;
-        }
-
-        .form-range::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007bff;
-            cursor: pointer;
-        }
-
-        .form-check-input {
-            width: 20px;
-            height: 20px;
-            margin-top: 5px;
-            cursor: pointer;
-        }
-
-        .form-check-label {
-            margin-left: 10px;
-            font-weight: bold;
-            color: #495057;
-        }
 
         .btn-primary {
             display: inline-block;
@@ -171,30 +79,13 @@
             background-color: #0056b3;
         }
 
-        .value-display {
-            font-size: 14px;
-            color: #007bff;
-            margin-top: 5px;
-        }
-        .username-info{
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.5em;
-        }
-        .temp{
-            text-align: center;
-        }
-        .grade-image{
-            display: inline-block;
-            width: 80px;
-            height: auto;
-            vertical-align: middle;
-        }
+
+
     </style>
 </head>
 <body>
 <div class="container" layout:fragment="content">
-    <div class="card card-big2">
+    <div class="card card-big2" id="cards">
         <div class="card card1">
             <h2>비밀번호 변경</h2>
             <div class="mb-3">

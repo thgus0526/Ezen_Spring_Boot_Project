@@ -8,7 +8,7 @@
 		  crossorigin="anonymous">
 	<style>
 		body {
-			background-color: #f8f9fa; /* 흰색 계열 배경색 */
+			background-color: #CCE0D6; /* 흰색 계열 배경색 */
 			font-family: 'Arial', sans-serif;
 		}
 		.container {
@@ -57,6 +57,18 @@
 			background-color: #007bff; /* 비활성화 시 원래 파란색으로 */
 			border-color: #007bff;
 		}
+
+
+		.total-button {
+			background-color: #00b09b;
+			color: white;
+		}
+
+		.total-button:hover {
+			background-color: inherit;
+			color: #0f5132;
+			border: 1px solid green;
+		}
 	</style>
 </head>
 <body>
@@ -85,7 +97,7 @@
 		</table>
 	</div>
 	<div class="text-center">
-		<a th:href="@{/question/create}" class="btn btn-primary mt-3">질문 등록하기</a>
+		<a th:href="@{/question/create}" class="btn mt-3 total-button">질문 등록하기</a>
 	</div>
 </div>
 

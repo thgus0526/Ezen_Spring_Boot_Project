@@ -1,5 +1,79 @@
+/* style.css */
+body{
+    background-color: #CCE0D6;
+}
+.navbar {
+    background-color: #558B6E; /* 짙은 초록색 계열 배경 */
+    transition: background-color 0.3s; /* 배경색 전환 트랜지션 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 추가 */
+}
+
+.navbar:hover {
+    background-color: #458745; /* 호버 시 연한 초록색 계열 배경 */
+}
+
+.navbar-brand img {
+    width: 120px; /* 로고 크기 조정 */
+    height: auto; /* 가로 세로 비율 유지 */
+    transition: transform 0.3s ease-in-out; /* 로고 크기 변환 애니메이션 */
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.05); /* 호버 시 로고 약간 확대 */
+}
+
+.navbar-toggler {
+    font-size: 16px; /* 버튼 기본 글자 크기 */
+    transition: transform 0.3s; /* 변환 애니메이션 효과 */
+}
+
+.navbar-toggler:hover {
+    transform: scale(1.1); /* 호버 시 버튼 크기 확대 */
+}
+
+.navbar-nav .nav-link {
+    color: #FFF; /* 링크 텍스트 흰색 */
+    margin-right: 20px; /* 링크 간 간격 */
+    font-size: 16px; /* 링크 텍스트 크기 */
+    text-transform: uppercase; /* 링크 텍스트 대문자 변환 */
+    transition: transform 0.3s, color 0.3s; /* 변환과 색상 전환 트랜지션 */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1); /* 글자 그림자 추가 */
+}
+
+.navbar-nav .nav-link:hover {
+    transform: scale(1.1); /* 호버 시 링크 텍스트 크기 확대 */
+    color: #070707; /* 호버 시 링크 텍스트 연한 초록색 계열로 변경 */
+}
+
+.header-user-name {
+    color: #FFF; /* 사용자 이름 텍스트 흰색 */
+    font-size: 16px; /* 사용자 이름 텍스트 크기 */
+    text-transform: uppercase; /* 대문자 변환 */
+    transition: color 0.3s; /* 텍스트 색상 전환 트랜지션 */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1); /* 글자 그림자 추가 */
+}
+
+.header-user-name:hover {
+    color: #33691E; /* 호버 시 사용자 이름 텍스트 연한 초록색 계열로 변경 */
+}
+
+@media screen and (max-width: 990px){
+    .navbar-nav .nav-link {
+        color: #FFF; /* 작은 화면에서 링크 텍스트 흰색으로 설정 */
+    }
+
+    .header-user-name {
+        color: #FFF; /* 작은 화면에서 사용자 이름 텍스트 흰색으로 설정 */
+    }
+}
+
+
 textarea {
 	width : 100%;
+}
+
+.main {
+    padding: 30px 150px;
 }
 
 input[type=submit]{
@@ -23,8 +97,9 @@ body {
     width: 100%;
     height: 100vh;
 }
+
 #weather {
-    background-color: #e0f7fa;
+    background-color: #D6ECE1;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -55,7 +130,7 @@ body {
 }
 
 .title {font-weight:bold;display:block;}
-.hAddr {position:absolute;left:10px;top:100px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
+.hAddr {position:absolute;left: 150px;top: 142px;border-radius: 2px;background:#fff;background:rgba(255,255,255,0.8);z-index:1;padding:5px;}
 #centerAddr {display:block;margin-top:2px;font-weight: normal;}
 .bAddr {padding:5px;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
 
@@ -146,6 +221,17 @@ body {
 .header-user-name {
     text-decoration: none;
     font-weight: bold;
+}
+
+#loc1Button, #loc2Button {
+    background-color: inherit;
+    color: #0f5132;
+    border: 1px solid green;
+}
+
+#loc1Button:hover, #loc2Button:hover {
+    background-color: #00b09b;
+    color: white;
 }
 
 @media screen and (max-width: 990px){
