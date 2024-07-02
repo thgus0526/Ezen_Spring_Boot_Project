@@ -36,7 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
-*.js
+git rm --cached apikey.js
+
 
 .env
 
