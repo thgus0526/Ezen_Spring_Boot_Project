@@ -23,7 +23,6 @@ public class SecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests.requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
 
-
                 .csrf(csrf -> csrf   // /h2-console/로 시작하는 모든 URL은 CSRF 검증을 하지 않겠다.
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**")))
 

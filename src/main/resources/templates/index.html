@@ -30,20 +30,20 @@
         </div>
         <div class="col-md-3" id="weather">
             <div>
-            <button class="btn btn-primary m-3" id="loc1Button" onclick="activeButton('loc1Button');">gps 주소</button>
-                <button class="btn btn-outline-success m-3" id="loc2Button" th:data-address="${user.addressStreet}"
-                        onclick="loc2ButtonFunc(this.getAttribute('data-address'));"
-                        th:if="${#authorization.expression('isAuthenticated()')}">회원 주소</button>
+            <button class="btn activeLocButton m-3" id="loc1Button" onclick="activeButton('loc1Button');">현재 주소</button>
+            <button class="btn notActiveLocButton m-3" id="loc2Button" th:data-address="${user.addressStreet}"
+                    onclick="loc2ButtonFunc(this.getAttribute('data-address'));"
+                    th:if="${#authorization.expression('isAuthenticated()')}">회원 주소</button>
             </div>
 
             <input type="hidden" name="userSms" th:if="${user != null}" th:value="${user.getSms}"/>
             <input type="hidden" name="isAdmin" th:if="${role != null}" th:value="${role}"/>
 
-
-                <span th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
+            <ul>
+                <li th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
                     <input type="hidden" name="adminMaxTemp" th:value="${adminTemp.getAdminSetMaxTemp}"/>
-                </span>
-
+                </li>
+            </ul>
 
 
             <div id="weather1"></div>

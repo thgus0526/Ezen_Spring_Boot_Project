@@ -15,26 +15,24 @@ function activeButton(buttonId) {
     var loc2Button = document.getElementById('loc2Button');
 
     if (buttonId === 'loc1Button') {
-        loc1Button.classList.add('btn-primary');
-        loc1Button.classList.remove('btn-outline-primary');
+        loc1Button.classList.add('activeLocButton');
+        loc1Button.classList.remove('notActiveLocButton');
         if(loc2Button){
-            loc2Button.classList.add('btn-outline-success');
-            loc2Button.classList.remove('btn-success');
+            loc2Button.classList.add('notActiveLocButton');
+            loc2Button.classList.remove('activeLocButton');
         }
         loadAPI();
     } else if(buttonId === 'loc2Button'){
-        loc1Button.classList.add('btn-outline-primary');
-        loc1Button.classList.remove('btn-primary');
-        if(loc2Button){
-            loc2Button.classList.add('btn-success');
-            loc2Button.classList.remove('btn-outline-success');
-        }
+        loc1Button.classList.add('notActiveLocButton');
+        loc1Button.classList.remove('activeLocButton');
+        loc2Button.classList.add('activeLocButton');
+        loc2Button.classList.remove('notActiveLocButton');
     } else {
-        loc1Button.classList.add('btn-outline-primary');
-        loc1Button.classList.remove('btn-primary');
+        loc1Button.classList.add('notActiveLocButton');
+        loc1Button.classList.remove('activeLocButton');
         if(loc2Button){
-            loc2Button.classList.add('btn-outline-success');
-            loc2Button.classList.remove('btn-success');
+            loc2Button.classList.add('notActiveLocButton');
+            loc2Button.classList.remove('activeLocButton');
         }
     }
 }
