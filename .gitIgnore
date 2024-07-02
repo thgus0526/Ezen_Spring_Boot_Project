@@ -36,7 +36,7 @@ out/
 ### VS Code ###
 .vscode/
 
-/src/main/resources/static/js/apikey.js
+js/apikey.js
 
 .env
 
