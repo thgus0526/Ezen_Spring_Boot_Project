@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -15,6 +16,9 @@ import java.util.HashMap;
 
 @Service
 public class KakaoService {
+
+    @Value("${kakao.client-id}")
+    private String kakao_client_id;
 
     @Autowired
     private KakaoUserInfoRepository kakaoUserInfoRepository;
@@ -30,7 +34,7 @@ public class KakaoService {
             conn.setDoOutput(true);
 
             String postParams = "grant_type=authorization_code"
-                    + "&client_id=a0f264bcd4d592a0479ae39646b18e9c"
+                    + "&client_id=" + kakao_client_id
                     + "&redirect_uri=http://localhost:8080/login"
                     + "&code=" + code;
             conn.getOutputStream().write(postParams.getBytes());

@@ -1,3 +1,5 @@
+import config from '../js/apikey.js';
+
 // --------------------------------------------------GPS---------------------------------------------------
 const weatherDiv = document.getElementById('weather');
 const weather1Div = document.getElementById('weather1');
@@ -302,8 +304,9 @@ function dfs_xy_conv(code, v1, v2) {
 function airvisualFunc(lat, lng) {
     console.log("airvisualFunc");
 
-    const apiKey = "34a5088c-cdec-4e29-99ce-59ed71c60059"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
-    const url = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&rad=500&key=${apiKey}`;
+    const AIR_VISUAL_API_KEY = config.AIR_VISUAL_API_KEY;
+
+    const url = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&rad=500&key=${AIR_VISUAL_API_KEY}`;
     console.log(url);
     fetch(url)
         .then((response) => response.json())
@@ -369,8 +372,8 @@ function locationfunc(lat, lng) {
 
     var rs = dfs_xy_conv("toXY", lat, lng);
 
-    const apiKey = "pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
-    const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
+    const METEOROLOGICAL_ADMINISTRATION_API_KEY = config.METEOROLOGICAL_ADMINISTRATION_API_KEY;// 여기에 자신의 OpenWeatherMap API 키를 입력하세요
+    const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${METEOROLOGICAL_ADMINISTRATION_API_KEY}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
     fetch(url)
         .then((response) => response.json())
         .then((data) => {
