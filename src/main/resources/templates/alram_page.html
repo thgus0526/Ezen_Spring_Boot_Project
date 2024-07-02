@@ -110,11 +110,16 @@
     </div>
 </div>
 <div class="total-button-wrapper">
-    <button type="button" class="btn total-button" onclick="getCoordinatesAndLocationFunc()">알람문자보내기</button>
+    <button type="button"  class="btn total-button" onclick="getCoordinatesAndLocationFunc()">알람문자보내기</button>
 </div>
 <div th:if="${userList!=null}" class="display-none">
     <div th:each="user : ${userList}" class="user-item">
-        <div th:text="${user.getAddressStreet()}"></div>
+        <div class="user-address">
+            <div th:text="${user.getAddressStreet()}"></div>
+        </div>
+        <div class="user-id">
+            <div th:text="${user.getUserId()}"></div>
+        </div>
         <input type="text" name="userList" th:value="${userList}">
         <input type="text" name="addressStreet" th:value="${user.getAddressStreet()}">
     </div>
@@ -130,40 +135,36 @@
 <script>
     let userList=[];
     $('.user-item').each(function() {
-        var user = {};
-        user.addressStreet = $(this).find('div').text(); // 사용자의 주소 정보
+        let user = {};
+        user.userId = $(this).find('.user-id').text();
+        user.addressStreet = $(this).find('.user-address').text(); // 사용자의 주소 정보
         userList.push(user);
     });
     console.log(userList);
 
     function getCoordinatesAndLocationFunc(){
-
-        console.log(userList);
-        $.ajax({
-            url: '/getCoordinates',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(userList),
-            success: function(response) {
-                console.log("success");
-                console.log('response'+response);
-                if(Array.isArray(response)){
-                    response.forEach(coordinate => {
-
-                        console.log(coordinate.latitude, coordinate.longitude);
-                        locationfunc(coordinate.latitude, coordinate.longitude);
-                    });
-                } else {
-                    console.error("Unexpected response format:", response);
+            console.log(userList);
+            $.ajax({
+                url: '/getCoordinates',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(userList),
+                success: function(response) {
+                    if(Array.isArray(response)){
+                        let coordinates=[];
+                        response.forEach(coord => {
+                            console.log(coord.id, coord.latitude, coord.longitude);
+                            coordinates.push({id: coord.id, latitude: coord.latitude, longitude: coord.longitude});
+                        });
+                        locationfunc(coordinates);
+                    } else {
+                        console.error("Unexpected response format:", response);
+                    }
+                },
+                error: function(error){
+                    console.error('Error:', error);
                 }
-
-            },
-            error: function(error){
-                console.error('Error:', error);
-            }
-        });
-
-
+            });
     }
 </script>
 </body>
