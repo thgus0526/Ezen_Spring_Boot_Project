@@ -39,6 +39,6 @@ out/
 .env
 
 apikey.js
-
+src/main/resources/application.properties
 application.properties
 application-API-KEY.properties
