@@ -38,7 +38,7 @@ out/
 
 .env
 
-src/main/resources/static/js/apikey.js
+./src/main/resources/static/js/apikey.js
 
 
 apikey.js
