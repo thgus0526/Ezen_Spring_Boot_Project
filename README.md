@@ -60,61 +60,63 @@
 ## 🖼화면
 
 ### 메인 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/98418b65-d56a-4947-93a9-616598407430)  
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/48065140-c527-48b2-b665-aef212763db0)
 - 카테고리(퀴즈, 뉴스, 문의사항 등...) 메인 화면.
 - 좌측 지도에 마커를 찍으면 우측화면에 날씨정보와 미세먼지 정보 출력.
 - 사용자의 위치를 받아 화면에 날씨정보 출력.
 - 회원정보에 주소를 받아 화면에 날씨정보 출력.
 
 ### 로그인 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/321667ea-d252-4441-b376-5c223ed2d995)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/0d45e362-f036-4a2a-89e9-5a65c0965cc0)
 - 소셜 로그인과 일반로그인을 통해 사용자 정보 수집.
 - 아이디 및 비밀번호 찾기.
 
 ### 회원가입 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/cffaa8d6-07ea-44b5-9b9a-4fc0a4cb1722)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/c25701f3-f80b-462f-996d-cabd3bab209a)
 - 유효성 검사를 통한 아이디, 비밀번호, 이메일 중복 검사.
 - gps이용을 위한 주소 입력.
 - 이메일 중복을 방지하기 위한 인증코드 발송.
 
 ### 카카오 소셜 로그인 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/d5829b99-cdc5-4d1f-aa51-be04c722cdfc)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/824b1656-ef6c-40c4-a93c-6e99f36e1417)
 - 동의항목 체크로 사용자 정보 수집
 #### 카카오 소셜 로그인 개인정보 수집 후 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/d39e83fe-a082-4b15-bbd6-8866989111ba)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/3cc4704e-bbea-4c51-affe-2a1b1ac43bb4)
 - 추가 적인 개인정보를 받기위한 간편가입 페이지 이동.
 
 ### 소셜 및 로그인 후 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/be73f666-d902-4d6b-bf78-9c0e59ea92f7)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/dc3733f2-2649-4c5b-be0d-50b39d59f35a)
 - 사용자의 주소를 불러서 지도에 위치정보 및 날씨 정보 출력.
 - 헤더에 사용자 ID 출력 및 클릭시 마이페이지로 이동.
 
 ### 문의 사항 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/e701257a-4167-4b62-ae00-6b290f41804c)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/e5bd50e2-1657-4329-a3b2-2914bea4a646)
 - 사용자의 문의를 등록하는 페이지/ 수정 삭제 가능.
 - 관리자 권한을 가진 사용자만 답글 가능.
 
 ### 공지 사항 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/b0f087bd-4800-4104-bfbf-ecd1dcf542e6)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/52be94b7-e0cc-4121-bd90-9037fb1e3d6a)
 - 관리자의 공지사항 등록 페이지
 - 수정 삭제 가능.
 
-### 기상 퀴즈 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/0dddf806-231e-4f45-9652-8aced3ca65d5)
+### 환경 퀴즈 페이지
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/5e6681d7-ebe9-42d6-b187-839da9f99853)
 - ox퀴즈 페이지
 - 하단에 사용자의 정보 출력
 - 다음 문제 풀기 버튼을 누르면 새로운 문제 생성
 
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/0593a83b-9ee4-4b37-90bd-6973f24c472f)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/ec5ffc4b-c4ac-4763-840d-78370775508d)
+
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/32bf16e1-3ac6-4bd4-9593-fc1f3138957e)
 - 정답을 맞추면 '정답입니다' 오답이면 '오답입니다' 모달창 생성
 
 ### 환경 뉴스 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/8ca4f9fb-f070-45d4-bbb9-d6d156eabd0d)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/de8c4da9-f53f-4834-9821-1a1be554471b)
 - 뉴스 api를 받아 환경 뉴스 출력
 - 뉴스 카테고리를 url
 
 ### 마이 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/eded9339-274b-411f-bd40-5454bbfe075b)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/e499f6e1-161f-4c06-a7c9-f4a35b958928)
 - 이메일 인증을 통한 회원정보 수정 기능
 - 비밀번호 인증을 통한 비밀번호 변경
 - 비밀번호 인증을 통한 회원 탈퇴 기능
@@ -123,7 +125,7 @@
 - 우편번호 찾기를 통한 주소 변경
 
 ### 회원 관리 페이지
-![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/cd793cef-469e-4a95-8591-36864ec7d0ba)
+![image](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/b1c31cf4-9bee-4356-9c1c-f5e33498da4c)
 - 관리자가 회원 정보 수정 / 삭제 가능
 - 사용자는 접근 불가능
 ## 🎬시연영상
