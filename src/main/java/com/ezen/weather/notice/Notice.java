@@ -21,7 +21,7 @@ public class Notice {
     @Column(name="notice_title")
     private String noticeTitle;
 
-    @Column(name="notice_content")
+    @Column(name = "notice_content", columnDefinition = "TEXT")
     private String noticeContent;
 
     @Column(name="notice_hit")

@@ -223,13 +223,13 @@ body {
     font-weight: bold;
 }
 
-#loc1Button, #loc2Button {
+.notActiveLocButton {
     background-color: inherit;
     color: #0f5132;
     border: 1px solid green;
 }
 
-#loc1Button:hover, #loc2Button:hover {
+.activeLocButton, #loc1Button:hover, #loc2Button:hover {
     background-color: #00b09b;
     color: white;
 }
