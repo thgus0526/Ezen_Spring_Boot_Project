@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CoordinateController {
@@ -17,17 +19,26 @@ public class CoordinateController {
     private final String KAKAO_API_KEY = "ff48f5bc5c2956d90f13ecfdaaafc13b";
 
     @PostMapping("/getCoordinates")
-    public List<Coordinate> getCoordinates(@RequestBody List<SiteUser> userList){
+    public List<Map<String, Object>> getCoordinates(@RequestBody List<Map<String, String>> userList){
         System.out.println("테스트테스트");
-        List<Coordinate> coordinates = new ArrayList<>();
-        for(SiteUser siteUser : userList){
-            String address = siteUser.getAddressStreet();
-            Coordinate coordinate = convertAddressToCoordinate(address);
-            if (coordinate != null) {
-                coordinates.add(coordinate);
+
+        List<Map<String, Object>> coordinatesList = new ArrayList<>();
+
+
+        for(Map<String, String> siteUser : userList){
+            String userId = siteUser.get("userId");
+            String addressStreet = siteUser.get("addressStreet");
+
+            Coordinate coordinate = convertAddressToCoordinate(addressStreet);
+            if(coordinate != null){
+                Map<String, Object> coord = new HashMap<>();
+                coord.put("id", userId);
+                coord.put("latitude", coordinate.getLatitude());
+                coord.put("longitude", coordinate.getLongitude());
+                coordinatesList.add(coord);
             }
         }
-        return coordinates;
+        return coordinatesList;
     }
 
     private Coordinate convertAddressToCoordinate(String address){

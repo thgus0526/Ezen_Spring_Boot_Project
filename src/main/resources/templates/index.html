@@ -68,30 +68,22 @@
 
         if (isAuthenticated) {
             if (isAdmin === "USER") {
-
-                if (userSmsCount <= 0) {
+                if (userSmsCount <= 0 && !sessionStorage.getItem('alertUserShown')) {
                     alert("남은 알림문자수가 0입니다 충전후 이용하세요");
-                    sessionStorage.setItem('alert', true);
+                    sessionStorage.setItem('alertUserShown', true);
 
                 }
             } else if (isAdmin === "ADMIN") {
-                if (adminMaxTemp <= data) {
+                if (adminMaxTemp <= data && !sessionStorage.getItem('alertAdminShown')) {
                     alert("현재 온도가 기본설정값보다 높습니다 문자를 발송하세요.");
-                    // 문자를 보낸 후엔 더이상 뜨지 않게 설정해야함
-                    sessionStorage.setItem('alert', true);
+                    sessionStorage.setItem('alertAdminShown', true);
                 }
             }
         }
     }
 
-
-
-
-
-
     </script>
     <script th:src="@{/js/main.js}"></script>
-
 </th:block>
 
 

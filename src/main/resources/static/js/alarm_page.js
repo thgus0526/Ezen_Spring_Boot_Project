@@ -74,157 +74,73 @@ function dfs_xy_conv(code, v1, v2) {
     }
     return rs;
 }
-function locationfunc(lat, lng) {
-    console.log("locationfunc");
+function locationfunc(coordinates) {
+    coordinates.forEach(coordinate =>{
+        console.log("locationfunc");
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0"); // 1을 더한 후 두 자리 수로 맞춤
+        const date = String(now.getDate()).padStart(2, "0");
+        const hour = String(now.getHours()).padStart(2, "0");
 
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0"); // 1을 더한 후 두 자리 수로 맞춤
-    const date = String(now.getDate()).padStart(2, "0");
-    const hour = String(now.getHours()).padStart(2, "0");
+        const formattedDate = `${year}${month}${date}`;
 
-    const formattedDate = `${year}${month}${date}`;
+        var baseDate = formattedDate;
+        if(hour < '06'){
+            baseDate =  `${year}${month}${date-1}`;
+        }
 
-    var baseDate = formattedDate;
-    if(hour < '06'){
-        baseDate =  `${year}${month}${date-1}`;
-    }
+        var rs = dfs_xy_conv("toXY", coordinate.latitude, coordinate.longitude);
 
-    var rs = dfs_xy_conv("toXY", lat, lng);
-
-    const apiKey = "pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
-    const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
-    fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-            const items = data.response.body.items.item;
-
-            // fcstTime의 데이터 필터링
-            const filteredItems = items.filter(item => item.fcstDate === formattedDate)
-                .filter(item => item.fcstTime.substring(0, 2) === hour);
-
-            // 필요한 카테고리 데이터 추출
-            const popData = filteredItems.find(item => item.category === 'POP');
-            const skyData = filteredItems.find(item => item.category === 'SKY');
-            const tmpData = filteredItems.find(item => item.category === 'TMP');
-            const ptyData = filteredItems.find(item => item.category === 'PTY');
-
-            // 강수 형태에 따라 문자열 결정
-            var ptyString = "";
-            var ptyImg = "";
-            if (ptyData) {
-                if (ptyData.fcstValue === "0") {
-                    if (skyData.fcstValue === "1") {
-                        ptyString = "맑음";
-                        ptyImg = "sun.png";
-                    }
-                    else if (skyData.fcstValue === "3") {
-                        ptyString = "구름많음";
-                        ptyImg = "manyCloud.png";
-                    }
-                    else if (skyData.fcstValue === "4") {
-                        ptyString = "흐림";
-                        ptyImg = "cloud.png";
-                    }
-                } else if (ptyData.fcstValue === "1") {
-                    ptyString = "비";
-                    ptyImg = "rain.png";
+        const apiKey = "pT92G96xAGF0VK2U3O0kj%2BmVmHumwJTe08EgnL98rAQTQQxeaqyiD85Sx9nrgex5BOEZp81ZKdK3a1llX6TMfw%3D%3D"; // 여기에 자신의 OpenWeatherMap API 키를 입력하세요
+        const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${apiKey}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
+        fetch(url)
+            .then((response) => {
+                if(!response.ok){
+                    throw new Error('Network response was not ok' + response.statusText);
                 }
-                else if (ptyData.fcstValue === "2") {
-                    ptyString = "비/눈";
-                    ptyImg = "rainSnow.png";
+                return response.json();
+            })
+            .then((data) => {
+
+                console.log('Data received: ', data);
+
+                if(!data || !data.response || !data.response.body || !data.response.body.items || !data.response.body.items.item){
+                    throw new Error('Invalid data structure');
                 }
-                else if (ptyData.fcstValue === "3") {
-                    ptyString = "눈";
-                    ptyImg = "snow.png";
-                }
-                else if (ptyData.fcstValue === "5") {
-                    ptyString = "빗방울";
-                    ptyImg = "littleRain.png";
-                }
-                else if (ptyData.fcstValue === "6") {
-                    ptyString = "빗방울눈날림";
-                    ptyImg = "littleRainSnow.png";
-                }
-                else if (ptyData.fcstValue === "7") {
-                    ptyString = "눈날림";
-                    ptyImg = "littleSnow.png";
-                }
-            }
-            // 문자발송을 위한 데이터 전송함수 호출
-            sendDataToServer(tmpData.fcstValue);
+                const items = data.response.body.items.item;
 
-            // 기존 내용을 지웁니다.
-            while (weather1Div.firstChild) {
-                weather1Div.removeChild(weather1Div.firstChild);
-            }
+                // fcstTime의 데이터 필터링
+                const filteredItems = items.filter(item => item.fcstDate === formattedDate)
+                    .filter(item => item.fcstTime.substring(0, 2) === hour);
 
-            const weather1 = document.getElementById("weather1");
+                // 필요한 카테고리 데이터 추출
+                const tmpData = filteredItems.find(item => item.category === 'TMP');
+                console.log("온도 = " +tmpData);
+                console.log("아이디 = " +coordinate.id);
+                // 문자발송을 위한 데이터 전송함수 호출
+                sendDataToServer(coordinate.id, tmpData.fcstValue);
 
-            const parseDate = `${year}년 ${month}월 ${date}일`;
-
-            var imgElement = document.createElement('img'); // <img> 요소를 생성합니다.
-            imgElement.src = "./img/" + ptyImg; // 이미지 URL을 설정합니다.
-            imgElement.alt = '날씨이미지'; // alt 속성을 설정합니다.
-
-            weather1Div.appendChild(imgElement);
-
-            // 기존 내용을 지웁니다.
-            // weather1Div.textContent = '';
-
-            // 필요한 요소를 생성합니다.
-            var ptyStringElement = document.createElement('p');
-            ptyStringElement.className = 'weatherValue';
-            ptyStringElement.textContent = ptyString;
-
-            var parseDateElement = document.createElement('p');
-            parseDateElement.textContent = parseDate;
-
-            var hourElement = document.createElement('p');
-            hourElement.textContent = `${hour}시 기준`;
-
-            var temperatureElement = document.createElement('p');
-            var tmpText = document.createElement('span');
-            var tmpSpan = document.createElement('span');
-            tmpText.className = 'weatherText';
-            tmpSpan.className = 'weatherValue';
-            tmpText.textContent = `온도 : `;
-            tmpSpan.textContent = `${tmpData.fcstValue}°`;
-            temperatureElement.appendChild(tmpText);
-            temperatureElement.appendChild(tmpSpan);
-
-            var popElement = document.createElement('p');
-            var popText = document.createElement('span');
-            var popSpan = document.createElement('span');
-            popText.className = 'weatherText';
-            popSpan.className = 'weatherValue';
-            popText.textContent = `강수확률 : `;
-            popSpan.textContent = `${popData.fcstValue}%`;
-            popElement.appendChild(popText);
-            popElement.appendChild(popSpan);
-
-// 생성한 요소를 weather1Div에 추가합니다.
-            weather1Div.appendChild(ptyStringElement);
-            weather1Div.appendChild(parseDateElement);
-            weather1Div.appendChild(hourElement);
-            weather1Div.appendChild(temperatureElement);
-            weather1Div.appendChild(popElement);
-
-        })
-        .catch((error) =>
-            console.error("Error fetching weather data:", error)
-        );
+            })
+            .catch((error) =>
+                console.error("Error fetching weather data:". error)
+            );
+    });
 }
 
-function sendDataToServer(data){
+function sendDataToServer(userId, temperature){
     // AJAX 를 이용하여 서버로 데이터 전송
-    console.log("data" + data);
+    console.log("sendDataToServer로 들어온 아이디 : " + userId);
+    console.log("sendDataToServer로 들어온 온도 : " + temperature);
+
     $.ajax({
         type: 'POST',
         url: '/user/send',
         contentType: 'application/json',
         data: JSON.stringify({
-            value: data
+            userId: userId,
+            value: temperature
+
         }),
         success: function(response){
             console.log('Data send successfully', response);
