@@ -213,48 +213,12 @@
 
         .firework {
             position: absolute;
-            width: 50px;
-            height: 50px;
+            width: 20px;
+            height: 20px;
             background-color: #ffeb3b;
             border-radius: 50%;
             animation: firework 0.7s ease-out infinite;
         }
-
-        /*86, 14, 53, 7, 92, 18, 61, 29, 99, 41,*/
-        /*12, 77, 6, 46, 58, 30, 88, 65, 81, 55,*/
-        /*23, 39, 97, 9*/
-
-        .firework:nth-child(1) {
-            top: 86%;
-            left: 14%;
-            animation-delay: 0s;
-        }
-
-        .firework:nth-child(2) {
-            top: 53%;
-            left: 7%;
-            animation-delay: 0.1s;
-        }
-
-        .firework:nth-child(3) {
-            top: 92%;
-            left: 18%;
-            animation-delay: 0.2s;
-        }
-
-        .firework:nth-child(4) {
-            top: 61%;
-            left: 41%;
-            animation-delay: 0.3s;
-        }
-
-        .firework:nth-child(5) {
-            top: 12%;
-            left: 77%;
-            animation-delay: 0.4s;
-        }
-
-
 
 
     </style>
@@ -311,16 +275,9 @@
     </div>
     <!-- 폭죽 애니메이션 -->
 
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
-    <div class="firework"></div>
+    <div class="fireworks-container">
+
+    </div>
 
 </div>
 
@@ -356,11 +313,47 @@
                         "<p class='answer correct'>정답입니다.</p>");
                     $('#pointContainer').html("현재 포인트: " + data.userPoint);
                     showModal();
+                    const container = document.querySelector(".fireworks-container");
+
+                    const numberOfFireworks = 100;
+
+                    for (let i = 0; i < numberOfFireworks; i++) {
+                        const firework = document.createElement("div");
+                        firework.classList.add("firework");
+
+                        // 랜덤한 위치 설정
+                        const randomLeft = Math.random() * 100; // 0부터 100 사이의 랜덤한 수
+                        const randomTop = Math.random() * 100; // 0부터 100 사이의 랜덤한 수
+
+                        firework.style.left = randomLeft + "%";
+                        firework.style.top = randomTop + "%";
+                        firework.style.animationDelay = (Math.random() * 0.5) + "s"; // 0부터 0.5 사이의 랜덤한 딜레이
+
+                        container.appendChild(firework);
+                    }
                     showFireworks();
                 } else {
                     $('#resultContainer').html("<p class='answer wrong'>오답입니다.</p>");
                     $('#pointContainer').html("현재 포인트: " + data.userPoint);
                     showModal();
+                    const container = document.querySelector(".fireworks-container");
+
+                    const numberOfFireworks = 100;
+
+                    for (let i = 0; i < numberOfFireworks; i++) {
+                        const firework = document.createElement("div");
+                        firework.classList.add("firework");
+
+                        // 랜덤한 위치 설정
+                        const randomLeft = Math.random() * 100; // 0부터 100 사이의 랜덤한 수
+                        const randomTop = Math.random() * 100; // 0부터 100 사이의 랜덤한 수
+
+                        firework.style.left = randomLeft + "%";
+                        firework.style.top = randomTop + "%";
+                        firework.style.animationDelay = (Math.random() * 0.5) + "s"; // 0부터 0.5 사이의 랜덤한 딜레이
+
+                        container.appendChild(firework);
+                    }
                 }
             },
             error: function (e) {
