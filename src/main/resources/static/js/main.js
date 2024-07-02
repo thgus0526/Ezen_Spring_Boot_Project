@@ -304,7 +304,7 @@ function dfs_xy_conv(code, v1, v2) {
 function airvisualFunc(lat, lng) {
     console.log("airvisualFunc");
 
-    const AIR_VISUAL_API_KEY = config.AIR_VISUAL_API_KEY;
+    const AIR_VISUAL_API_KEY = process.env.AIR_VISUAL_API_KEY;
 
     const url = `http://api.airvisual.com/v2/nearest_city?lat=${lat}&lon=${lng}&rad=500&key=${AIR_VISUAL_API_KEY}`;
     console.log(url);
