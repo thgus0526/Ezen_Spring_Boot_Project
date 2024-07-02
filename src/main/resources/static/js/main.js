@@ -372,7 +372,7 @@ function locationfunc(lat, lng) {
 
     var rs = dfs_xy_conv("toXY", lat, lng);
 
-    const METEOROLOGICAL_ADMINISTRATION_API_KEY = config.METEOROLOGICAL_ADMINISTRATION_API_KEY;// 여기에 자신의 OpenWeatherMap API 키를 입력하세요
+    const METEOROLOGICAL_ADMINISTRATION_API_KEY = process.env.METEOROLOGICAL_ADMINISTRATION_API_KEY;// 여기에 자신의 OpenWeatherMap API 키를 입력하세요
     const url = `https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=${METEOROLOGICAL_ADMINISTRATION_API_KEY}&pageNo=1&numOfRows=1000&dataType=JSON&base_date=${baseDate}&base_time=0500&nx=${rs.x}&ny=${rs.y}`;
     fetch(url)
         .then((response) => response.json())
