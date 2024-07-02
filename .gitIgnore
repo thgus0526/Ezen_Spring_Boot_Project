@@ -36,10 +36,9 @@ out/
 ### VS Code ###
 .vscode/
 
-git rm --cached apikey.js
-
-
 .env
+
+apikey.js
 
 application.properties
 application-API-KEY.properties
