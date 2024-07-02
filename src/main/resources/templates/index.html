@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App</title>
+    <title>How Weather</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
     <!-- sbb CSS -->
@@ -23,28 +23,21 @@
     <div class="row text-center">
         <div class="col-md-9 map-wrapper">
             <div id="map"></div>
-            <div class="hAddr">
-                <div>주소</div>
-                <span id="centerAddr"></span>
-            </div>
         </div>
         <div class="col-md-3" id="weather">
             <div>
-            <button class="btn activeLocButton m-3" id="loc1Button" onclick="activeButton('loc1Button');">현재 주소</button>
-            <button class="btn notActiveLocButton m-3" id="loc2Button" th:data-address="${user.addressStreet}"
-                    onclick="loc2ButtonFunc(this.getAttribute('data-address'));"
-                    th:if="${#authorization.expression('isAuthenticated()')}">회원 주소</button>
+                <button class="btn activeLocButton m-3" id="loc1Button" onclick="activeButton('loc1Button');">현재 주소</button>
+                <button class="btn notActiveLocButton m-3" id="loc2Button" th:data-address="${user.addressStreet}"
+                        onclick="loc2ButtonFunc(this.getAttribute('data-address'));"
+                        th:if="${#authorization.expression('isAuthenticated()')}">회원 주소</button>
             </div>
 
             <input type="hidden" name="userSms" th:if="${user != null}" th:value="${user.getSms}"/>
             <input type="hidden" name="isAdmin" th:if="${role != null}" th:value="${role}"/>
 
-            <ul>
-                <li th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
+            <span th:if="${adminTemp != null}" th:each="adminTemp : ${adminTemp}">
                     <input type="hidden" name="adminMaxTemp" th:value="${adminTemp.getAdminSetMaxTemp}"/>
-                </li>
-            </ul>
-
+                </span>
 
             <div id="weather1"></div>
             <div id="weather2"></div>
@@ -57,33 +50,41 @@
 <th:block layout:fragment="script">
 
     <script th:inline="javascript">
-    function sendDataToMain(data) {
-        let isAuthenticated = [[${#authentication.principal != null}]];
-        let isAdmin = $('input[name=isAdmin]').val();
-        let userSmsCount = $('input[name=userSms]').val();
-        let adminMaxTemp = $('input[name=adminMaxTemp]').val();
-        console.log("관리자인가? " + isAdmin);
-        console.log("기본값 :" + adminMaxTemp);
-        console.log("문자횟수:" + userSmsCount);
+        function sendDataToMain(data) {
+            let isAuthenticated = [[${#authentication.principal != null}]];
+            let isAdmin = $('input[name=isAdmin]').val();
+            let userSmsCount = $('input[name=userSms]').val();
+            let adminMaxTemp = $('input[name=adminMaxTemp]').val();
+            console.log("관리자인가? " + isAdmin);
+            console.log("기본값 :" + adminMaxTemp);
+            console.log("문자횟수:" + userSmsCount);
 
-        if (isAuthenticated) {
-            if (isAdmin === "USER") {
-                if (userSmsCount <= 0 && !sessionStorage.getItem('alertUserShown')) {
-                    alert("남은 알림문자수가 0입니다 충전후 이용하세요");
-                    sessionStorage.setItem('alertUserShown', true);
+            if (isAuthenticated) {
+                if (isAdmin === "USER") {
 
-                }
-            } else if (isAdmin === "ADMIN") {
-                if (adminMaxTemp <= data && !sessionStorage.getItem('alertAdminShown')) {
-                    alert("현재 온도가 기본설정값보다 높습니다 문자를 발송하세요.");
-                    sessionStorage.setItem('alertAdminShown', true);
+                    if (userSmsCount <= 0) {
+                        alert("남은 알림문자수가 0입니다 충전후 이용하세요");
+                        sessionStorage.setItem('alert', true);
+
+                    }
+                } else if (isAdmin === "ADMIN") {
+                    if (adminMaxTemp <= data) {
+                        alert("현재 온도가 기본설정값보다 높습니다 문자를 발송하세요.");
+                        // 문자를 보낸 후엔 더이상 뜨지 않게 설정해야함
+                        sessionStorage.setItem('alert', true);
+                    }
                 }
             }
         }
-    }
+
+
+
+
+
 
     </script>
     <script th:src="@{/js/main.js}"></script>
+
 </th:block>
 
 

@@ -12,6 +12,7 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <meta name="user-id" th:content="${#authentication.name}"/>
+    <title>How Weather</title>
     <style>
         /*body{*/
         /*    background-color: #CCE0D6;*/
@@ -45,10 +46,10 @@
                     <a class="nav-link" aria-current="page" href="/question/list">문의사항</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/quiz">기상 퀴즈</a>
+                    <a class="nav-link" href="/quiz">환경 퀴즈</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user/news">기상 뉴스</a>
+                    <a class="nav-link" href="/user/news">환경 뉴스</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/user/login}">로그인</a>
