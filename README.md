@@ -31,7 +31,8 @@
 - ![IntelliJ_IDEA](https://img.shields.io/badge/IntelliJ_IDEA-789AFE?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
 
 ## ⚙프로젝트 구성
-![프로젝트구성](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/00de8714-3640-4014-bcbf-6f04bb215037)
+![KakaoTalk_20240701_174214117](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/e366faf4-23c9-4419-a7a1-547e28484eb0)
+
 
 ## 💾프로젝트 프로그램 사용법
 ![여기어때 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/3709527e-5489-4259-a41c-c156e834e882)
