@@ -74,9 +74,5 @@ public class SmsController {
                 }
             }
         }
-
     }
 }
-
-
-

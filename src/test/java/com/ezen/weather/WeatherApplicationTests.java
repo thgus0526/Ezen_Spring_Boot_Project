@@ -2,6 +2,8 @@ package com.ezen.weather;
 
 import com.ezen.weather.notice.Notice;
 import com.ezen.weather.notice.NoticeRepository;
+import com.ezen.weather.question.Question;
+import com.ezen.weather.question.QuestionRepository;
 import com.ezen.weather.user.SiteUser;
 import com.ezen.weather.user.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,8 @@ class WeatherApplicationTests {
 	private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private QuestionRepository questionRepository;
 
 
 	@Test
@@ -58,26 +62,7 @@ class WeatherApplicationTests {
 		}
 	}
 
-	@Test
-	public void testUserSignUp() {
 
-		for (int i = 1; i <= 10; i++) {
-			SiteUser user = new SiteUser();
-			user.setUserId("user" + i);
-			user.setPassword(passwordEncoder.encode("password" + i));
-			user.setName("User " + i);
-			user.setEmail("user" + i + "@example.com");
-			user.setBirth("1994-05-26");
-			user.setAddressStreet("서울시 서대문구 홍은동");
-			user.setAddressDetail("1111");
-			user.setAddressZipcode("11111");
-			user.setAddressNotes("홍동");
-			user.setPoint(0L);
-			user.setAccPoint(0L);
-			user.setSms(5);
-			userRepository.save(user);
-		}
-	}
 
 	@Test
 	public void testNoticeRegistration() {
