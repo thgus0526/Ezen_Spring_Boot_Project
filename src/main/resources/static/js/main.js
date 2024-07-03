@@ -1,10 +1,8 @@
 import config from '../js/apikey.js';
 
 // --------------------------------------------------GPS---------------------------------------------------
-const weatherDiv = document.getElementById('weather');
 const weather1Div = document.getElementById('weather1');
 const weather2Div = document.getElementById('weather2');
-// const weather3Div = document.getElementById('weather3');
 
 const lalo = {
     latitude: 0,
@@ -12,7 +10,6 @@ const lalo = {
 }
 
 function activeButton(buttonId) {
-    var button = document.getElementById(buttonId);
     var loc1Button = document.getElementById('loc1Button');
     var loc2Button = document.getElementById('loc2Button');
 
@@ -50,6 +47,8 @@ function loc2ButtonFunc(address) {
 
         // 정상적으로 검색이 완료됐으면
         if (status === kakao.maps.services.Status.OK) {
+            console.log(result[0].y, result[0].x);
+            locationfunc(result[0].y, result[0].x);
             mapXY(result[0].y, result[0].x);
 
         }
@@ -134,15 +133,12 @@ function mapXY(x, y) {
     // 마커가 지도 위에 표시되도록 설정합니다
     marker.setMap(map);
 
+    // 초기에 지도 중심 좌표에 대한 주소정보를 표시합니다
+    displayInitialInfo(markerPosition);
+
     var geocoder = new kakao.maps.services.Geocoder();
 
     infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
-
-// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
-    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
-
-    // 초기에 지도 중심 좌표에 대한 주소정보를 표시합니다
-    displayInitialInfo(markerPosition);
 
 // 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
     kakao.maps.event.addListener(map, 'click', function(mouseEvent) {
@@ -171,11 +167,6 @@ function mapXY(x, y) {
                 infowindow.open(map, marker);
             }
         });
-    });
-
-// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
-    kakao.maps.event.addListener(map, 'idle', function() {
-        searchAddrFromCoords(map.getCenter(), displayCenterInfo);
     });
 
     function searchAddrFromCoords(coords, callback) {
@@ -212,24 +203,6 @@ function mapXY(x, y) {
                 infowindow.open(map, marker);
             }
         });
-    }
-
-// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
-    function displayCenterInfo(result, status) {
-        if (status === kakao.maps.services.Status.OK) {
-            var infoDiv = document.getElementById('centerAddr');
-
-            for(var i = 0; i < result.length; i++) {
-                // 행정동의 region_type 값은 'H' 이므로
-                if (result[i].region_type === 'H') {
-                    // weather3Div.textContent = result[i].address_name;
-
-                    infoDiv.innerHTML = result[i].address_name;
-
-                    break;
-                }
-            }
-        }
     }
 }
 
@@ -377,6 +350,7 @@ function locationfunc(lat, lng) {
     fetch(url)
         .then((response) => response.json())
         .then((data) => {
+            console.log(data);
             const items = data.response.body.items.item;
 
             // fcstTime의 데이터 필터링

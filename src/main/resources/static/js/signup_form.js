@@ -393,28 +393,28 @@ function validatePassword() {
 
 // 회원가입 버튼 활성화 검사
 function checkAllValidations() {
-    // const submitButton = document.getElementById('join');
-    // const isAllValid = validationStatus.id && validationStatus.checkId &&
-    //         validationStatus.password && validationStatus.name && validationStatus.phone &&
-    //     validationStatus.zipcode && validationStatus.email &&
-    //     validationStatus.checkEmail && validationStatus.birth;
-    //
-    // // console.log("validationStatus.id", validationStatus.id);
-    // // console.log("validationStatus.checkId", validationStatus.checkId);
-    // // console.log("validationStatus.name", validationStatus.name);
-    // // console.log("validationStatus.phone", validationStatus.phone);
-    // // console.log("validationStatus.zipcode", validationStatus.zipcode);
-    // // console.log("validationStatus.email", validationStatus.email);
-    // // console.log("validationStatus.checkEmail", validationStatus.checkEmail);
-    // // console.log("validationStatus.password", validationStatus.password);
-    // // console.log("validationStatus.birth", validationStatus.birth);
-    // // console.log("-----------------------------------------------------------------");
-    //
-    // if (isAllValid) {
-    //     $('#join').removeClass('btn-secondary').addClass('btn-primary');
-    //     submitButton.disabled = false;
-    // } else {
-    //     $('#join').removeClass('btn-primary').addClass('btn-secondary');
-    //     submitButton.disabled = true;
-    // }
+    const submitButton = document.getElementById('join');
+    const isAllValid = validationStatus.id && validationStatus.checkId &&
+            validationStatus.password && validationStatus.name && validationStatus.phone &&
+        validationStatus.zipcode && validationStatus.email &&
+        validationStatus.checkEmail && validationStatus.birth;
+
+    // console.log("validationStatus.id", validationStatus.id);
+    // console.log("validationStatus.checkId", validationStatus.checkId);
+    // console.log("validationStatus.name", validationStatus.name);
+    // console.log("validationStatus.phone", validationStatus.phone);
+    // console.log("validationStatus.zipcode", validationStatus.zipcode);
+    // console.log("validationStatus.email", validationStatus.email);
+    // console.log("validationStatus.checkEmail", validationStatus.checkEmail);
+    // console.log("validationStatus.password", validationStatus.password);
+    // console.log("validationStatus.birth", validationStatus.birth);
+    // console.log("-----------------------------------------------------------------");
+
+    if (isAllValid) {
+        $('#join').removeClass('btn-secondary').addClass('btn-primary');
+        submitButton.disabled = false;
+    } else {
+        $('#join').removeClass('btn-primary').addClass('btn-secondary');
+        submitButton.disabled = true;
+    }
 }

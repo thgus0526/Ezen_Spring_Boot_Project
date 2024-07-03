@@ -65,7 +65,7 @@ public class SmsController {
                 if(currentTemp > userMaxTemp && user.getSms() >= 1) {
                     String userPhone = user.getPhone();
                     Message message = new Message();
-                    message.setFrom("01022300705");
+                    message.setFrom("01052850970");
                     message.setTo(userPhone);
                     message.setText("[지금날씨어때] 오늘 00시 00분 00지역에 경계경보 발령. 여러분께서는 대피할 준비를 하시고, 어린이와 노약자가 우선 대피할 수 있도록 해 주시기 바랍니다.");
                     SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
@@ -74,5 +74,9 @@ public class SmsController {
                 }
             }
         }
+
     }
 }
+
+
+

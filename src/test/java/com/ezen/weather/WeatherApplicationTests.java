@@ -3,9 +3,11 @@ package com.ezen.weather;
 import com.ezen.weather.notice.Notice;
 import com.ezen.weather.notice.NoticeRepository;
 import com.ezen.weather.user.SiteUser;
+import com.ezen.weather.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
@@ -14,8 +16,35 @@ class WeatherApplicationTests {
 
     @Autowired
     private NoticeRepository noticeRepository;
+	@Autowired
+	private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
 	@Test
 	void contextLoads() {
+	}
+
+	@Test
+	public void testUserSignUp() {
+
+		for (int i = 1; i <= 10; i++) {
+			SiteUser user = new SiteUser();
+			user.setUserId("user" + i);
+			user.setPassword(passwordEncoder.encode("password" + i));
+			user.setName("User " + i);
+			user.setEmail("user" + i + "@example.com");
+			user.setBirth("1994-05-26");
+			user.setAddressStreet("서울시 서대문구 홍은동");
+			user.setAddressDetail("1111");
+			user.setAddressZipcode("11111");
+			user.setAddressNotes("홍동");
+			user.setPoint(0L);
+			user.setAccPoint(0L);
+			user.setSms(5);
+			userRepository.save(user);
+		}
 	}
 
 	@Test
