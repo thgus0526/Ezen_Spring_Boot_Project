@@ -24,6 +24,7 @@
 - <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white"> 
 - <img src="https://img.shields.io/badge/HeidiSQL-DFD9E2?style=for-the-badge&logoColor=white">
 - <img src="https://img.shields.io/badge/Lombok-E4D9FF?style=for-the-badge&logoColor=white">
+- <img src="https://img.shields.io/badge/JSON-000000?style=flat-square&logo=json&logoColor=white"/>
 
 ## ⌨사용 툴
 - ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)
