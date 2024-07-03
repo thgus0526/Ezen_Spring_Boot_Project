@@ -43,7 +43,7 @@
 
 ## 📃관련문서
 - PPT :
-- Notion : https://apple-decision-c91.notion.site/60f57cf64f6c483ab7c6e7da55d48cb9?v=dd1b4df13b8f4d899aaac2324082e3aa 
+- ![Notion](https://img.shields.io/badge/Notion-white?style=flat-square&logo=Notion&logoColor=000000) : https://apple-decision-c91.notion.site/60f57cf64f6c483ab7c6e7da55d48cb9?v=dd1b4df13b8f4d899aaac2324082e3aa 
 
 ## 🔒저작권 및 사용권 정보
 - 카카오 지도 api : https://apis.map.kakao.com/
