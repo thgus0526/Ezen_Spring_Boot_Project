@@ -53,7 +53,6 @@
 
 - 장소현(https://github.com/thgus0526)
 - 임정빈(https://github.com/jbn750)
-- 김유민()
 - 한상민([mmm44112@gmail.com](https://github.com/mmm44112?tab=repositories))
 - 유성헌(https://github.com/c21ysh2)
 - 변성진([byun970@gmail.com](https://github.com/byun970))
