@@ -40,6 +40,9 @@
 ## 🔍구현 결과
 ![구현결과 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/059af82c-ddee-4ebd-ad51-186e9e77d6d0)
 
+## 📃관련문서
+- PPT :
+- Notion : 
 
 ## 🔒저작권 및 사용권 정보
 - 카카오 지도 api : https://apis.map.kakao.com/
