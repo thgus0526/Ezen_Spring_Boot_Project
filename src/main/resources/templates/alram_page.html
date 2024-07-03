@@ -105,6 +105,7 @@
                 <div class="total-button-wrapper">
                     <button type="submit" class="btn total-button">변경</button>
                 </div>
+
             </form>
         </div>
     </div>
@@ -143,28 +144,28 @@
     console.log(userList);
 
     function getCoordinatesAndLocationFunc(){
-            console.log(userList);
-            $.ajax({
-                url: '/getCoordinates',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(userList),
-                success: function(response) {
-                    if(Array.isArray(response)){
-                        let coordinates=[];
-                        response.forEach(coord => {
-                            console.log(coord.id, coord.latitude, coord.longitude);
-                            coordinates.push({id: coord.id, latitude: coord.latitude, longitude: coord.longitude});
-                        });
-                        locationfunc(coordinates);
-                    } else {
-                        console.error("Unexpected response format:", response);
-                    }
-                },
-                error: function(error){
-                    console.error('Error:', error);
+        console.log(userList);
+        $.ajax({
+            url: '/getCoordinates',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(userList),
+            success: function(response) {
+                if(Array.isArray(response)){
+                    let coordinates=[];
+                    response.forEach(coord => {
+                        console.log(coord.id, coord.latitude, coord.longitude);
+                        coordinates.push({id: coord.id, latitude: coord.latitude, longitude: coord.longitude});
+                    });
+                    locationfunc(coordinates);
+                } else {
+                    console.error("Unexpected response format:", response);
                 }
-            });
+            },
+            error: function(error){
+                console.error('Error:', error);
+            }
+        });
     }
 </script>
 </body>

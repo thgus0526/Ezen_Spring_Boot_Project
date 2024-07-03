@@ -2,22 +2,78 @@ package com.ezen.weather;
 
 import com.ezen.weather.notice.Notice;
 import com.ezen.weather.notice.NoticeRepository;
+import com.ezen.weather.question.Question;
+import com.ezen.weather.question.QuestionRepository;
 import com.ezen.weather.user.SiteUser;
+import com.ezen.weather.user.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.web.servlet.MockMvc;
+
 
 import java.time.LocalDateTime;
 
+
+@AutoConfigureMockMvc
 @SpringBootTest
 class WeatherApplicationTests {
 
-    @Autowired
-    private NoticeRepository noticeRepository;
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	@Autowired
+	private NoticeRepository noticeRepository;
+	@Autowired
+	private QuestionRepository questionRepository;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+
+	//회원가입 테스트코드
 	@Test
-	void contextLoads() {
+	public void testUserSignUp() {
+		for (int i = 1; i <= 10; i++) {
+			SiteUser user = new SiteUser();
+			user.setUserId("user" + i);
+			user.setPassword(passwordEncoder.encode("password" + i));
+			user.setName("User " + i);
+			user.setEmail("user" + i + "@example.com");
+			user.setBirth("1994-05-26");
+			user.setAddressStreet("서울시 서대문구 홍은동");
+			user.setAddressDetail("1111");
+			user.setAddressZipcode("11111");
+			user.setAddressNotes("홍동");
+			user.setPoint(0L);
+			user.setAccPoint(0L);
+			user.setSms(5);
+			userRepository.save(user);
+		}
 	}
 
+
+	//문의사항 테스트코드
+	@Test
+	public void questionRegistration(){
+		for (int i = 1; i <= 10; i++) {
+			Question question = new Question();
+			question.setSubject("문의사항"+i);
+			question.setContent("문의합니다"+i);
+			SiteUser user = new SiteUser();
+			user.setUserId("user1");
+			question.setAuthor(user);
+			question.setCreateDate(LocalDateTime.now());
+			questionRepository.save(question);
+		}
+	}
+
+
+	//공지사항 테스트코드
 	@Test
 	public void testNoticeRegistration() {
 		// Given
@@ -83,6 +139,4 @@ class WeatherApplicationTests {
 		noticeRepository.save(notice3);
 
 	}
-
-
 }
