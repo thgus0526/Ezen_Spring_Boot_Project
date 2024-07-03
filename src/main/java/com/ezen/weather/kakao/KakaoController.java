@@ -27,6 +27,7 @@ public class KakaoController {
         this.kakaoService = kakaoService;
     }
 
+
     @RequestMapping("/login")
     public String home(@RequestParam(value = "code", required = false) String code, Model model, HttpSession session) {
         logger.info("카카오 로그인 시작");

@@ -1,9 +1,11 @@
+import config from "../js/apikey.js";
 
 // --------------------------------------------------뉴스---------------------------------------------------
 
 document.addEventListener("DOMContentLoaded", () => {
-    const apiKey = "pub_4736254b02f1f18de933db7c8ddd0e40704b6"; // 여기에 올바른 API 키를 입력하세요.
-    const url = `https://newsdata.io/api/1/latest?country=kr&category=environment&apikey=${apiKey}`;
+    const NEWS_API_KEY = config.NEWS_API_KEY;
+    // 여기에 올바른 API 키를 입력하세요.
+    const url = `https://newsdata.io/api/1/latest?country=kr&category=environment&apikey=${NEWS_API_KEY}`;
     const newsContainer = document.getElementById("news-container");
 
     fetch(url)

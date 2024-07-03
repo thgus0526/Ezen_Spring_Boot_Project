@@ -20,7 +20,6 @@ public class CoordinateController {
 
     @PostMapping("/getCoordinates")
     public List<Map<String, Object>> getCoordinates(@RequestBody List<Map<String, String>> userList){
-        System.out.println("테스트테스트");
 
         List<Map<String, Object>> coordinatesList = new ArrayList<>();
 
@@ -42,7 +41,6 @@ public class CoordinateController {
     }
 
     private Coordinate convertAddressToCoordinate(String address){
-        System.out.println("테스트테스트2222");
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "KakaoAK " + KAKAO_API_KEY);

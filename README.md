@@ -24,6 +24,7 @@
 - <img src="https://img.shields.io/badge/mariaDB-003545?style=for-the-badge&logo=mariaDB&logoColor=white"> 
 - <img src="https://img.shields.io/badge/HeidiSQL-DFD9E2?style=for-the-badge&logoColor=white">
 - <img src="https://img.shields.io/badge/Lombok-E4D9FF?style=for-the-badge&logoColor=white">
+- <img src="https://img.shields.io/badge/JSON-000000?style=flat-square&logo=json&logoColor=white"/>
 
 ## ⌨사용 툴
 - ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)
@@ -31,7 +32,8 @@
 - ![IntelliJ_IDEA](https://img.shields.io/badge/IntelliJ_IDEA-789AFE?style=flat-square&logo=IntelliJ%20IDEA&logoColor=white)
 
 ## ⚙프로젝트 구성
-![프로젝트구성](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/00de8714-3640-4014-bcbf-6f04bb215037)
+![KakaoTalk_20240701_174214117](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/e366faf4-23c9-4419-a7a1-547e28484eb0)
+
 
 ## 💾프로젝트 프로그램 사용법
 ![여기어때 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/3709527e-5489-4259-a41c-c156e834e882)
@@ -39,6 +41,9 @@
 ## 🔍구현 결과
 ![구현결과 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/059af82c-ddee-4ebd-ad51-186e9e77d6d0)
 
+## 📃관련문서
+- PPT :
+- Notion : https://apple-decision-c91.notion.site/60f57cf64f6c483ab7c6e7da55d48cb9?v=dd1b4df13b8f4d899aaac2324082e3aa 
 
 ## 🔒저작권 및 사용권 정보
 - 카카오 지도 api : https://apis.map.kakao.com/
@@ -52,7 +57,6 @@
 
 - 장소현(https://github.com/thgus0526)
 - 임정빈(https://github.com/jbn750)
-- 김유민()
 - 한상민([mmm44112@gmail.com](https://github.com/mmm44112?tab=repositories))
 - 유성헌(https://github.com/c21ysh2)
 - 변성진([byun970@gmail.com](https://github.com/byun970))

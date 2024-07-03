@@ -335,24 +335,6 @@
                     $('#resultContainer').html("<p class='answer wrong'>오답입니다.</p>");
                     $('#pointContainer').html("현재 포인트: " + data.userPoint);
                     showModal();
-                    const container = document.querySelector(".fireworks-container");
-
-                    const numberOfFireworks = 100;
-
-                    for (let i = 0; i < numberOfFireworks; i++) {
-                        const firework = document.createElement("div");
-                        firework.classList.add("firework");
-
-                        // 랜덤한 위치 설정
-                        const randomLeft = Math.random() * 100; // 0부터 100 사이의 랜덤한 수
-                        const randomTop = Math.random() * 100; // 0부터 100 사이의 랜덤한 수
-
-                        firework.style.left = randomLeft + "%";
-                        firework.style.top = randomTop + "%";
-                        firework.style.animationDelay = (Math.random() * 0.5) + "s"; // 0부터 0.5 사이의 랜덤한 딜레이
-
-                        container.appendChild(firework);
-                    }
                 }
             },
             error: function (e) {

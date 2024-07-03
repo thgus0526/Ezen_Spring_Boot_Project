@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+
+.env
+
+./src/main/resources/static/js/apikey.js
+
+
+apikey.js
+application.properties
+application-API-KEY.properties

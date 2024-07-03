@@ -1,28 +1,22 @@
 package com.ezen.weather.Sms;
 
 import com.ezen.weather.adminTemp.AdminTempRepository;
-
 import com.ezen.weather.user.SiteUser;
 import com.ezen.weather.user.UserRepository;
 import com.ezen.weather.user.UserService;
 import com.ezen.weather.userTemp.UserTemp;
 import com.ezen.weather.userTemp.UserTempRepository;
 import com.ezen.weather.userTemp.UserTempService;
-import lombok.NoArgsConstructor;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.apache.maven.model.Site;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -30,7 +24,11 @@ import java.util.Optional;
 @RestController
 public class SmsController {
 
-    private final DefaultMessageService messageService = NurigoApp.INSTANCE.initialize("NCSOAMYK1HONAHU1", "G9F2CS3B69XTX81XG8HOUTSRWXQ3M0UL", "https://api.coolsms.co.kr");
+    @Value("${message-api-key}")
+    private String messageApiKey;
+
+    @Value("${message-secret-api-key}")
+    private String messageSecretApiKey;
 
     private final AdminTempRepository adminTempRepository;
     private final UserRepository userRepository;
@@ -38,19 +36,21 @@ public class SmsController {
     private final UserTempService userTempService;
     private final UserService userService;
 
+    private DefaultMessageService messageService;
 
+    @PostConstruct
+    public void init() {
+        messageService = NurigoApp.INSTANCE.initialize(messageApiKey, messageSecretApiKey, "https://api.coolsms.co.kr");
+    }
 
     @PostMapping("/user/send")
     public void sendSms(@RequestBody Map<String, Object> data) {
         System.out.println("문자~~~~~~~~~~~~~~~~~");
         System.out.println("온도값 : " + data.get("value").toString());
         System.out.println("아이디값 : " + data.get("userId").toString().trim());
-        // 현재 기온
         double currentTemp = Double.parseDouble(data.get("value").toString());
-
         String userId = data.get("userId").toString().trim();
 
-        // findByUserId 사용
         Optional<SiteUser> userOptional = userRepository.findByUserId(userId);
         System.out.println("User found by findByUserId: " + userOptional.isPresent());
 
@@ -58,15 +58,14 @@ public class SmsController {
             SiteUser user = userOptional.get();
             UserTemp userTemp = userTempService.getUserTemp(userId);
 
-            System.out.println(data.get("userId").toString().trim()+"의 온도 설정 값 : "+ userTemp.getUserSetMaxTemp());
-            if(userTemp != null){
+            System.out.println(data.get("userId").toString().trim() + "의 온도 설정 값 : " + userTemp);
+            if(userTemp != null) {
                 double userMaxTemp = userTemp.getUserSetMaxTemp();
 
-                if(currentTemp > userMaxTemp && user.getSms() >= 1){
-                    System.out.println("조건을 통과한 유저 : " + user.getName());
+                if(currentTemp > userMaxTemp && user.getSms() >= 1) {
                     String userPhone = user.getPhone();
                     Message message = new Message();
-                    message.setFrom("01022300705");
+                    message.setFrom("01052850970");
                     message.setTo(userPhone);
                     message.setText("[지금날씨어때] 오늘 00시 00분 00지역에 경계경보 발령. 여러분께서는 대피할 준비를 하시고, 어린이와 노약자가 우선 대피할 수 있도록 해 주시기 바랍니다.");
 //                    SingleMessageSentResponse response = messageService.sendOne(new SingleMessageSendingRequest(message));
@@ -75,6 +74,7 @@ public class SmsController {
                 }
             }
         }
+
     }
 }
 
