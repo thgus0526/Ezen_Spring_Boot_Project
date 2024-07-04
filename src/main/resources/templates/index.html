@@ -83,7 +83,12 @@
 
 
     </script>
-    <script type="module" th:src="@{/js/main.js}"></script>
+    <script type="module">
+        import { activeButton, loc2ButtonFunc  } from './js/main.js';
+
+        window.activeButton = activeButton;
+        window.loc2ButtonFunc = loc2ButtonFunc;
+    </script>
 
 </th:block>
 
