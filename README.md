@@ -35,6 +35,19 @@
 
 
 ## 💾프로젝트 프로그램 사용법
+프로젝트 내에 API 사용법:
+
+1. apikey.js 파일 추가
+const config {
+   // API Key 추가
+};
+
+export default config;
+
+2. application-API-KEY.properties 파일 추가
+message-api-key = API Key 추가
+message-secret-api-key = API Key 추가
+
 ![여기어때 drawio](https://github.com/thgus0526/Ezen_Spring_Boot_Project/assets/76036655/3709527e-5489-4259-a41c-c156e834e882)
 
 ## 🔍구현 결과
