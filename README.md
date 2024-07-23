@@ -145,5 +145,4 @@ message-secret-api-key = API Key 추가
 - 관리자가 회원 정보 수정 / 삭제 가능
 - 사용자는 접근 불가능
 ## 🎬시연영상
-https://github.com/user-attachments/assets/3fd34bb7-120d-4df3-9a4b-8ed618eba17f
 
